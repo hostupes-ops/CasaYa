@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CasaYa — Servicios a domicilio en Cuba</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#00C853;--green-dark:#00A040;--green-light:#E8F9EF;--green-mid:#CCEFDA;--black:#0D1117;--gray-900:#1C2333;--gray-700:#3D4A5C;--gray-500:#6B7A90;--gray-300:#B8C2CF;--gray-100:#F2F5F8;--white:#FFFFFF;--radius:16px;--shadow:0 4px 20px rgba(0,0,0,0.08);--shadow-lg:0 8px 40px rgba(0,0,0,0.14)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F5F7FA;color:var(--black);min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+.navbar{background:var(--white);border-bottom:1px solid #EAECF0;padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:22px;font-weight:800;color:var(--black);letter-spacing:-0.5px;cursor:pointer}
+.logo span{color:var(--green)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid #EAECF0;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:100}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 16px;border-radius:10px;border:none;background:none;color:var(--gray-500);font-family:inherit;transition:color 0.15s}
+.bnav-item.active{color:var(--green)}
+.bnav-item svg{width:22px;height:22px}
+.bnav-item span{font-size:10px;font-weight:600}
+.page-content{flex:1;overflow-y:auto;padding-bottom:80px}
+.btn-primary{width:100%;background:var(--green);border:none;border-radius:14px;padding:15px;font-family:inherit;font-size:15px;font-weight:800;color:white;cursor:pointer;transition:background 0.2s}
+.btn-primary:hover{background:var(--green-dark)}
+.btn-outline{width:100%;background:transparent;border:2px solid var(--green);border-radius:14px;padding:14px;font-family:inherit;font-size:15px;font-weight:700;color:var(--green);cursor:pointer}
+.btn-secondary{background:var(--gray-100);border:none;border-radius:14px;padding:14px 18px;font-family:inherit;font-size:14px;font-weight:700;color:var(--gray-700);cursor:pointer;display:flex;align-items:center;gap:8px}
+.back-btn{width:38px;height:38px;background:rgba(255,255,255,0.12);border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;margin-bottom:16px;flex-shrink:0}
+.back-btn-dark{width:38px;height:38px;background:var(--gray-100);border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-700)}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-label{font-size:13px;font-weight:700;color:var(--gray-700)}
+.form-input{background:var(--white);border:1.5px solid #E0E5EB;border-radius:12px;padding:13px 16px;font-family:inherit;font-size:14px;color:var(--black);outline:none;transition:border-color 0.15s;width:100%}
+.form-input:focus{border-color:var(--green)}
+.form-select{background:var(--white);border:1.5px solid #E0E5EB;border-radius:12px;padding:13px 16px;font-family:inherit;font-size:14px;color:var(--black);outline:none;width:100%;cursor:pointer}
+.form-select:focus{border-color:var(--green)}
+.section{padding:22px 20px 0}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title{font-size:16px;font-weight:800;color:var(--black);margin-bottom:14px}
+.section-link{font-size:13px;color:var(--green);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+/* HERO */
+.home-hero{background:linear-gradient(145deg,#0D1117 0%,#1C2333 100%);padding:28px 20px 32px;position:relative;overflow:hidden}
+.home-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:var(--green);border-radius:50%;opacity:0.08}
+.hero-greeting{font-size:13px;color:rgba(255,255,255,0.6);font-weight:500;margin-bottom:4px}
+.hero-title{font-size:22px;font-weight:800;color:white;line-height:1.3;margin-bottom:20px}
+.hero-title em{color:var(--green);font-style:normal}
+.search-bar{background:white;border-radius:14px;display:flex;align-items:center;padding:0 16px;gap:10px;height:52px;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+.search-bar input{flex:1;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--black)}
+.search-btn{background:var(--green);border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+/* CITY */
+.city-bar{display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--white);border-bottom:1px solid #F0F2F5;position:relative;z-index:50}
+.city-btn{display:flex;align-items:center;gap:6px;background:none;border:1.5px solid #E0E5EB;border-radius:20px;padding:7px 14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--black);cursor:pointer}
+.city-btn:hover{border-color:var(--green)}
+.city-dropdown{position:absolute;top:56px;left:20px;background:var(--white);border-radius:16px;box-shadow:var(--shadow-lg);z-index:200;width:calc(100% - 40px);border:1px solid #EAECF0;display:none;max-height:300px;overflow-y:auto}
+.city-dropdown.open{display:block;animation:fadeDown 0.18s ease}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.city-dropdown-header{padding:12px 16px;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #F0F2F5;position:sticky;top:0;background:white}
+.city-option{padding:13px 16px;font-size:14px;font-weight:600;color:var(--black);cursor:pointer;display:flex;align-items:center;gap:10px;border-bottom:1px solid #F8F9FA}
+.city-option:last-child{border-bottom:none}
+.city-option:hover{background:var(--gray-100)}
+.city-option.selected{color:var(--green)}
+/* CATEGORIES */
+.categories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cat-card{background:var(--white);border-radius:var(--radius);padding:18px 12px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;box-shadow:var(--shadow);border:2px solid transparent;transition:all 0.2s}
+.cat-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.cat-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+.cat-name{font-size:12px;font-weight:700;color:var(--gray-900);text-align:center}
+/* PROMO */
+.promo-banner{margin:22px 20px 0;background:linear-gradient(135deg,var(--green) 0%,#00A040 100%);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+.promo-banner::after{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,0.1);border-radius:50%}
+.promo-text h3{font-size:16px;font-weight:800;color:white}
+.promo-text p{font-size:12px;color:rgba(255,255,255,0.8);margin-top:4px}
+/* EMPTY */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:12px}
+.empty-icon{font-size:48px}
+.empty-title{font-size:16px;font-weight:800}
+.empty-sub{font-size:13px;color:var(--gray-500);line-height:1.6;max-width:260px}
+/* PRO CARDS */
+.pros-list{padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.pro-list-card{background:var(--white);border-radius:var(--radius);padding:16px;display:flex;gap:14px;box-shadow:var(--shadow);cursor:pointer;transition:transform 0.2s}
+.pro-list-card:hover{transform:translateY(-1px)}
+.pro-list-avatar{width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0}
+.pro-list-info{flex:1}
+.pro-list-name{font-size:15px;font-weight:700}
+.pro-list-role{font-size:12px;color:var(--gray-500);font-weight:500;margin-top:2px}
+.pro-list-meta{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tag{background:var(--gray-100);color:var(--gray-600);font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px}
+.tag.green{background:var(--green-light);color:var(--green-dark)}
+/* FILTER */
+.filter-chips{display:flex;gap:8px;padding:14px 20px;overflow-x:auto;scrollbar-width:none;background:var(--white)}
+.filter-chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #E0E5EB;background:var(--white);color:var(--gray-700);font-family:inherit}
+.chip.active{background:var(--green);border-color:var(--green);color:white}
+/* DETAIL */
+.detail-hero{background:linear-gradient(145deg,#0D1117,#1C2333);padding:20px 20px 28px}
+.detail-name{font-size:20px;font-weight:800;color:white;margin-top:10px}
+.detail-role{font-size:13px;color:rgba(255,255,255,0.6);margin-top:3px}
+.stat-value{font-size:16px;font-weight:800;color:white}
+.stat-label{font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px}
+.detail-body{padding:20px;display:flex;flex-direction:column;gap:20px}
+.detail-section-title{font-size:14px;font-weight:800;margin-bottom:12px}
+.services-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.service-item{background:var(--gray-100);border-radius:12px;padding:14px 12px}
+.service-item-name{font-size:13px;font-weight:700}
+.service-item-price{font-size:14px;font-weight:800;color:var(--green);margin-top:4px}
+.service-item-duration{font-size:11px;color:var(--gray-500);margin-top:2px}
+.cta-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);padding:14px 20px 20px;border-top:1px solid #EAECF0;display:flex;gap:12px}
+/* BOOKING */
+.date-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.date-btn{background:var(--white);border:1.5px solid #E0E5EB;border-radius:12px;padding:10px 6px;font-family:inherit;cursor:pointer;text-align:center;transition:all 0.15s}
+.date-btn .day{font-size:10px;font-weight:600;color:var(--gray-500)}
+.date-btn .num{font-size:16px;font-weight:800;color:var(--black)}
+.date-btn.selected{background:var(--green);border-color:var(--green)}
+.date-btn.selected .day,.date-btn.selected .num{color:white}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.time-btn{background:var(--white);border:1.5px solid #E0E5EB;border-radius:10px;padding:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray-700);cursor:pointer;transition:all 0.15s}
+.time-btn.selected{background:var(--green);border-color:var(--green);color:white}
+.service-check{background:var(--white);border:1.5px solid #E0E5EB;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:8px;transition:border-color 0.15s}
+.service-check.checked{border-color:var(--green);background:var(--green-light)}
+.service-check-box{width:22px;height:22px;border-radius:6px;border:2px solid #E0E5EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.service-check.checked .service-check-box{background:var(--green);border-color:var(--green)}
+.service-check-name{font-size:14px;font-weight:600;flex:1}
+.service-check-price{font-size:13px;font-weight:700;color:var(--green)}
+.summary-card{background:var(--gray-100);border-radius:var(--radius);padding:16px}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #E8EBF0}
+.summary-row:last-child{border-bottom:none}
+.summary-label{font-size:13px;color:var(--gray-600);font-weight:500}
+.summary-value{font-size:13px;font-weight:700}
+.summary-total .summary-label{font-size:14px;font-weight:800;color:var(--black)}
+.summary-total .summary-value{font-size:16px;font-weight:800;color:var(--green)}
+/* ONBOARDING */
+.onboarding{min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(160deg,#0D1117 0%,#1C2333 55%,#0D2818 100%);padding:52px 28px 40px}
+.onb-logo{font-size:32px;font-weight:800;color:white;letter-spacing:-1px;margin-bottom:6px}
+.onb-logo span{color:var(--green)}
+.onb-tagline{font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:44px}
+.onb-title{font-size:26px;font-weight:800;color:white;line-height:1.3;margin-bottom:8px}
+.onb-sub{font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:32px;line-height:1.6}
+.role-card{background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.1);border-radius:20px;padding:22px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;margin-bottom:14px}
+.role-card:hover,.role-card.selected{background:rgba(0,200,83,0.12);border-color:var(--green)}
+.role-icon{width:56px;height:56px;border-radius:16px;background:rgba(0,200,83,0.15);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.role-info h3{font-size:16px;font-weight:800;color:white}
+.role-info p{font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;line-height:1.4}
+/* REGISTER */
+.reg-header{background:linear-gradient(145deg,#0D1117,#1C2333);padding:24px 20px}
+.reg-title{font-size:20px;font-weight:800;color:white;margin-top:8px}
+.reg-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px}
+.reg-step{display:none;flex-direction:column;gap:18px}
+.reg-step.active{display:flex}
+.step-indicator{display:flex;gap:6px;padding:14px 20px 0}
+.step-dot{height:4px;border-radius:4px;flex:1;background:#E0E5EB;transition:background 0.3s}
+.step-dot.done{background:var(--green)}
+.service-entry{background:var(--white);border:1.5px solid #E0E5EB;border-radius:14px;padding:16px;margin-bottom:10px}
+.service-entry-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.service-entry-num{font-size:13px;font-weight:700;color:var(--gray-700)}
+.service-remove{background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:20px;padding:0;line-height:1}
+.add-service-btn{background:var(--green-light);border:1.5px dashed var(--green);border-radius:12px;padding:13px;font-family:inherit;font-size:14px;font-weight:700;color:var(--green);cursor:pointer;width:100%}
+.price-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* VERIFICATION */
+.photo-upload{border:2px dashed #D0D7E0;border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--white);position:relative;overflow:hidden}
+.photo-upload:hover{border-color:var(--green);background:var(--green-light)}
+.photo-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.photo-upload-icon{font-size:32px;margin-bottom:8px}
+.photo-upload-title{font-size:14px;font-weight:700}
+.photo-upload-sub{font-size:12px;color:var(--gray-500);margin-top:3px}
+.photo-status{font-size:12px;color:var(--green);font-weight:700;margin-top:6px;display:none}
+.photo-upload.uploaded{border-color:var(--green);background:var(--green-light)}
+/* PROFILE */
+.profile-hero{background:linear-gradient(145deg,#0D1117,#1C2333);padding:28px 20px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.profile-avatar-wrap{width:80px;height:80px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid rgba(255,255,255,0.2)}
+.profile-name{font-size:20px;font-weight:800;color:white}
+.profile-loc{font-size:13px;color:rgba(255,255,255,0.6)}
+.profile-body{padding:20px;display:flex;flex-direction:column;gap:14px}
+.profile-menu{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.menu-item{display:flex;align-items:center;gap:14px;padding:16px;cursor:pointer;transition:background 0.15s;border-bottom:1px solid #F0F2F5}
+.menu-item:last-child{border-bottom:none}
+.menu-item:hover{background:var(--gray-100)}
+.menu-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.menu-text{flex:1}
+.menu-title{font-size:14px;font-weight:600}
+.menu-sub{font-size:12px;color:var(--gray-500);margin-top:2px}
+/* INFO BOX */
+.info-box{background:var(--green-light);border-radius:12px;padding:14px;display:flex;gap:10px;align-items:flex-start}
+.info-box-icon{font-size:18px;flex-shrink:0}
+.info-box-text{font-size:12px;color:var(--green-dark);font-weight:500;line-height:1.5}
+/* VERIFY BADGE */
+.vbadge{display:inline-flex;align-items:center;gap:5px;border-radius:20px;font-size:11px;font-weight:700;padding:4px 10px}
+.vbadge.pending{background:#FFF8E1;color:#D97706}
+.vbadge.verified{background:var(--green-light);color:var(--green-dark)}
+.vbadge.none{background:#FEE2E2;color:#DC2626}
+/* SUCCESS */
+.success-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;min-height:80vh}
+.success-icon{width:100px;height:100px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:24px;animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275)}
+@keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+.success-icon svg{width:52px;height:52px;color:var(--green)}
+.success-card{background:var(--white);border-radius:var(--radius);padding:20px;width:100%;max-width:340px;box-shadow:var(--shadow);margin-bottom:28px;text-align:left}
+.success-card-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F0F2F5}
+.success-card-row:last-child{border-bottom:none}
+.success-card-row .k{font-size:12px;color:var(--gray-500)}
+.success-card-row .v{font-size:12px;font-weight:700}
+@keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.screen.active .page-content{animation:slideUp 0.25s ease}
+</style>
+</head>
+<body>
+
+<!-- ========== ONBOARDING ========== -->
+
+<div id="screen-onboarding" class="screen active">
+<div class="onboarding">
+  <div class="onb-logo">Casa<span>Ya</span></div>
+  <div class="onb-tagline">Servicios a domicilio en Cuba 🇨🇺</div>
+  <h1 class="onb-title">¿Cómo quieres usar CasaYa?</h1>
+  <p class="onb-sub">Selecciona tu rol para personalizar tu experiencia.</p>
+  <div id="role-client" class="role-card" onclick="selectRole('client')">
+    <div class="role-icon">🏠</div>
+    <div class="role-info"><h3>Buscar servicios</h3><p>Necesito un profesional de limpieza, cuidado o belleza a domicilio</p></div>
+  </div>
+  <div id="role-pro" class="role-card" onclick="selectRole('pro')">
+    <div class="role-icon">💼</div>
+    <div class="role-info"><h3>Ofrecer mis servicios</h3><p>Soy profesional y quiero publicar mis servicios para conseguir clientes</p></div>
+  </div>
+  <button class="btn-primary" onclick="continueOnboarding()" style="margin-top:8px">Continuar →</button>
+  <div style="text-align:center;margin-top:16px;font-size:12px;color:rgba(255,255,255,0.3)">Al continuar aceptas los Términos de CasaYa</div>
+</div>
+</div>
+
+<!-- ========== REGISTER CLIENT ========== -->
+
+<div id="screen-register-client" class="screen">
+<div class="reg-header">
+  <button class="back-btn" onclick="showScreen('screen-onboarding')"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+  <div class="reg-title">Crear cuenta</div>
+  <div class="reg-sub">Para buscar y reservar servicios</div>
+</div>
+<div class="page-content" style="padding-bottom:100px">
+<div style="padding:24px 20px;display:flex;flex-direction:column;gap:18px">
+  <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" type="text" placeholder="Ej: Ana García López" /></div>
+  <div class="form-group"><label class="form-label">WhatsApp ✱</label><input class="form-input" type="tel" placeholder="+53 5 XXX XXXX" /><span style="font-size:11px;color:var(--gray-500)">✱ Los profesionales te contactarán por aquí</span></div>
+  <div class="form-group"><label class="form-label">Ciudad</label>
+    <select class="form-select"><option value="">— Selecciona —</option><option>La Habana</option><option>Santiago de Cuba</option><option>Holguín</option><option>Camagüey</option><option>Guantánamo</option><option>Santa Clara</option><option>Las Tunas</option><option>Bayamo</option><option>Cienfuegos</option><option>Pinar del Río</option><option>Matanzas</option><option>Ciego de Ávila</option><option>Sancti Spíritus</option><option>Trinidad</option><option>Varadero</option></select>
+  </div>
+  <div class="form-group"><label class="form-label">Municipio / Reparto</label><input class="form-input" type="text" placeholder="Ej: Playa, Vedado, Centro Habana" /></div>
+  <div class="info-box"><div class="info-box-icon">💡</div><div class="info-box-text">Tu número de WhatsApp es necesario para que los profesionales puedan coordinarse contigo directamente.</div></div>
+</div>
+</div>
+<div style="position:fixed;bottom:0;left:0;right:0;background:white;padding:14px 20px 24px;border-top:1px solid #EAECF0">
+  <button class="btn-primary" onclick="showScreen('screen-home')">Crear cuenta y explorar →</button>
+</div>
+</div>
+
+<!-- ========== REGISTER PRO ========== -->
+
+<div id="screen-register-pro" class="screen">
+<div class="reg-header">
+  <button class="back-btn" onclick="prevStep()"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+  <div class="reg-title" id="reg-title">Datos personales</div>
+  <div class="reg-sub" id="reg-sub">Paso 1 de 4</div>
+</div>
+<div class="step-indicator">
+  <div class="step-dot done" id="sd1"></div>
+  <div class="step-dot" id="sd2"></div>
+  <div class="step-dot" id="sd3"></div>
+  <div class="step-dot" id="sd4"></div>
+</div>
+<div class="page-content" style="padding-bottom:100px">
+<div style="padding:24px 20px">
+
+  <!-- STEP 1 -->
+
+  <div class="reg-step active" id="step1">
+    <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" type="text" placeholder="Ej: María González Pérez" /></div>
+    <div class="form-group"><label class="form-label">Número de WhatsApp ✱</label><input class="form-input" id="pro-whatsapp" type="tel" placeholder="+53 5 XXX XXXX" /><span style="font-size:11px;color:var(--gray-500)">✱ Los clientes te contactarán directamente por WhatsApp</span></div>
+    <div class="form-group"><label class="form-label">Ciudad donde ofreces el servicio</label>
+      <select class="form-select"><option value="">— Selecciona —</option><option>La Habana</option><option>Santiago de Cuba</option><option>Holguín</option><option>Camagüey</option><option>Guantánamo</option><option>Santa Clara</option><option>Las Tunas</option><option>Bayamo</option><option>Cienfuegos</option><option>Pinar del Río</option><option>Matanzas</option><option>Ciego de Ávila</option><option>Sancti Spíritus</option><option>Trinidad</option><option>Varadero</option></select>
+    </div>
+    <div class="form-group"><label class="form-label">Municipios / Zonas donde trabajas</label><input class="form-input" type="text" placeholder="Ej: Playa, Miramar, Vedado" /></div>
+    <div class="form-group"><label class="form-label">Sobre mí (descripción profesional)</label><textarea class="form-input" rows="4" placeholder="Cuéntale a tus clientes quién eres, tu experiencia y por qué elegirte..."></textarea></div>
+  </div>
+
+  <!-- STEP 2 -->
+
+  <div class="reg-step" id="step2">
+    <div class="form-group"><label class="form-label">Categoría de servicio</label>
+      <select class="form-select"><option value="">— Selecciona —</option><option>🧹 Limpieza del hogar</option><option>💊 Cuidado de personas mayores</option><option>💅 Belleza y estética</option></select>
+    </div>
+    <div class="form-group"><label class="form-label">Años de experiencia</label>
+      <select class="form-select"><option>Menos de 1 año</option><option>1–3 años</option><option>3–5 años</option><option>Más de 5 años</option><option>Más de 10 años</option></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Disponibilidad</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E0E5EB;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--green)" checked> Lun–Vie</label>
+        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E0E5EB;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--green)"> Sábados</label>
+        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E0E5EB;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--green)"> Domingos</label>
+        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E0E5EB;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--green)"> Urgencias</label>
+      </div>
+    </div>
+    <div>
+      <label class="form-label" style="display:block;margin-bottom:12px">Mis servicios y precios</label>
+      <div id="svc-container">
+        <div class="service-entry">
+          <div class="service-entry-header"><span class="service-entry-num">Servicio 1</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <input class="form-input" type="text" placeholder="Nombre del servicio (ej: Limpieza estándar 3h)" />
+            <div class="price-row">
+              <div class="form-group"><label class="form-label">Precio (CUP)</label><input class="form-input" type="number" placeholder="Ej: 500" min="0" /></div>
+              <div class="form-group"><label class="form-label">Duración</label><select class="form-select"><option>1 hora</option><option>2 horas</option><option>3 horas</option><option>4 horas</option><option>6 horas</option><option>8 horas</option><option>Todo el día</option></select></div>
+            </div>
+            <textarea class="form-input" rows="2" placeholder="¿Qué incluye este servicio?"></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="add-service-btn" onclick="addService()">+ Agregar otro servicio</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+
+  <div class="reg-step" id="step3">
+    <div class="info-box" style="margin-bottom:4px"><div class="info-box-icon">🔒</div><div class="info-box-text"><strong>Verificación opcional.</strong> Los perfiles verificados generan mucha más confianza y reciben hasta 3× más solicitudes de clientes.</div></div>
+
+```
+<div class="form-group"><label class="form-label">🪪 Carnet — parte delantera</label>
+  <div class="photo-upload" id="pu-front" onclick="markUploaded('pu-front','ps-front')">
+    <input type="file" accept="image/*" />
+    <div class="photo-upload-icon">🪪</div>
+    <div class="photo-upload-title">Foto del carnet (frente)</div>
+    <div class="photo-upload-sub">Toca para seleccionar imagen</div>
+    <div class="photo-status" id="ps-front">✅ Cargado correctamente</div>
+  </div>
+</div>
+
+<div class="form-group"><label class="form-label">🪪 Carnet — parte trasera</label>
+  <div class="photo-upload" id="pu-back" onclick="markUploaded('pu-back','ps-back')">
+    <input type="file" accept="image/*" />
+    <div class="photo-upload-icon">🪪</div>
+    <div class="photo-upload-title">Foto del carnet (reverso)</div>
+    <div class="photo-upload-sub">Toca para seleccionar imagen</div>
+    <div class="photo-status" id="ps-back">✅ Cargado correctamente</div>
+  </div>
+</div>
+
+<div class="form-group"><label class="form-label">🤳 Selfie sosteniendo el carnet</label>
+  <div class="photo-upload" id="pu-selfie" onclick="markUploaded('pu-selfie','ps-selfie')">
+    <input type="file" accept="image/*" capture="user" />
+    <div class="photo-upload-icon">🤳</div>
+    <div class="photo-upload-title">Foto tuya con el carnet visible</div>
+    <div class="photo-upload-sub">Asegúrate que el carnet sea legible</div>
+    <div class="photo-status" id="ps-selfie">✅ Cargado correctamente</div>
+  </div>
+</div>
+
+<div class="form-group"><label class="form-label">🏠 Dirección de tu domicilio</label><input class="form-input" type="text" placeholder="Calle, número, municipio, ciudad" /><span style="font-size:11px;color:var(--gray-500);margin-top:4px;display:block">Solo se usa para verificar tu identidad. Es información privada.</span></div>
+```
+
+  </div>
+
+  <!-- STEP 4 -->
+
+  <div class="reg-step" id="step4">
+    <div style="text-align:center;padding:16px 0 8px">
+      <div style="font-size:56px;margin-bottom:14px">🎉</div>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:8px">¡Perfil creado!</h2>
+      <p style="font-size:14px;color:var(--gray-500);line-height:1.6">Ya estás en CasaYa. Tu perfil entrará en revisión y estará visible en 24–48 horas.</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-row"><span class="summary-label">Estado</span><span class="vbadge pending">⏳ En revisión</span></div>
+      <div class="summary-row"><span class="summary-label">Verificación</span><span id="final-verify" class="vbadge none">Sin verificar</span></div>
+      <div class="summary-row"><span class="summary-label">Visible en</span><span class="summary-value">24–48 horas</span></div>
+    </div>
+    <div class="info-box"><div class="info-box-icon">📱</div><div class="info-box-text">Los clientes te contactarán directamente por WhatsApp. Activa tus notificaciones.</div></div>
+  </div>
+
+</div>
+</div>
+<div style="position:fixed;bottom:0;left:0;right:0;background:white;padding:14px 20px 24px;border-top:1px solid #EAECF0">
+  <button class="btn-primary" id="step-btn" onclick="nextStep()">Continuar →</button>
+</div>
+</div>
+
+<!-- ========== HOME ========== -->
+
+<div id="screen-home" class="screen">
+<nav class="navbar">
+  <div class="logo" onclick="goHome()">Casa<span>Ya</span></div>
+  <div style="display:flex;gap:10px;align-items:center">
+    <button onclick="showScreen('screen-explore')" style="background:none;border:none;cursor:pointer;padding:8px;border-radius:10px;color:var(--gray-700);display:flex;align-items:center"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+    <button onclick="showScreen('screen-profile')" style="background:var(--green);color:white;border:none;padding:8px 16px;border-radius:40px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">Mi perfil</button>
+  </div>
+</nav>
+<div class="page-content">
+  <div class="home-hero">
+    <p class="hero-greeting">👋 ¿Qué necesitas hoy?</p>
+    <h1 class="hero-title">Servicios a domicilio <em>confiables</em> en Cuba</h1>
+    <div class="search-bar">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="¿Qué servicio buscas?" readonly onclick="showScreen('screen-explore')" />
+      <button class="search-btn" onclick="showScreen('screen-explore')"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+
+  <!-- CITY SELECTOR -->
+
+  <div class="city-bar" id="city-bar-wrap">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#00C853" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <button class="city-btn" onclick="toggleCity()">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      <span id="city-label">Elige tu ciudad</span>
+    </button>
+  </div>
+  <div class="city-dropdown" id="city-dd">
+    <div class="city-dropdown-header">📍 Ciudades de Cuba</div>
+    <div class="city-option" onclick="pickCity('La Habana','🏙️')"><span>🏙️</span>La Habana</div>
+    <div class="city-option" onclick="pickCity('Santiago de Cuba','🌄')"><span>🌄</span>Santiago de Cuba</div>
+    <div class="city-option" onclick="pickCity('Holguín','🌿')"><span>🌿</span>Holguín</div>
+    <div class="city-option" onclick="pickCity('Camagüey','🏛️')"><span>🏛️</span>Camagüey</div>
+    <div class="city-option" onclick="pickCity('Guantánamo','⛰️')"><span>⛰️</span>Guantánamo</div>
+    <div class="city-option" onclick="pickCity('Santa Clara','🌺')"><span>🌺</span>Santa Clara</div>
+    <div class="city-option" onclick="pickCity('Las Tunas','🌾')"><span>🌾</span>Las Tunas</div>
+    <div class="city-option" onclick="pickCity('Bayamo','🎵')"><span>🎵</span>Bayamo</div>
+    <div class="city-option" onclick="pickCity('Cienfuegos','⚓')"><span>⚓</span>Cienfuegos</div>
+    <div class="city-option" onclick="pickCity('Pinar del Río','🌱')"><span>🌱</span>Pinar del Río</div>
+    <div class="city-option" onclick="pickCity('Matanzas','🌊')"><span>🌊</span>Matanzas</div>
+    <div class="city-option" onclick="pickCity('Ciego de Ávila','🍍')"><span>🍍</span>Ciego de Ávila</div>
+    <div class="city-option" onclick="pickCity('Sancti Spíritus','🕌')"><span>🕌</span>Sancti Spíritus</div>
+    <div class="city-option" onclick="pickCity('Trinidad','🏺')"><span>🏺</span>Trinidad</div>
+    <div class="city-option" onclick="pickCity('Varadero','🏖️')"><span>🏖️</span>Varadero</div>
+  </div>
+
+  <div class="promo-banner"><div class="promo-text"><h3>¡Gratis para todos!</h3><p>Sin comisiones ni suscripciones</p></div><div style="font-size:40px;position:relative;z-index:1">🎉</div></div>
+
+  <div class="section">
+    <div class="section-header"><h2 class="section-title">Servicios</h2><button class="section-link" onclick="showScreen('screen-explore')">Ver todos</button></div>
+    <div class="categories-grid">
+      <div class="cat-card" onclick="filterAndExplore('limpieza')"><div class="cat-icon" style="background:#E3F4FF">🧹</div><span class="cat-name">Limpieza del hogar</span></div>
+      <div class="cat-card" onclick="filterAndExplore('cuidado')"><div class="cat-icon" style="background:#FFF0E3">💊</div><span class="cat-name">Cuidado de personas</span></div>
+      <div class="cat-card" onclick="filterAndExplore('belleza')"><div class="cat-icon" style="background:#F9E3FF">💅</div><span class="cat-name">Belleza y estética</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2 class="section-title" style="margin-bottom:0">Profesionales disponibles</h2><button class="section-link" onclick="showScreen('screen-explore')">Ver todos</button></div>
+    <div id="home-pros"></div>
+  </div>
+
+  <div style="padding:20px">
+    <div style="background:linear-gradient(135deg,#0D1117,#1C2333);border-radius:16px;padding:22px 20px;position:relative;overflow:hidden">
+      <div style="position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:var(--green);border-radius:50%;opacity:0.07"></div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:6px">¿Eres profesional?</p>
+      <h3 style="font-size:17px;font-weight:800;color:white;margin-bottom:6px">Publica tus servicios gratis</h3>
+      <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:18px;line-height:1.5">Únete a CasaYa y empieza a recibir clientes sin pagar comisiones</p>
+      <button class="btn-primary" style="max-width:240px" onclick="selectRole('pro');showScreen('screen-register-pro')">Registrarme como profesional</button>
+    </div>
+  </div>
+  <div style="height:10px"></div>
+</div>
+<nav class="bottom-nav">
+  <button class="bnav-item active" onclick="showScreen('screen-home')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-explore')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-bookings')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-profile')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+</nav>
+</div>
+
+<!-- ========== EXPLORE ========== -->
+
+<div id="screen-explore" class="screen">
+<nav class="navbar"><div class="logo" onclick="goHome()">Casa<span>Ya</span></div></nav>
+<div style="background:white;padding:14px 20px;border-bottom:1px solid #F0F2F5">
+  <div style="background:var(--gray-100);border-radius:12px;display:flex;align-items:center;padding:0 14px;gap:10px;height:46px">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="explore-input" placeholder="Buscar profesional o servicio..." style="flex:1;border:none;outline:none;font-family:inherit;font-size:14px;background:transparent" oninput="renderPros(currentFilter)" />
+  </div>
+</div>
+<div class="filter-chips">
+  <button class="chip active" onclick="setFilter(this,'todos')">Todos</button>
+  <button class="chip" onclick="setFilter(this,'limpieza')">🧹 Limpieza</button>
+  <button class="chip" onclick="setFilter(this,'cuidado')">💊 Cuidado</button>
+  <button class="chip" onclick="setFilter(this,'belleza')">💅 Belleza</button>
+</div>
+<div class="page-content" style="padding-bottom:80px">
+  <div class="pros-list" id="pros-list"></div>
+</div>
+<nav class="bottom-nav">
+  <button class="bnav-item" onclick="showScreen('screen-home')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+  <button class="bnav-item active"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-bookings')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-profile')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+</nav>
+</div>
+
+<!-- ========== DETAIL ========== -->
+
+<div id="screen-detail" class="screen">
+<div class="page-content" id="detail-content" style="padding-bottom:90px"></div>
+<div class="cta-bar">
+  <button class="btn-secondary" id="wa-btn" onclick="openWhatsApp()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </button>
+  <button class="btn-primary" onclick="showScreen('screen-booking')">Reservar →</button>
+</div>
+</div>
+
+<!-- ========== BOOKING ========== -->
+
+<div id="screen-booking" class="screen">
+<div style="background:white;padding:16px 20px;border-bottom:1px solid #F0F2F5;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10">
+  <button class="back-btn-dark" onclick="showScreen('screen-detail')"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+  <h2 style="font-size:17px;font-weight:800">Reservar servicio</h2>
+</div>
+<div class="page-content" style="padding-bottom:100px">
+<div style="padding:20px;display:flex;flex-direction:column;gap:18px">
+  <div class="form-group"><label class="form-label">¿Qué servicio necesitas?</label><div id="booking-services"></div></div>
+  <div class="form-group"><label class="form-label">Selecciona fecha</label><div class="date-grid" id="date-grid"></div></div>
+  <div class="form-group"><label class="form-label">Selecciona hora</label><div class="time-grid" id="time-grid"></div></div>
+  <div class="form-group"><label class="form-label">Tu dirección</label><input class="form-input" type="text" placeholder="Calle, número, municipio" /></div>
+  <div class="form-group"><label class="form-label">Notas (opcional)</label><textarea class="form-input" rows="3" placeholder="Ej: Traer materiales, tengo mascota..."></textarea></div>
+  <div class="form-group"><label class="form-label">Resumen</label>
+    <div class="summary-card">
+      <div class="summary-row"><span class="summary-label">Profesional</span><span class="summary-value" id="sum-pro">—</span></div>
+      <div class="summary-row"><span class="summary-label">Servicio</span><span class="summary-value" id="sum-svc">—</span></div>
+      <div class="summary-row"><span class="summary-label">Fecha y hora</span><span class="summary-value" id="sum-date">—</span></div>
+      <div class="summary-row summary-total"><span class="summary-label">Total</span><span class="summary-value" id="sum-price">—</span></div>
+    </div>
+  </div>
+  <div class="info-box"><div class="info-box-icon">💵</div><div class="info-box-text">El pago se realiza en efectivo directamente al profesional el día del servicio. CasaYa no cobra comisiones.</div></div>
+</div>
+</div>
+<div style="position:fixed;bottom:0;left:0;right:0;background:white;padding:14px 20px 20px;border-top:1px solid #EAECF0">
+  <button class="btn-primary" onclick="confirmBooking()">Confirmar reserva</button>
+</div>
+</div>
+
+<!-- ========== BOOKINGS LIST ========== -->
+
+<div id="screen-bookings" class="screen">
+<nav class="navbar"><div class="logo" onclick="goHome()">Casa<span>Ya</span></div></nav>
+<div class="page-content" style="padding-bottom:80px">
+<div style="padding:20px">
+  <h2 style="font-size:18px;font-weight:800;margin-bottom:16px">Mis reservas</h2>
+  <div class="empty-state" style="background:white;border-radius:16px;box-shadow:var(--shadow)">
+    <div class="empty-icon">📅</div>
+    <div class="empty-title">Sin reservas aún</div>
+    <div class="empty-sub">Cuando reserves un servicio aparecerá aquí con todos los detalles</div>
+    <button class="btn-primary" style="max-width:200px;margin-top:10px" onclick="showScreen('screen-explore')">Explorar servicios</button>
+  </div>
+</div>
+</div>
+<nav class="bottom-nav">
+  <button class="bnav-item" onclick="showScreen('screen-home')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-explore')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
+  <button class="bnav-item active"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-profile')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+</nav>
+</div>
+
+<!-- ========== PROFILE ========== -->
+
+<div id="screen-profile" class="screen">
+<nav class="navbar"><div class="logo" onclick="goHome()">Casa<span>Ya</span></div></nav>
+<div class="page-content" style="padding-bottom:80px">
+  <div class="profile-hero">
+    <div class="profile-avatar-wrap">👤</div>
+    <div><div class="profile-name">Mi perfil</div><div class="profile-loc" id="profile-city-display">📍 Ciudad no seleccionada</div></div>
+  </div>
+  <div class="profile-body">
+    <div class="profile-menu">
+      <div class="menu-item" onclick="showScreen('screen-bookings')"><div class="menu-icon" style="background:#E3F4FF">📋</div><div class="menu-text"><div class="menu-title">Mis reservas</div><div class="menu-sub">Historial de servicios</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#B8C2CF" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      <div class="menu-item" onclick="selectRole('pro');showScreen('screen-register-pro')"><div class="menu-icon" style="background:#F9E3FF">💼</div><div class="menu-text"><div class="menu-title">Ofrecer servicios</div><div class="menu-sub">Regístrate como profesional</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#B8C2CF" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+    <div class="profile-menu">
+      <div class="menu-item"><div class="menu-icon" style="background:#FFF0E3">⚙️</div><div class="menu-text"><div class="menu-title">Configuración</div><div class="menu-sub">Cuenta y notificaciones</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#B8C2CF" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      <div class="menu-item"><div class="menu-icon" style="background:#E3F4FF">❓</div><div class="menu-text"><div class="menu-title">Ayuda y soporte</div><div class="menu-sub">¿Tienes algún problema?</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#B8C2CF" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+    <div style="text-align:center;padding:10px 0"><span style="font-size:11px;color:var(--gray-300)">CasaYa v1.0 · Hecho con ❤️ para Cuba</span></div>
+  </div>
+</div>
+<nav class="bottom-nav">
+  <button class="bnav-item" onclick="showScreen('screen-home')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-explore')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
+  <button class="bnav-item" onclick="showScreen('screen-bookings')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
+  <button class="bnav-item active"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+</nav>
+</div>
+
+<!-- ========== SUCCESS ========== -->
+
+<div id="screen-success" class="screen" style="background:#F5F7FA">
+<div class="page-content">
+<div class="success-screen">
+  <div class="success-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+  <h2 style="font-size:24px;font-weight:800;margin-bottom:10px">¡Reserva enviada!</h2>
+  <p style="font-size:14px;color:var(--gray-500);line-height:1.6;max-width:280px;margin:0 auto 28px">El profesional te contactará por WhatsApp para confirmar los detalles del servicio.</p>
+  <div class="success-card">
+    <div class="success-card-row"><span class="k">Profesional</span><span class="v" id="suc-pro">—</span></div>
+    <div class="success-card-row"><span class="k">Servicio</span><span class="v" id="suc-svc">—</span></div>
+    <div class="success-card-row"><span class="k">Fecha</span><span class="v" id="suc-date">—</span></div>
+    <div class="success-card-row"><span class="k">Pago</span><span class="v">Efectivo al profesional</span></div>
+  </div>
+  <button class="btn-primary" style="max-width:320px" onclick="goHome()">Volver al inicio</button>
+</div>
+</div>
+</div>
+
+<script>
+// ===== STATE =====
+let selectedRole = '';
+let currentStep = 1;
+let currentPro = null;
+let selectedDate = '';
+let selectedTime = '';
+let currentFilter = 'todos';
+let selectedCity = '';
+let svcCount = 1;
+const professionals = [];
+const uploads = {};
+
+// ===== ONBOARDING =====
+function selectRole(role) {
+  selectedRole = role;
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  const el = document.getElementById('role-' + role);
+  if (el) el.classList.add('selected');
+}
+
+function continueOnboarding() {
+  if (!selectedRole) { alert('Por favor selecciona una opción.'); return; }
+  if (selectedRole === 'client') showScreen('screen-register-client');
+  else { currentStep = 1; updateStep(); showScreen('screen-register-pro'); }
+}
+
+// ===== REGISTRATION STEPS =====
+const stepTitles = ['Datos personales','Servicios y precios','Verificación de identidad','¡Perfil listo!'];
+const stepSubs = ['Paso 1 de 4 · Info básica','Paso 2 de 4 · Tus servicios','Paso 3 de 4 · Verificación','Paso 4 de 4 · Resumen'];
+
+function updateStep() {
+  [1,2,3,4].forEach(i => {
+    document.getElementById('step'+i).classList.toggle('active', i === currentStep);
+    document.getElementById('sd'+i).classList.toggle('done', i <= currentStep);
+  });
+  document.getElementById('reg-title').textContent = stepTitles[currentStep-1];
+  document.getElementById('reg-sub').textContent = stepSubs[currentStep-1];
+  const btn = document.getElementById('step-btn');
+  if (currentStep === 4) { btn.textContent = 'Ir a la app →'; btn.onclick = () => showScreen('screen-home'); }
+  else { btn.textContent = 'Continuar →'; btn.onclick = nextStep; }
+}
+
+function nextStep() {
+  if (currentStep < 4) { currentStep++; updateStep(); }
+  if (currentStep === 4) {
+    const anyPhoto = uploads['front'] || uploads['back'] || uploads['selfie'];
+    const badge = document.getElementById('final-verify');
+    if (anyPhoto) { badge.className='vbadge pending'; badge.textContent='⏳ En revisión'; }
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) { currentStep--; updateStep(); }
+  else showScreen('screen-onboarding');
+}
+
+function addService() {
+  svcCount++;
+  const c = document.getElementById('svc-container');
+  const d = document.createElement('div');
+  d.className = 'service-entry';
+  d.innerHTML = `
+    <div class="service-entry-header">
+      <span class="service-entry-num">Servicio ${svcCount}</span>
+      <button class="service-remove" onclick="this.closest('.service-entry').remove()">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input class="form-input" type="text" placeholder="Nombre del servicio" />
+      <div class="price-row">
+        <div class="form-group"><label class="form-label">Precio (CUP)</label><input class="form-input" type="number" placeholder="Ej: 500" min="0" /></div>
+        <div class="form-group"><label class="form-label">Duración</label><select class="form-select"><option>1 hora</option><option>2 horas</option><option>3 horas</option><option>4 horas</option><option>6 horas</option><option>8 horas</option><option>Todo el día</option></select></div>
+      </div>
+      <textarea class="form-input" rows="2" placeholder="¿Qué incluye este servicio?"></textarea>
+
+```
+</div>`;
+```
+
+c.appendChild(d);
+}
+
+function markUploaded(boxId, statusId) {
+document.getElementById(boxId).classList.add(‘uploaded’);
+document.getElementById(statusId).style.display = ‘block’;
+uploads[boxId.replace(‘pu-’,’’)] = true;
+}
+
+// ===== CITY =====
+function toggleCity() {
+document.getElementById(‘city-dd’).classList.toggle(‘open’);
+}
+
+function pickCity(city, emoji) {
+selectedCity = city;
+document.getElementById(‘city-label’).textContent = emoji + ’ ’ + city;
+document.getElementById(‘city-dd’).classList.remove(‘open’);
+document.getElementById(‘profile-city-display’).textContent = ’📍 ’ + city;
+renderHomePros();
+}
+
+document.addEventListener(‘click’, e => {
+if (!e.target.closest(’#city-bar-wrap’) && !e.target.closest(’#city-dd’))
+document.getElementById(‘city-dd’)?.classList.remove(‘open’);
+});
+
+// ===== NAVIGATION =====
+function showScreen(id) {
+document.querySelectorAll(’.screen’).forEach(s => s.classList.remove(‘active’));
+document.getElementById(id).classList.add(‘active’);
+window.scrollTo(0,0);
+if (id === ‘screen-explore’) renderPros(currentFilter);
+if (id === ‘screen-home’) renderHomePros();
+}
+
+function goHome() { showScreen(‘screen-home’); }
+
+function filterAndExplore(cat) {
+currentFilter = cat;
+showScreen(‘screen-explore’);
+document.querySelectorAll(’.chip’).forEach(c => {
+c.classList.toggle(‘active’, c.textContent.toLowerCase().includes(cat.substring(0,4)) || (cat===‘todos’ && c.textContent===‘Todos’));
+});
+}
+
+// ===== EXPLORE =====
+function setFilter(el, cat) {
+document.querySelectorAll(’.chip’).forEach(c => c.classList.remove(‘active’));
+el.classList.add(‘active’);
+currentFilter = cat;
+renderPros(cat);
+}
+
+const catEmoji = {limpieza:‘🧹’,cuidado:‘👩‍⚕️’,belleza:‘💅’};
+const catBg = {limpieza:’#E3F4FF’,cuidado:’#FFF0E3’,belleza:’#F9E3FF’};
+
+function proCard(p) {
+const idx = professionals.indexOf(p);
+return `<div class="pro-list-card" onclick="showDetail(${idx})">
+<div class="pro-list-avatar" style="background:${catBg[p.category]||'#F0F0F0'}">${catEmoji[p.category]||‘👤’}</div>
+<div class="pro-list-info">
+<div class="pro-list-name">${p.name}</div>
+<div class="pro-list-role">${p.role}</div>
+<div class="pro-list-meta">
+<span class="tag">📍 ${p.city}</span>
+${p.verified?’<span class="tag green">✓ Verificado</span>’:’’}
+<span class="tag">Pago efectivo</span>
+</div>
+</div>
+
+  </div>`;
+}
+
+function emptyState(btn) {
+return `<div class="empty-state" style="background:white;border-radius:16px;box-shadow:var(--shadow)"> <div class="empty-icon">🔍</div> <div class="empty-title">Sin profesionales aún</div> <div class="empty-sub">Todavía no hay profesionales registrados. ¡Sé el primero!</div> ${btn?`<button class="btn-primary" style="max-width:240px;margin-top:10px" onclick="selectRole('pro');showScreen('screen-register-pro')">Registrarme como profesional</button>`:’’}
+
+  </div>`;
+}
+
+function renderPros(filter) {
+const list = document.getElementById(‘pros-list’);
+if (!list) return;
+const q = (document.getElementById(‘explore-input’)?.value||’’).toLowerCase();
+let filtered = professionals.filter(p => {
+const mc = filter===‘todos’||p.category===filter;
+const mq = !q||p.name.toLowerCase().includes(q)||p.role.toLowerCase().includes(q);
+return mc&&mq;
+});
+list.innerHTML = filtered.length ? filtered.map(proCard).join(’’) : emptyState(true);
+}
+
+function renderHomePros() {
+const el = document.getElementById(‘home-pros’);
+if (!el) return;
+const filtered = selectedCity ? professionals.filter(p=>p.city===selectedCity) : professionals;
+if (!filtered.length) {
+el.innerHTML = `<div style="margin-top:14px">` + emptyState(false) + `</div>`;
+} else {
+el.innerHTML = `<div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">` + filtered.slice(0,4).map(proCard).join(’’) + `</div>`;
+}
+}
+
+// ===== DETAIL =====
+function showDetail(idx) {
+currentPro = professionals[idx];
+const p = currentPro;
+document.getElementById(‘detail-content’).innerHTML = ` <div class="detail-hero"> <button class="back-btn" onclick="showScreen('screen-explore')"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button> <div style="display:flex;gap:16px;align-items:flex-start"> <div style="width:80px;height:80px;border-radius:20px;background:${catBg[p.category]||'#F0F0F0'};display:flex;align-items:center;justify-content:center;font-size:40px;border:3px solid var(--green);flex-shrink:0">${catEmoji[p.category]||'👤'}</div> <div style="flex:1"> <div class="detail-name">${p.name}</div> <div class="detail-role">${p.role}</div> <div style="margin-top:8px">${p.verified?'<span class="vbadge verified">✓ Verificado</span>':'<span class="vbadge none">Sin verificar</span>'}</div> <div style="display:flex;gap:20px;margin-top:14px"> <div><div class="stat-value">—</div><div class="stat-label">Valoración</div></div> <div><div class="stat-value">0</div><div class="stat-label">Reseñas</div></div> </div> </div> </div> </div> <div class="detail-body"> <div><div class="detail-section-title">📍 Zona de trabajo</div><p style="font-size:14px;color:var(--gray-600)">${p.city}${p.zones?' · '+p.zones:''}</p></div> ${p.bio?`<div><div class="detail-section-title">Sobre mí</div><p style="font-size:14px;color:var(--gray-600);line-height:1.6">${p.bio}</p></div>`:''} ${p.services&&p.services.length?`<div><div class="detail-section-title">Servicios y precios</div><div class="services-grid">${p.services.map(s=>`<div class="service-item"><div class="service-item-name">${s.name}</div><div class="service-item-price">${s.price} CUP</div><div class="service-item-duration">${s.duration}</div></div>`).join(’’)}</div></div>`:''} <div class="info-box"><div class="info-box-icon">💬</div><div class="info-box-text">Contáctalo por WhatsApp para coordinar antes de reservar.</div></div> </div>`;
+
+// Fill booking
+document.getElementById(‘sum-pro’).textContent = p.name;
+document.getElementById(‘suc-pro’).textContent = p.name;
+if (p.services&&p.services.length) {
+document.getElementById(‘sum-svc’).textContent = p.services[0].name;
+document.getElementById(‘sum-price’).textContent = p.services[0].price+’ CUP’;
+document.getElementById(‘suc-svc’).textContent = p.services[0].name;
+document.getElementById(‘booking-services’).innerHTML = p.services.map((s,i)=>` <div class="service-check ${i===0?'checked':''}" onclick="pickService(this,'${s.name}','${s.price}')"> <div class="service-check-box">${i===0?'<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>':''}</div> <span class="service-check-name">${s.name}<br><small style="color:var(--gray-400);font-weight:400">${s.duration}</small></span> <span class="service-check-price">${s.price} CUP</span> </div>`).join(’’);
+} else {
+document.getElementById(‘booking-services’).innerHTML = ‘<p style="font-size:13px;color:var(--gray-500)">Este profesional no ha agregado servicios aún.</p>’;
+}
+
+// Dates
+const days=[‘Dom’,‘Lun’,‘Mar’,‘Mié’,‘Jue’,‘Vie’,‘Sáb’],months=[‘Ene’,‘Feb’,‘Mar’,‘Abr’,‘May’,‘Jun’,‘Jul’,‘Ago’,‘Sep’,‘Oct’,‘Nov’,‘Dic’];
+const today=new Date();
+document.getElementById(‘date-grid’).innerHTML = Array.from({length:7},(_,i)=>{
+const d=new Date(today);d.setDate(today.getDate()+i+1);
+const lbl=`${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
+return `<button class="date-btn ${i===0?'selected':''}" onclick="pickDate(this,'${lbl}')"><div class="day">${days[d.getDay()]}</div><div class="num">${d.getDate()}</div></button>`;
+}).join(’’);
+const fd=new Date(today);fd.setDate(today.getDate()+1);
+selectedDate=`${days[fd.getDay()]} ${fd.getDate()} ${months[fd.getMonth()]}`;
+
+const times=[‘8:00 AM’,‘9:00 AM’,‘10:00 AM’,‘11:00 AM’,‘2:00 PM’,‘4:00 PM’];
+document.getElementById(‘time-grid’).innerHTML=times.map((t,i)=>`<button class="time-btn ${i===0?'selected':''}" onclick="pickTime(this,'${t}')">${t}</button>`).join(’’);
+selectedTime=times[0];updateSumDate();
+
+showScreen(‘screen-detail’);
+}
+
+function openWhatsApp() {
+if(!currentPro||!currentPro.whatsapp)return;
+const num=currentPro.whatsapp.replace(/\D/g,’’);
+const msg=encodeURIComponent(`Hola ${currentPro.name}, vi tu perfil en CasaYa y me interesa tu servicio de ${currentPro.role}. ¿Cuándo tienes disponibilidad?`);
+window.open(`https://wa.me/${num}?text=${msg}`,’_blank’);
+}
+
+function pickService(el,name,price){
+document.querySelectorAll(’.service-check’).forEach(s=>{s.classList.remove(‘checked’);s.querySelector(’.service-check-box’).innerHTML=’’;});
+el.classList.add(‘checked’);
+el.querySelector(’.service-check-box’).innerHTML=’<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>’;
+document.getElementById(‘sum-svc’).textContent=name;
+document.getElementById(‘sum-price’).textContent=price+’ CUP’;
+document.getElementById(‘suc-svc’).textContent=name;
+}
+
+function pickDate(el,val){document.querySelectorAll(’.date-btn’).forEach(b=>b.classList.remove(‘selected’));el.classList.add(‘selected’);selectedDate=val;updateSumDate();}
+function pickTime(el,val){document.querySelectorAll(’.time-btn’).forEach(b=>b.classList.remove(‘selected’));el.classList.add(‘selected’);selectedTime=val;updateSumDate();}
+function updateSumDate(){const t=selectedDate&&selectedTime?`${selectedDate} · ${selectedTime}`:’—’;const e1=document.getElementById(‘sum-date’),e2=document.getElementById(‘suc-date’);if(e1)e1.textContent=t;if(e2)e2.textContent=t;}
+
+function confirmBooking(){showScreen(‘screen-success’);}
+
+// ===== INIT =====
+renderHomePros();
+renderPros(‘todos’);
+</script>
+
+</body>
+</html>
