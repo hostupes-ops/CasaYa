@@ -3,570 +3,410 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CasaYa — Servicios a domicilio en Cuba</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CasaYa</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --teal:#00BFA5;--teal-dark:#009688;--teal-light:#E0F7F4;
-  --navy:#1E2D4E;--navy2:#2C3E6B;
-  --black:#1A1A2E;--gray-700:#4A5568;--gray-500:#718096;--gray-300:#CBD5E0;--gray-100:#F7F9FC;
-  --white:#FFFFFF;--radius:16px;
-  --shadow:0 4px 20px rgba(0,0,0,0.07);--shadow-lg:0 8px 40px rgba(0,0,0,0.13);
+  --t:#00BFA5;--td:#009688;--tl:#E0F7F4;
+  --n:#1E2D4E;--n2:#2C3E6B;
+  --g7:#4A5568;--g5:#718096;--g3:#CBD5E0;--g1:#F7F9FC;
+  --w:#fff;--r:16px;
+  --sh:0 4px 20px rgba(0,0,0,.07);--shl:0 8px 40px rgba(0,0,0,.13);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{font-family:'Plus Jakarta Sans',sans-serif;background:#F7F9FC;color:var(--black);min-height:100vh;overflow-x:hidden}
-.screen{display:none;min-height:100vh;flex-direction:column}
-.screen.active{display:flex}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{font-family:'Plus Jakarta Sans',sans-serif;background:#F7F9FC;color:#1E2D4E;min-height:100vh;overflow-x:hidden}
+/* SCREENS */
+.scr{display:none!important}
+.scr.on{display:flex!important;flex-direction:column;min-height:100vh}
 /* NAV */
-.navbar{background:var(--white);border-bottom:1px solid #EDF2F7;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.logo{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-0.5px;cursor:pointer}
-.logo span{color:var(--teal)}
+.nav{background:var(--w);border-bottom:1px solid #EDF2F7;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:22px;font-weight:800;color:var(--n);letter-spacing:-.5px;cursor:pointer}
+.logo b{color:var(--t);font-weight:800}
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid #EDF2F7;display:flex;justify-content:space-around;padding:8px 0 14px;z-index:100}
-.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 14px;border:none;background:none;color:var(--gray-500);font-family:inherit}
-.bnav-item.active{color:var(--teal)}
-.bnav-item svg{width:22px;height:22px}
-.bnav-item span{font-size:10px;font-weight:600}
-/* BOTTOM CENTER FAB */
-.fab{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:56px;height:56px;border-radius:50%;background:var(--teal);border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,191,165,0.45);cursor:pointer;z-index:110;transition:transform 0.15s}
-.fab:hover{transform:translateX(-50%) scale(1.08)}
-.fab svg{color:white;width:28px;height:28px}
-/* BUTTONS */
-.btn-teal{width:100%;background:var(--teal);border:none;border-radius:14px;padding:16px;font-family:inherit;font-size:16px;font-weight:800;color:white;cursor:pointer;transition:background 0.2s}
-.btn-teal:hover{background:var(--teal-dark)}
-.btn-outline{width:100%;background:transparent;border:2px solid var(--teal);border-radius:14px;padding:14px;font-family:inherit;font-size:15px;font-weight:700;color:var(--teal);cursor:pointer}
-.btn-ghost{background:none;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;color:var(--gray-500)}
-.back-btn-w{width:36px;height:36px;background:rgba(255,255,255,0.15);border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:white}
-.back-btn-d{width:36px;height:36px;background:var(--gray-100);border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-700)}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--w);border-top:1px solid #EDF2F7;display:flex;justify-content:space-around;padding:8px 0 14px;z-index:100}
+.bni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 14px;border:none;background:none;color:var(--g5);font-family:inherit;font-size:10px;font-weight:600}
+.bni.on{color:var(--t)}
+.bni svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2}
+/* FAB */
+.fab{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;background:var(--t);border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,191,165,.4);cursor:pointer;z-index:110}
+.fab svg{stroke:white;fill:none;stroke-width:2.5;width:26px;height:26px}
+/* BTNS */
+.bt{width:100%;background:var(--t);border:none;border-radius:14px;padding:15px;font-family:inherit;font-size:15px;font-weight:800;color:white;cursor:pointer;display:block}
+.bt:active{opacity:.85}
+.bto{width:100%;background:transparent;border:2px solid var(--t);border-radius:14px;padding:14px;font-family:inherit;font-size:15px;font-weight:700;color:var(--t);cursor:pointer;display:block}
+.bk{background:var(--g1);border:none;border-radius:12px;padding:12px 16px;font-family:inherit;font-size:14px;font-weight:700;color:var(--g7);cursor:pointer;display:flex;align-items:center;gap:8px}
+.back-w{width:36px;height:36px;background:rgba(255,255,255,.15);border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.back-w svg{stroke:white;fill:none;stroke-width:2;width:18px;height:18px}
+.back-d{width:36px;height:36px;background:var(--g1);border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.back-d svg{stroke:var(--g7);fill:none;stroke-width:2;width:18px;height:18px}
 /* FORMS */
-.form-group{display:flex;flex-direction:column;gap:8px}
-.form-label{font-size:13px;font-weight:700;color:var(--gray-700)}
-.form-input{background:var(--white);border:1.5px solid #E2E8F0;border-radius:12px;padding:13px 16px;font-family:inherit;font-size:14px;color:var(--black);outline:none;transition:border-color 0.15s;width:100%}
-.form-input:focus{border-color:var(--teal)}
-.form-select{background:var(--white);border:1.5px solid #E2E8F0;border-radius:12px;padding:13px 16px;font-family:inherit;font-size:14px;color:var(--black);outline:none;width:100%;cursor:pointer}
-.form-select:focus{border-color:var(--teal)}
-/* PAGE CONTENT */
-.page-content{flex:1;overflow-y:auto;padding-bottom:80px}
-/* INFO BOX */
-.info-box{background:var(--teal-light);border-radius:12px;padding:14px;display:flex;gap:10px;align-items:flex-start}
-.info-box-icon{font-size:18px;flex-shrink:0}
-.info-box-text{font-size:12px;color:var(--teal-dark);font-weight:500;line-height:1.5}
-/* TAGS */
-.tag{background:var(--gray-100);color:var(--gray-500);font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px}
-.tag.teal{background:var(--teal-light);color:var(--teal-dark)}
-/* =====================
-   WEBEL-STYLE TUTORIAL 
-   ===================== */
-.tutorial-screen{min-height:100vh;display:flex;flex-direction:column;background:white}
-.tut-top{display:flex;align-items:center;justify-content:space-between;padding:16px 24px 0}
-.tut-skip{font-size:15px;font-weight:700;color:var(--teal);background:none;border:none;cursor:pointer;font-family:inherit}
-.tut-slides{flex:1;position:relative;overflow:hidden}
-.tut-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 32px;opacity:0;transform:translateX(40px);transition:all 0.35s cubic-bezier(0.4,0,0.2,1);pointer-events:none}
-.tut-slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
-.tut-slide.exit{opacity:0;transform:translateX(-40px)}
-.tut-illustration{width:260px;height:260px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
-.tut-title{font-size:26px;font-weight:800;color:var(--navy);text-align:center;line-height:1.3;margin-bottom:10px}
-.tut-sub{font-size:15px;color:var(--gray-500);text-align:center;line-height:1.6}
-.tut-dots{display:flex;justify-content:center;gap:8px;padding:20px 0 10px}
-.tut-dot{width:8px;height:8px;border-radius:50%;background:#CBD5E0;transition:all 0.25s}
-.tut-dot.active{background:var(--teal);width:24px;border-radius:4px}
-.tut-footer{padding:16px 24px 36px}
-/* =====================
-   ONBOARDING ROLE
-   ===================== */
-.onboarding{min-height:100vh;display:flex;flex-direction:column;background:white;padding:0}
-.onb-hero{background:linear-gradient(150deg,var(--navy) 0%,var(--navy2) 100%);padding:52px 28px 36px;text-align:center}
-.onb-logo{font-size:34px;font-weight:800;color:white;letter-spacing:-1px;margin-bottom:8px}
-.onb-logo span{color:var(--teal)}
-.onb-tagline{font-size:14px;color:rgba(255,255,255,0.5)}
-.onb-body{flex:1;padding:32px 24px}
-.onb-title{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.3}
-.onb-sub{font-size:14px;color:var(--gray-500);margin-bottom:28px;line-height:1.6}
-.role-card{background:var(--white);border:2px solid #E2E8F0;border-radius:20px;padding:20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;margin-bottom:14px;box-shadow:var(--shadow)}
-.role-card:hover,.role-card.selected{border-color:var(--teal);box-shadow:0 4px 20px rgba(0,191,165,0.18)}
-.role-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.role-info h3{font-size:16px;font-weight:800;color:var(--navy)}
-.role-info p{font-size:12px;color:var(--gray-500);margin-top:3px;line-height:1.4}
-.onb-footer{padding:20px 24px 36px}
-/* =====================
-   REG STEPS
-   ===================== */
-.reg-header{background:linear-gradient(145deg,var(--navy),var(--navy2));padding:20px 20px 24px}
-.reg-title{font-size:20px;font-weight:800;color:white;margin-top:8px}
-.reg-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-top:3px}
-.step-indicator{display:flex;gap:6px;padding:14px 20px 0}
-.step-dot{height:4px;border-radius:4px;flex:1;background:#E2E8F0;transition:background 0.3s}
-.step-dot.done{background:var(--teal)}
-.reg-step{display:none;flex-direction:column;gap:18px}
-.reg-step.active{display:flex}
-.service-entry{background:var(--white);border:1.5px solid #E2E8F0;border-radius:14px;padding:16px;margin-bottom:10px}
-.svc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.svc-num{font-size:13px;font-weight:700;color:var(--gray-700)}
-.svc-remove{background:none;border:none;cursor:pointer;color:var(--gray-300);font-size:20px;line-height:1;padding:0}
-.add-svc-btn{background:var(--teal-light);border:1.5px dashed var(--teal);border-radius:12px;padding:13px;font-family:inherit;font-size:14px;font-weight:700;color:var(--teal);cursor:pointer;width:100%}
-.price-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-/* Photo upload */
-.photo-upload{border:2px dashed #CBD5E0;border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--white);position:relative;overflow:hidden}
-.photo-upload:hover{border-color:var(--teal);background:var(--teal-light)}
-.photo-upload.uploaded{border-color:var(--teal);background:var(--teal-light)}
-.photo-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.photo-status{font-size:12px;color:var(--teal-dark);font-weight:700;margin-top:6px;display:none}
-/* Avatar upload */
-.avatar-upload{width:100px;height:100px;border-radius:50%;background:var(--gray-100);border:3px dashed #CBD5E0;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;margin:0 auto;transition:all 0.2s}
-.avatar-upload:hover{border-color:var(--teal);background:var(--teal-light)}
-.avatar-upload.uploaded{border-color:var(--teal);border-style:solid}
-.avatar-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
-.avatar-preview{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none}
-/* =====================
-   HOME SCREEN
-   ===================== */
-.home-hero{background:linear-gradient(145deg,var(--navy) 0%,var(--navy2) 100%);padding:28px 20px 32px;position:relative;overflow:hidden}
-.home-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:var(--teal);border-radius:50%;opacity:0.08}
-.hero-greeting{font-size:13px;color:rgba(255,255,255,0.55);font-weight:500;margin-bottom:4px}
-.hero-title{font-size:22px;font-weight:800;color:white;line-height:1.3;margin-bottom:20px}
-.hero-title em{color:var(--teal);font-style:normal}
-.search-bar{background:white;border-radius:14px;display:flex;align-items:center;padding:0 16px;gap:10px;height:52px;box-shadow:0 4px 24px rgba(0,0,0,0.25)}
-.search-bar input{flex:1;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--black)}
-.search-btn{background:var(--teal);border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
-/* CITY */
-.city-bar{display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--white);border-bottom:1px solid #EDF2F7;position:relative;z-index:50}
-.city-btn{display:flex;align-items:center;gap:6px;background:none;border:1.5px solid #E2E8F0;border-radius:20px;padding:7px 14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--black);cursor:pointer}
-.city-btn:hover{border-color:var(--teal)}
-.city-dropdown{position:absolute;top:54px;left:20px;background:var(--white);border-radius:16px;box-shadow:var(--shadow-lg);z-index:200;width:calc(100% - 40px);border:1px solid #EDF2F7;display:none;max-height:280px;overflow-y:auto}
-.city-dropdown.open{display:block;animation:fadeDown 0.18s ease}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.city-dd-header{padding:11px 16px;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #F0F4F8;position:sticky;top:0;background:white}
-.city-option{padding:12px 16px;font-size:14px;font-weight:600;color:var(--black);cursor:pointer;display:flex;align-items:center;gap:10px;border-bottom:1px solid #F7F9FC}
-.city-option:last-child{border-bottom:none}
-.city-option:hover{background:var(--gray-100)}
-/* CATEGORIES */
-.categories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.cat-card{background:var(--white);border-radius:var(--radius);padding:18px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;box-shadow:var(--shadow);border:2px solid transparent;transition:all 0.2s}
-.cat-card:hover{border-color:var(--teal);transform:translateY(-2px)}
-.cat-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
-.cat-name{font-size:11px;font-weight:700;color:var(--navy);text-align:center}
-/* PROMO */
-.promo-banner{margin:20px 20px 0;background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);border-radius:var(--radius);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
-.promo-banner::after{content:'';position:absolute;right:-16px;top:-16px;width:90px;height:90px;background:rgba(255,255,255,0.1);border-radius:50%}
-.promo-text h3{font-size:16px;font-weight:800;color:white}
-.promo-text p{font-size:12px;color:rgba(255,255,255,0.8);margin-top:3px}
-/* PRO CARDS */
-.pros-list{padding:16px 20px;display:flex;flex-direction:column;gap:12px}
-.pro-list-card{background:var(--white);border-radius:var(--radius);padding:16px;display:flex;gap:14px;box-shadow:var(--shadow);cursor:pointer;transition:transform 0.2s}
-.pro-list-card:hover{transform:translateY(-1px)}
-.pro-avatar-box{width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;overflow:hidden}
-.pro-avatar-box img{width:100%;height:100%;object-fit:cover}
-.pro-list-name{font-size:15px;font-weight:700;color:var(--navy)}
-.pro-list-role{font-size:12px;color:var(--gray-500);margin-top:2px}
-.pro-meta{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
-/* DETAIL */
-.detail-hero{background:linear-gradient(145deg,var(--navy),var(--navy2));padding:20px 20px 28px}
-.detail-avatar-big{width:80px;height:80px;border-radius:20px;overflow:hidden;border:3px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0}
-.detail-avatar-big img{width:100%;height:100%;object-fit:cover}
-.detail-name{font-size:20px;font-weight:800;color:white;margin-top:10px}
-.detail-role{font-size:13px;color:rgba(255,255,255,0.55);margin-top:3px}
-.stat-val{font-size:16px;font-weight:800;color:white}
-.stat-lbl{font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px}
-.detail-body{padding:20px;display:flex;flex-direction:column;gap:20px}
-.dsec-title{font-size:14px;font-weight:800;margin-bottom:12px;color:var(--navy)}
-.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.svc-item{background:var(--gray-100);border-radius:12px;padding:14px 12px}
-.svc-item-name{font-size:13px;font-weight:700;color:var(--navy)}
-.svc-item-price{font-size:14px;font-weight:800;color:var(--teal);margin-top:4px}
-.svc-item-dur{font-size:11px;color:var(--gray-500);margin-top:2px}
-.cta-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);padding:14px 20px 20px;border-top:1px solid #EDF2F7;display:flex;gap:12px}
-/* BOOKING */
-.date-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.date-btn{background:var(--white);border:1.5px solid #E2E8F0;border-radius:12px;padding:10px 4px;font-family:inherit;cursor:pointer;text-align:center;transition:all 0.15s}
-.date-btn .day{font-size:10px;font-weight:600;color:var(--gray-500)}
-.date-btn .num{font-size:16px;font-weight:800;color:var(--black)}
-.date-btn.selected{background:var(--teal);border-color:var(--teal)}
-.date-btn.selected .day,.date-btn.selected .num{color:white}
-.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.time-btn{background:var(--white);border:1.5px solid #E2E8F0;border-radius:10px;padding:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray-700);cursor:pointer;transition:all 0.15s}
-.time-btn.selected{background:var(--teal);border-color:var(--teal);color:white}
-.svc-check{background:var(--white);border:1.5px solid #E2E8F0;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:8px}
-.svc-check.checked{border-color:var(--teal);background:var(--teal-light)}
-.svc-check-box{width:22px;height:22px;border-radius:6px;border:2px solid #CBD5E0;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
-.svc-check.checked .svc-check-box{background:var(--teal);border-color:var(--teal)}
-.svc-check-name{font-size:14px;font-weight:600;flex:1;color:var(--navy)}
-.svc-check-price{font-size:13px;font-weight:700;color:var(--teal)}
-.summary-card{background:var(--gray-100);border-radius:var(--radius);padding:16px}
-.sum-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #E8EBF0}
-.sum-row:last-child{border-bottom:none}
-.sum-lbl{font-size:13px;color:var(--gray-500);font-weight:500}
-.sum-val{font-size:13px;font-weight:700;color:var(--navy)}
-.sum-total .sum-lbl{font-size:14px;font-weight:800;color:var(--navy)}
-.sum-total .sum-val{font-size:16px;font-weight:800;color:var(--teal)}
-/* REQUEST SERVICE MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;display:none;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex;animation:fadeIn 0.2s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal-sheet{background:var(--white);border-radius:24px 24px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding:0 0 40px;animation:slideUp2 0.3s cubic-bezier(0.4,0,0.2,1)}
-@keyframes slideUp2{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-handle{width:40px;height:4px;background:#E2E8F0;border-radius:4px;margin:14px auto 20px}
-.modal-title{font-size:18px;font-weight:800;color:var(--navy);padding:0 20px 16px;border-bottom:1px solid #F0F4F8}
-.modal-body{padding:20px;display:flex;flex-direction:column;gap:16px}
-.service-option{background:var(--gray-100);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.15s;border:2px solid transparent}
-.service-option:hover,.service-option.selected{background:var(--teal-light);border-color:var(--teal)}
-.service-option-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.service-option-name{font-size:15px;font-weight:700;color:var(--navy)}
-.service-option-sub{font-size:12px;color:var(--gray-500);margin-top:2px}
-/* VBADGE */
-.vbadge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;font-size:11px;font-weight:700;padding:4px 10px}
-.vbadge.ok{background:var(--teal-light);color:var(--teal-dark)}
-.vbadge.pending{background:#FFF8E1;color:#D97706}
-.vbadge.no{background:#FEE2E2;color:#DC2626}
-/* EMPTY STATE */
-.empty-state{display:flex;flex-direction:column;align-items:center;padding:40px 24px;text-align:center;gap:12px}
-.empty-icon{font-size:48px}
-.empty-title{font-size:16px;font-weight:800;color:var(--navy)}
-.empty-sub{font-size:13px;color:var(--gray-500);line-height:1.6;max-width:260px}
+.fg{display:flex;flex-direction:column;gap:8px}
+.fl{font-size:13px;font-weight:700;color:var(--g7)}
+.fi{background:var(--w);border:1.5px solid #E2E8F0;border-radius:12px;padding:13px 16px;font-family:inherit;font-size:14px;color:var(--n);outline:none;transition:border-color .15s;width:100%}
+.fi:focus{border-color:var(--t)}
+.fs{background:var(--w);border:1.5px solid #E2E8F0;border-radius:12px;padding:13px 16px;font-family:inherit;font-size:14px;color:var(--n);outline:none;width:100%}
+/* PAGE */
+.pg{flex:1;overflow-y:auto;padding-bottom:80px}
+/* INFO */
+.ib{background:var(--tl);border-radius:12px;padding:14px;display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--td);font-weight:500;line-height:1.5}
 /* SECTION */
-.section{padding:22px 20px 0}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.section-title{font-size:16px;font-weight:800;color:var(--navy)}
-.section-link{font-size:13px;color:var(--teal);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
-/* PROFILE */
-.profile-hero{background:linear-gradient(145deg,var(--navy),var(--navy2));padding:28px 20px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
-.profile-avatar-wrap{width:80px;height:80px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid rgba(255,255,255,0.2)}
-.profile-name{font-size:20px;font-weight:800;color:white}
-.profile-loc{font-size:13px;color:rgba(255,255,255,0.5)}
-.profile-body{padding:20px;display:flex;flex-direction:column;gap:14px}
-.profile-menu{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
-.menu-item{display:flex;align-items:center;gap:14px;padding:16px;cursor:pointer;border-bottom:1px solid #F7F9FC}
-.menu-item:last-child{border-bottom:none}
-.menu-item:hover{background:var(--gray-100)}
-.menu-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.menu-text{flex:1}
-.menu-title{font-size:14px;font-weight:600;color:var(--navy)}
-.menu-sub{font-size:12px;color:var(--gray-500);margin-top:2px}
-/* RATING POPUP */
-.rating-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;display:none;align-items:center;justify-content:center;padding:24px}
-.rating-overlay.open{display:flex;animation:fadeIn 0.3s ease}
-.rating-card{background:var(--white);border-radius:24px;padding:28px 24px;width:100%;max-width:360px;text-align:center;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275)}
-@keyframes popIn{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
-.rating-emoji{font-size:52px;margin-bottom:14px}
-.rating-title{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px}
-.rating-sub{font-size:13px;color:var(--gray-500);margin-bottom:20px;line-height:1.5}
-.stars-row{display:flex;justify-content:center;gap:8px;margin-bottom:20px}
-.star-btn{font-size:36px;cursor:pointer;transition:transform 0.15s;background:none;border:none;filter:grayscale(1);opacity:0.4}
-.star-btn.active{filter:none;opacity:1;transform:scale(1.15)}
-.rating-textarea{width:100%;border:1.5px solid #E2E8F0;border-radius:12px;padding:12px 14px;font-family:inherit;font-size:14px;outline:none;resize:none;margin-bottom:16px;color:var(--black)}
-.rating-textarea:focus{border-color:var(--teal)}
-/* SUCCESS */
-.success-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;min-height:80vh}
-.success-icon{width:100px;height:100px;background:var(--teal-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:24px;animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275)}
-.success-icon svg{width:52px;height:52px;color:var(--teal)}
-.success-card{background:var(--white);border-radius:var(--radius);padding:20px;width:100%;max-width:340px;box-shadow:var(--shadow);margin-bottom:28px;text-align:left}
-.suc-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F0F4F8}
-.suc-row:last-child{border-bottom:none}
-.suc-row .k{font-size:12px;color:var(--gray-500)}
-.suc-row .v{font-size:12px;font-weight:700;color:var(--navy)}
+.sec{padding:22px 20px 0}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-t{font-size:16px;font-weight:800;color:var(--n)}
+.sec-l{font-size:13px;color:var(--t);font-weight:600;background:none;border:none;cursor:pointer;font-family:inherit}
+/* TAG */
+.tg{background:var(--g1);color:var(--g5);font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px}
+.tg.ok{background:var(--tl);color:var(--td)}
+/* =========== TUTORIAL =========== */
+#scr-tut{background:white}
+.tut-top{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0}
+.tut-skip{font-size:15px;font-weight:700;color:var(--t);background:none;border:none;cursor:pointer;font-family:inherit}
+.tut-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 32px}
+.tut-ill{width:240px;height:240px;margin-bottom:16px}
+.tut-title{font-size:26px;font-weight:800;color:var(--n);text-align:center;line-height:1.3;margin-bottom:10px}
+.tut-sub{font-size:15px;color:var(--g5);text-align:center;line-height:1.6}
+.tut-dots{display:flex;justify-content:center;gap:8px;padding:20px 0 10px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--g3);transition:all .25s}
+.dot.on{background:var(--t);width:24px;border-radius:4px}
+.tut-foot{padding:16px 24px 36px}
+/* =========== ONBOARDING =========== */
+#scr-onb{background:white}
+.onb-hero{background:linear-gradient(150deg,var(--n),var(--n2));padding:52px 28px 36px;text-align:center}
+.onb-logo{font-size:34px;font-weight:800;color:white;letter-spacing:-1px;margin-bottom:6px}
+.onb-logo b{color:var(--t)}
+.onb-tag{font-size:14px;color:rgba(255,255,255,.45)}
+.onb-body{flex:1;padding:32px 24px}
+.onb-title{font-size:22px;font-weight:800;color:var(--n);margin-bottom:8px;line-height:1.3}
+.onb-sub{font-size:14px;color:var(--g5);margin-bottom:28px;line-height:1.6}
+.rc{background:var(--w);border:2px solid #E2E8F0;border-radius:20px;padding:20px;display:flex;align-items:center;gap:16px;cursor:pointer;box-shadow:var(--sh);margin-bottom:14px;transition:border-color .2s}
+.rc.on,.rc:active{border-color:var(--t)}
+.ri{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.rn h3{font-size:16px;font-weight:800;color:var(--n)}
+.rn p{font-size:12px;color:var(--g5);margin-top:3px;line-height:1.4}
+.onb-foot{padding:20px 24px 36px}
+/* =========== REG =========== */
+.rh{background:linear-gradient(145deg,var(--n),var(--n2));padding:20px 20px 24px}
+.rh-title{font-size:20px;font-weight:800;color:white;margin-top:8px}
+.rh-sub{font-size:13px;color:rgba(255,255,255,.5);margin-top:3px}
+.sdots{display:flex;gap:6px;padding:14px 20px 0}
+.sd{height:4px;border-radius:4px;flex:1;background:#E2E8F0;transition:background .3s}
+.sd.on{background:var(--t)}
+.rstep{display:none;flex-direction:column;gap:18px}
+.rstep.on{display:flex}
+/* Avatar */
+.av-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0}
+.av-box{width:100px;height:100px;border-radius:50%;background:var(--g1);border:3px dashed var(--g3);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:border-color .2s}
+.av-box img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none}
+/* Photo upload */
+.pu{border:2px dashed var(--g3);border-radius:16px;padding:22px 16px;text-align:center;cursor:pointer;background:var(--w);position:relative;overflow:hidden;transition:all .2s}
+.pu:active,.pu.done{border-color:var(--t);background:var(--tl)}
+.pu input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.pu-st{font-size:12px;color:var(--td);font-weight:700;margin-top:6px;display:none}
+/* Service entry */
+.se{background:var(--w);border:1.5px solid #E2E8F0;border-radius:14px;padding:16px;margin-bottom:10px}
+.se-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.se-n{font-size:13px;font-weight:700;color:var(--g7)}
+.se-rm{background:none;border:none;cursor:pointer;color:var(--g3);font-size:20px;line-height:1}
+.add-svc{background:var(--tl);border:1.5px dashed var(--t);border-radius:12px;padding:13px;font-family:inherit;font-size:14px;font-weight:700;color:var(--t);cursor:pointer;width:100%}
+.pr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* VBADGE */
+.vb{display:inline-flex;align-items:center;gap:4px;border-radius:20px;font-size:11px;font-weight:700;padding:4px 10px}
+.vb.ok{background:var(--tl);color:var(--td)}
+.vb.pend{background:#FFF8E1;color:#D97706}
+.vb.no{background:#FEE2E2;color:#DC2626}
+/* =========== HOME =========== */
+.hero{background:linear-gradient(145deg,var(--n),var(--n2));padding:28px 20px 32px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:var(--t);border-radius:50%;opacity:.08}
+.hg{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:4px}
+.ht{font-size:22px;font-weight:800;color:white;line-height:1.3;margin-bottom:20px}
+.ht em{color:var(--t);font-style:normal}
+.sb{background:white;border-radius:14px;display:flex;align-items:center;padding:0 16px;gap:10px;height:52px;box-shadow:0 4px 24px rgba(0,0,0,.25)}
+.sb input{flex:1;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--n);cursor:pointer}
+.sb-btn{background:var(--t);border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.sb-btn svg{stroke:white;fill:none;stroke-width:2.5;width:16px;height:16px}
+/* CITY */
+.cb{display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--w);border-bottom:1px solid #EDF2F7;position:relative;z-index:50}
+.cbtn{display:flex;align-items:center;gap:6px;background:none;border:1.5px solid #E2E8F0;border-radius:20px;padding:7px 14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--n);cursor:pointer}
+.cdd{position:absolute;top:52px;left:20px;background:var(--w);border-radius:16px;box-shadow:var(--shl);z-index:200;width:calc(100% - 40px);border:1px solid #EDF2F7;display:none;max-height:260px;overflow-y:auto}
+.cdd.on{display:block}
+.cdd-h{padding:11px 16px;font-size:11px;font-weight:700;color:var(--g5);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #F0F4F8;position:sticky;top:0;background:white}
+.co{padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:10px;border-bottom:1px solid #F7F9FC}
+.co:last-child{border-bottom:none}
+.co:active{background:var(--g1)}
+/* CATS */
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cc{background:var(--w);border-radius:var(--r);padding:18px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;box-shadow:var(--sh);border:2px solid transparent;transition:border-color .2s}
+.cc:active{border-color:var(--t)}
+.ci{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+.cn{font-size:11px;font-weight:700;color:var(--n);text-align:center}
+/* PROMO */
+.pb{margin:20px 20px 0;background:linear-gradient(135deg,var(--t),var(--td));border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+.pb::after{content:'';position:absolute;right:-16px;top:-16px;width:90px;height:90px;background:rgba(255,255,255,.1);border-radius:50%}
+.pt h3{font-size:16px;font-weight:800;color:white}
+.pt p{font-size:12px;color:rgba(255,255,255,.8);margin-top:3px}
+/* PRO CARDS */
+.pl{padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.pc{background:var(--w);border-radius:var(--r);padding:16px;display:flex;gap:14px;box-shadow:var(--sh);cursor:pointer}
+.pa{width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden}
+.pa img{width:100%;height:100%;object-fit:cover}
+.pn{font-size:15px;font-weight:700;color:var(--n)}
+.pr2{font-size:12px;color:var(--g5);margin-top:2px}
+.pm{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 /* FILTER CHIPS */
-.filter-chips{display:flex;gap:8px;padding:14px 20px;overflow-x:auto;scrollbar-width:none;background:var(--white);border-bottom:1px solid #F0F4F8}
-.filter-chips::-webkit-scrollbar{display:none}
-.chip{white-space:nowrap;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #E2E8F0;background:var(--white);color:var(--gray-700);font-family:inherit}
-.chip.active{background:var(--teal);border-color:var(--teal);color:white}
-@keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
-.screen.active .page-content{animation:slideUp 0.25s ease}
+.fc{display:flex;gap:8px;padding:14px 20px;overflow-x:auto;scrollbar-width:none;background:var(--w);border-bottom:1px solid #F0F4F8}
+.fc::-webkit-scrollbar{display:none}
+.ch{white-space:nowrap;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #E2E8F0;background:var(--w);color:var(--g7);font-family:inherit}
+.ch.on{background:var(--t);border-color:var(--t);color:white}
+/* DETAIL */
+.dh{background:linear-gradient(145deg,var(--n),var(--n2));padding:20px 20px 28px}
+.da{width:80px;height:80px;border-radius:20px;overflow:hidden;border:3px solid var(--t);display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0}
+.da img{width:100%;height:100%;object-fit:cover}
+.dn{font-size:20px;font-weight:800;color:white;margin-top:10px}
+.dr{font-size:13px;color:rgba(255,255,255,.55);margin-top:3px}
+.db{padding:20px;display:flex;flex-direction:column;gap:20px}
+.dst{font-size:14px;font-weight:800;margin-bottom:12px;color:var(--n)}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.si{background:var(--g1);border-radius:12px;padding:14px 12px}
+.sin{font-size:13px;font-weight:700;color:var(--n)}
+.sip{font-size:14px;font-weight:800;color:var(--t);margin-top:4px}
+.sid{font-size:11px;color:var(--g5);margin-top:2px}
+.cta{position:fixed;bottom:0;left:0;right:0;background:var(--w);padding:14px 20px 20px;border-top:1px solid #EDF2F7;display:flex;gap:12px}
+/* BOOKING */
+.dg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.db2{background:var(--w);border:1.5px solid #E2E8F0;border-radius:12px;padding:10px 4px;font-family:inherit;cursor:pointer;text-align:center}
+.db2 .dy{font-size:10px;font-weight:600;color:var(--g5)}
+.db2 .nm{font-size:16px;font-weight:800;color:var(--n)}
+.db2.on{background:var(--t);border-color:var(--t)}
+.db2.on .dy,.db2.on .nm{color:white}
+.tg2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tb{background:var(--w);border:1.5px solid #E2E8F0;border-radius:10px;padding:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--g7);cursor:pointer}
+.tb.on{background:var(--t);border-color:var(--t);color:white}
+.ck{background:var(--w);border:1.5px solid #E2E8F0;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:8px}
+.ck.on{border-color:var(--t);background:var(--tl)}
+.ckb{width:22px;height:22px;border-radius:6px;border:2px solid var(--g3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ck.on .ckb{background:var(--t);border-color:var(--t)}
+.ckb svg{stroke:white;fill:none;stroke-width:3;width:12px;height:12px;display:none}
+.ck.on .ckb svg{display:block}
+.ckn{font-size:14px;font-weight:600;flex:1;color:var(--n)}
+.ckp{font-size:13px;font-weight:700;color:var(--t)}
+.sumc{background:var(--g1);border-radius:var(--r);padding:16px}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #E8EBF0}
+.sr:last-child{border-bottom:none}
+.sl{font-size:13px;color:var(--g5);font-weight:500}
+.sv{font-size:13px;font-weight:700;color:var(--n)}
+.sr.tot .sl{font-size:14px;font-weight:800;color:var(--n)}
+.sr.tot .sv{font-size:16px;font-weight:800;color:var(--t)}
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;display:none;align-items:flex-end;justify-content:center}
+.mo.on{display:flex}
+.ms{background:var(--w);border-radius:24px 24px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding:0 0 40px}
+.mh{width:40px;height:4px;background:#E2E8F0;border-radius:4px;margin:14px auto 20px}
+.mt{font-size:18px;font-weight:800;color:var(--n);padding:0 20px 16px;border-bottom:1px solid #F0F4F8}
+.mb{padding:20px;display:flex;flex-direction:column;gap:14px}
+.so{background:var(--g1);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border:2px solid transparent}
+.so:active,.so.on{background:var(--tl);border-color:var(--t)}
+.so-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.so-n{font-size:15px;font-weight:700;color:var(--n)}
+.so-s{font-size:12px;color:var(--g5);margin-top:2px}
+/* RATING */
+.ro{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:400;display:none;align-items:center;justify-content:center;padding:24px}
+.ro.on{display:flex}
+.rcard{background:var(--w);border-radius:24px;padding:28px 24px;width:100%;max-width:360px;text-align:center}
+.stars{display:flex;justify-content:center;gap:8px;margin:16px 0}
+.star{font-size:36px;cursor:pointer;opacity:.3;transition:opacity .15s,transform .15s;background:none;border:none}
+.star.on{opacity:1;transform:scale(1.15)}
+/* PROFILE */
+.ph{background:linear-gradient(145deg,var(--n),var(--n2));padding:28px 20px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.pav{width:80px;height:80px;border-radius:50%;background:var(--t);display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid rgba(255,255,255,.2)}
+.pmenu{background:var(--w);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:14px}
+.mi{display:flex;align-items:center;gap:14px;padding:16px;cursor:pointer;border-bottom:1px solid #F7F9FC}
+.mi:last-child{border-bottom:none}
+.mi:active{background:var(--g1)}
+.mic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mit{font-size:14px;font-weight:600;color:var(--n)}
+.mis{font-size:12px;color:var(--g5);margin-top:2px}
+/* SUCCESS */
+.succ{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;min-height:80vh}
+.succ-ic{width:100px;height:100px;background:var(--tl);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.succ-ic svg{stroke:var(--t);fill:none;stroke-width:2.5;width:52px;height:52px}
+.sc{background:var(--w);border-radius:var(--r);padding:20px;width:100%;max-width:340px;box-shadow:var(--sh);margin-bottom:28px;text-align:left}
+.scr2{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F0F4F8}
+.scr2:last-child{border-bottom:none}
+.scr2 .k{font-size:12px;color:var(--g5)}
+.scr2 .v{font-size:12px;font-weight:700;color:var(--n)}
+/* EMPTY */
+.es{display:flex;flex-direction:column;align-items:center;padding:40px 24px;text-align:center;gap:12px;background:var(--w);border-radius:var(--r);box-shadow:var(--sh)}
 </style>
 </head>
 <body>
 
-<!-- ==========================================
-     TUTORIAL — 4 SLIDES STYLE WEBEL
-     ========================================== -->
+<!-- TUTORIAL -->
 
-<div id="screen-tutorial" class="screen active" style="background:white">
-  <div class="tutorial-screen" style="min-height:100vh">
-    <div class="tut-top">
-      <div style="font-size:20px;font-weight:800;color:var(--navy)">Casa<span style="color:var(--teal)">Ya</span></div>
-      <button class="tut-skip" data-click="endTutorial()">Salir</button>
-    </div>
-    <div class="tut-slides" style="flex:1">
-      <!-- Slide 1 -->
-      <div class="tut-slide active" id="tslide-0">
-        <div class="tut-illustration">
-          <svg viewBox="0 0 260 260" style="width:100%;height:100%">
-            <circle cx="130" cy="130" r="120" fill="#F0FFFE"/>
-            <!-- House -->
-            <rect x="75" y="130" width="110" height="80" rx="6" fill="#E0F7F4"/>
-            <polygon points="70,132 130,80 190,132" fill="#00BFA5"/>
-            <rect x="110" y="160" width="40" height="50" rx="4" fill="white"/>
-            <!-- sparkles / service icons -->
-            <circle cx="60" cy="100" r="26" fill="white" filter="drop-shadow(0 2px 8px rgba(0,0,0,0.08))"/>
-            <text x="60" y="108" text-anchor="middle" font-size="22">🧹</text>
-            <circle cx="200" cy="90" r="26" fill="white" filter="drop-shadow(0 2px 8px rgba(0,0,0,0.08))"/>
-            <text x="200" y="98" text-anchor="middle" font-size="22">💅</text>
-            <circle cx="195" cy="155" r="26" fill="white" filter="drop-shadow(0 2px 8px rgba(0,0,0,0.08))"/>
-            <text x="195" y="163" text-anchor="middle" font-size="22">💊</text>
-          </svg>
-        </div>
-        <h2 class="tut-title">Busca tu servicio a domicilio</h2>
-        <p class="tut-sub">Limpieza del hogar, cuidado de personas mayores, belleza y más. Todo a domicilio en Cuba.</p>
-      </div>
-      <!-- Slide 2 -->
-      <div class="tut-slide" id="tslide-1">
-        <div class="tut-illustration">
-          <svg viewBox="0 0 260 260" style="width:100%;height:100%">
-            <circle cx="130" cy="130" r="120" fill="#F0FFFE"/>
-            <!-- Cards -->
-            <rect x="55" y="90" width="150" height="70" rx="14" fill="white" filter="drop-shadow(0 4px 16px rgba(0,0,0,0.10))"/>
-            <circle cx="90" cy="125" r="20" fill="#E0F7F4"/>
-            <text x="90" y="132" text-anchor="middle" font-size="18">👩</text>
-            <text x="130" y="118" font-size="15" font-weight="700" fill="#1E2D4E">Laura</text>
-            <circle cx="152" cy="115" r="7" fill="#00BFA5"/>
-            <text x="152" y="119" text-anchor="middle" font-size="8" fill="white">✓</text>
-            <text x="126" y="135" font-size="20">⭐</text>
-            <text x="150" y="136" font-size="14" font-weight="700" fill="#1E2D4E">5.0</text>
-            <!-- blurred cards -->
-            <rect x="65" y="60" width="130" height="55" rx="14" fill="#F7F9FC" opacity="0.8"/>
-            <circle cx="96" cy="87" r="16" fill="#E8F8F7" opacity="0.8"/>
-            <rect x="65" y="168" width="130" height="55" rx="14" fill="#F7F9FC" opacity="0.8"/>
-            <circle cx="96" cy="195" r="16" fill="#E8F8F7" opacity="0.8"/>
-          </svg>
-        </div>
-        <h2 class="tut-title">Escoge a tu profesional ideal</h2>
-        <p class="tut-sub">Compara entre los profesionales disponibles, sus precios y valoraciones. Elige el que más te guste.</p>
-      </div>
-      <!-- Slide 3 -->
-      <div class="tut-slide" id="tslide-2">
-        <div class="tut-illustration">
-          <svg viewBox="0 0 260 260" style="width:100%;height:100%">
-            <circle cx="130" cy="130" r="120" fill="#F0FFFE"/>
-            <!-- Phone -->
-            <rect x="90" y="70" width="80" height="130" rx="16" fill="white" filter="drop-shadow(0 4px 20px rgba(0,0,0,0.1))"/>
-            <rect x="100" y="86" width="60" height="8" rx="4" fill="#E0F7F4"/>
-            <rect x="100" y="102" width="40" height="6" rx="3" fill="#F0F4F8"/>
-            <rect x="100" y="116" width="50" height="6" rx="3" fill="#F0F4F8"/>
-            <!-- big teal button -->
-            <rect x="100" y="162" width="60" height="22" rx="10" fill="#00BFA5"/>
-            <text x="130" y="177" text-anchor="middle" font-size="11" fill="white" font-weight="700">Reservar</text>
-            <!-- WhatsApp bubble -->
-            <rect x="38" y="120" width="65" height="36" rx="10" fill="#25D366"/>
-            <text x="71" y="141" text-anchor="middle" font-size="20">💬</text>
-            <polygon points="95,140 100,148 95,148" fill="#25D366"/>
-          </svg>
-        </div>
-        <h2 class="tut-title">Contáctalo en 3 toques</h2>
-        <p class="tut-sub">Reserva directamente en la app o contáctalo por WhatsApp. El pago es en efectivo, sin comisiones.</p>
-      </div>
-      <!-- Slide 4 -->
-      <div class="tut-slide" id="tslide-3">
-        <div class="tut-illustration">
-          <svg viewBox="0 0 260 260" style="width:100%;height:100%">
-            <circle cx="130" cy="130" r="120" fill="#F0FFFE"/>
-            <!-- Door frame -->
-            <rect x="80" y="80" width="100" height="130" rx="4" fill="#D4A96A"/>
-            <rect x="85" y="85" width="90" height="120" rx="4" fill="#E8C882" opacity="0.6"/>
-            <!-- People waving -->
-            <circle cx="108" cy="130" r="18" fill="#FDDBB4"/>
-            <rect x="94" y="148" width="28" height="45" rx="8" fill="#7C86C9"/>
-            <line x1="94" y1="162" x2="78" y2="148" stroke="#FDDBB4" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="158" cy="128" r="18" fill="#FDDBB4"/>
-            <rect x="144" y="146" width="28" height="45" rx="8" fill="#00BFA5"/>
-            <line x1="172" y1="158" x2="188" y2="142" stroke="#FDDBB4" stroke-width="6" stroke-linecap="round"/>
-            <!-- stars -->
-            <text x="90" y="72" font-size="16">⭐</text><text x="112" y="65" font-size="16">⭐</text><text x="134" y="70" font-size="16">⭐</text>
-          </svg>
-        </div>
-        <h2 class="tut-title">Disfruta tu servicio</h2>
-        <p class="tut-sub">Recibe al profesional en tu domicilio en el horario acordado. ¡Y califica tu experiencia!</p>
-      </div>
-    </div>
-    <div class="tut-dots">
-      <div class="tut-dot active" id="tdot-0"></div>
-      <div class="tut-dot" id="tdot-1"></div>
-      <div class="tut-dot" id="tdot-2"></div>
-      <div class="tut-dot" id="tdot-3"></div>
-    </div>
-    <div class="tut-footer">
-      <button class="btn-teal" id="tut-btn" data-click="tutNext()">Siguiente</button>
-    </div>
+<div id="scr-tut" class="scr on">
+  <div class="tut-top">
+    <div class="logo">Casa<b>Ya</b></div>
+    <button id="btn-skip" class="tut-skip">Salir</button>
+  </div>
+  <div class="tut-body">
+    <div class="tut-ill" id="tut-ill"></div>
+    <h2 class="tut-title" id="tut-title"></h2>
+    <p class="tut-sub" id="tut-sub"></p>
+  </div>
+  <div class="tut-dots">
+    <div class="dot on" id="d0"></div>
+    <div class="dot" id="d1"></div>
+    <div class="dot" id="d2"></div>
+    <div class="dot" id="d3"></div>
+  </div>
+  <div class="tut-foot">
+    <button id="btn-tut-next" class="bt">Siguiente</button>
   </div>
 </div>
 
-<!-- ==========================================
-     ONBOARDING — ROLE SELECTOR
-     ========================================== -->
+<!-- ONBOARDING -->
 
-<div id="screen-onboarding" class="screen">
-  <div class="onboarding">
-    <div class="onb-hero">
-      <div class="onb-logo">Casa<span>Ya</span></div>
-      <div class="onb-tagline">Servicios a domicilio en Cuba 🇨🇺</div>
+<div id="scr-onb" class="scr">
+  <div class="onb-hero">
+    <div class="onb-logo">Casa<b>Ya</b></div>
+    <div class="onb-tag">Servicios a domicilio en Cuba 🇨🇺</div>
+  </div>
+  <div class="onb-body">
+    <h2 class="onb-title">¿Cómo quieres usar CasaYa?</h2>
+    <p class="onb-sub">Elige tu rol para personalizar tu experiencia.</p>
+    <div class="rc" id="rc-client">
+      <div class="ri" style="background:#E0F7F4">🏠</div>
+      <div class="rn"><h3>Buscar servicios</h3><p>Necesito un profesional a domicilio</p></div>
     </div>
-    <div class="onb-body">
-      <h2 class="onb-title">¿Cómo quieres usar CasaYa?</h2>
-      <p class="onb-sub">Elige tu rol para personalizar tu experiencia en la plataforma.</p>
-      <div id="role-client" class="role-card" data-click="selectRole('client')">
-        <div class="role-icon" style="background:#E0F7F4">🏠</div>
-        <div class="role-info"><h3>Buscar servicios</h3><p>Necesito un profesional de limpieza, cuidado o belleza</p></div>
-      </div>
-      <div id="role-pro" class="role-card" data-click="selectRole('pro')">
-        <div class="role-icon" style="background:#EEF2FF">💼</div>
-        <div class="role-info"><h3>Ofrecer mis servicios</h3><p>Soy profesional y quiero conseguir clientes</p></div>
-      </div>
+    <div class="rc" id="rc-pro">
+      <div class="ri" style="background:#EEF2FF">💼</div>
+      <div class="rn"><h3>Ofrecer mis servicios</h3><p>Soy profesional y quiero conseguir clientes</p></div>
     </div>
-    <div class="onb-footer">
-      <button class="btn-teal" data-click="continueOnboarding()">Continuar →</button>
-    </div>
+  </div>
+  <div class="onb-foot">
+    <button id="btn-continue-onb" class="bt">Continuar →</button>
   </div>
 </div>
 
-<!-- ==========================================
-     REGISTER — CLIENT
-     ========================================== -->
+<!-- REG CLIENT -->
 
-<div id="screen-reg-client" class="screen">
-  <div class="reg-header">
-    <button class="back-btn-w" data-click="showScreen('screen-onboarding')"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-    <div class="reg-title">Crear cuenta</div>
-    <div class="reg-sub">Para buscar y reservar servicios</div>
+<div id="scr-regc" class="scr">
+  <div class="rh">
+    <button id="btn-back-regc" class="back-w"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    <div class="rh-title">Crear cuenta</div>
+    <div class="rh-sub">Para buscar y reservar servicios</div>
   </div>
-  <div class="page-content" style="padding-bottom:100px">
+  <div class="pg" style="padding-bottom:100px">
     <div style="padding:24px 20px;display:flex;flex-direction:column;gap:18px">
-      <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" type="text" placeholder="Ej: Ana García López"/></div>
-      <div class="form-group"><label class="form-label">WhatsApp ✱</label><input class="form-input" type="tel" placeholder="+53 5 XXX XXXX"/><span style="font-size:11px;color:var(--gray-500)">✱ Los profesionales te contactarán por aquí</span></div>
-      <div class="form-group"><label class="form-label">Ciudad</label>
-        <select class="form-select"><option value="">— Selecciona —</option><option>La Habana</option><option>Santiago de Cuba</option><option>Holguín</option><option>Camagüey</option><option>Guantánamo</option><option>Santa Clara</option><option>Las Tunas</option><option>Bayamo</option><option>Cienfuegos</option><option>Pinar del Río</option><option>Matanzas</option><option>Ciego de Ávila</option><option>Sancti Spíritus</option><option>Trinidad</option><option>Varadero</option></select>
+      <div class="fg"><label class="fl">Nombre completo</label><input class="fi" type="text" placeholder="Ej: Ana García López"></div>
+      <div class="fg"><label class="fl">WhatsApp ✱</label><input class="fi" type="tel" placeholder="+53 5 XXX XXXX"><span style="font-size:11px;color:var(--g5)">✱ Los profesionales te contactarán aquí</span></div>
+      <div class="fg"><label class="fl">Ciudad</label>
+        <select class="fs"><option value="">— Selecciona —</option><option>La Habana</option><option>Santiago de Cuba</option><option>Holguín</option><option>Camagüey</option><option>Guantánamo</option><option>Santa Clara</option><option>Las Tunas</option><option>Bayamo</option><option>Cienfuegos</option><option>Pinar del Río</option><option>Matanzas</option><option>Ciego de Ávila</option><option>Sancti Spíritus</option><option>Trinidad</option><option>Varadero</option></select>
       </div>
-      <div class="form-group"><label class="form-label">Municipio / Reparto</label><input class="form-input" type="text" placeholder="Ej: Playa, Vedado, Centro Habana"/></div>
-      <div class="info-box"><div class="info-box-icon">💡</div><div class="info-box-text">Tu número de WhatsApp es necesario para que los profesionales puedan coordinarse contigo directamente.</div></div>
+      <div class="fg"><label class="fl">Municipio / Reparto</label><input class="fi" type="text" placeholder="Ej: Playa, Vedado"></div>
+      <div class="ib"><span>💡</span><span>Tu WhatsApp permite que los profesionales se coordinen contigo directamente.</span></div>
     </div>
   </div>
   <div style="position:fixed;bottom:0;left:0;right:0;background:white;padding:14px 20px 28px;border-top:1px solid #EDF2F7">
-    <button class="btn-teal" data-click="startApp()">Crear cuenta y explorar →</button>
+    <button id="btn-start-client" class="bt">Crear cuenta y explorar →</button>
   </div>
 </div>
 
-<!-- ==========================================
-     REGISTER — PRO (4 STEPS)
-     ========================================== -->
+<!-- REG PRO -->
 
-<div id="screen-reg-pro" class="screen">
-  <div class="reg-header">
-    <button class="back-btn-w" data-click="prevStep()"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-    <div class="reg-title" id="reg-title">Datos personales</div>
-    <div class="reg-sub" id="reg-sub">Paso 1 de 4</div>
+<div id="scr-regp" class="scr">
+  <div class="rh">
+    <button id="btn-back-regp" class="back-w"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    <div class="rh-title" id="rp-title">Datos personales</div>
+    <div class="rh-sub" id="rp-sub">Paso 1 de 4</div>
   </div>
-  <div class="step-indicator">
-    <div class="step-dot done" id="sd1"></div>
-    <div class="step-dot" id="sd2"></div>
-    <div class="step-dot" id="sd3"></div>
-    <div class="step-dot" id="sd4"></div>
+  <div class="sdots">
+    <div class="sd on" id="sd1"></div><div class="sd" id="sd2"></div>
+    <div class="sd" id="sd3"></div><div class="sd" id="sd4"></div>
   </div>
-  <div class="page-content" style="padding-bottom:100px">
+  <div class="pg" style="padding-bottom:100px">
     <div style="padding:24px 20px">
 
 ```
-  <!-- STEP 1 -->
-  <div class="reg-step active" id="step1">
-    <!-- Avatar upload -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0">
-      <div class="avatar-upload" id="avatar-upload-box" data-click="triggerAvatarUpload()">
-        <input type="file" id="avatar-input" accept="image/*" data-change="previewAvatar(this)" />
-        <img id="avatar-preview-img" class="avatar-preview" />
-        <div id="avatar-placeholder" style="display:flex;flex-direction:column;align-items:center;gap:4px">
-          <span style="font-size:28px">📷</span>
-          <span style="font-size:10px;font-weight:700;color:var(--gray-500)">Tu foto</span>
-        </div>
+  <div class="rstep on" id="rp1">
+    <div class="av-wrap">
+      <div class="av-box" id="av-box">
+        <input type="file" id="av-input" accept="image/*">
+        <img id="av-img" alt="">
+        <div id="av-ph" style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:28px">📷</span><span style="font-size:10px;font-weight:700;color:var(--g5)">Tu foto</span></div>
       </div>
-      <span style="font-size:12px;color:var(--gray-500)">Foto de perfil (opcional pero recomendado)</span>
+      <span style="font-size:12px;color:var(--g5)">Foto de perfil (recomendado)</span>
     </div>
-    <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" id="pro-name-input" type="text" placeholder="Ej: María González Pérez"/></div>
-    <div class="form-group"><label class="form-label">WhatsApp ✱</label><input class="form-input" id="pro-wa-input" type="tel" placeholder="+53 5 XXX XXXX"/><span style="font-size:11px;color:var(--gray-500)">✱ Los clientes te contactarán directamente por WhatsApp</span></div>
-    <div class="form-group"><label class="form-label">Ciudad</label>
-      <select class="form-select" id="pro-city-input"><option value="">— Selecciona —</option><option>La Habana</option><option>Santiago de Cuba</option><option>Holguín</option><option>Camagüey</option><option>Guantánamo</option><option>Santa Clara</option><option>Las Tunas</option><option>Bayamo</option><option>Cienfuegos</option><option>Pinar del Río</option><option>Matanzas</option><option>Ciego de Ávila</option><option>Sancti Spíritus</option><option>Trinidad</option><option>Varadero</option></select>
+    <div class="fg"><label class="fl">Nombre completo</label><input class="fi" id="p-name" type="text" placeholder="Ej: María González"></div>
+    <div class="fg"><label class="fl">WhatsApp ✱</label><input class="fi" id="p-wa" type="tel" placeholder="+53 5 XXX XXXX"><span style="font-size:11px;color:var(--g5)">✱ Los clientes te contactarán por aquí</span></div>
+    <div class="fg"><label class="fl">Ciudad</label>
+      <select class="fs" id="p-city"><option value="">— Selecciona —</option><option>La Habana</option><option>Santiago de Cuba</option><option>Holguín</option><option>Camagüey</option><option>Guantánamo</option><option>Santa Clara</option><option>Las Tunas</option><option>Bayamo</option><option>Cienfuegos</option><option>Pinar del Río</option><option>Matanzas</option><option>Ciego de Ávila</option><option>Sancti Spíritus</option><option>Trinidad</option><option>Varadero</option></select>
     </div>
-    <div class="form-group"><label class="form-label">Municipios / Zonas donde trabajas</label><input class="form-input" id="pro-zones-input" type="text" placeholder="Ej: Playa, Miramar, Vedado"/></div>
-    <div class="form-group"><label class="form-label">Sobre mí</label><textarea class="form-input" id="pro-bio-input" rows="4" placeholder="Cuéntale a tus clientes tu experiencia y por qué elegirte..."></textarea></div>
+    <div class="fg"><label class="fl">Zonas donde trabajas</label><input class="fi" id="p-zones" type="text" placeholder="Ej: Playa, Vedado, Miramar"></div>
+    <div class="fg"><label class="fl">Sobre mí</label><textarea class="fi" id="p-bio" rows="4" placeholder="Tu experiencia y por qué elegirte..."></textarea></div>
   </div>
 
-  <!-- STEP 2 -->
-  <div class="reg-step" id="step2">
-    <div class="form-group"><label class="form-label">Categoría principal</label>
-      <select class="form-select"><option value="">— Selecciona —</option><option>🧹 Limpieza del hogar</option><option>💊 Cuidado de personas mayores</option><option>💅 Belleza y estética</option></select>
+  <div class="rstep" id="rp2">
+    <div class="fg"><label class="fl">Categoría</label>
+      <select class="fs" id="p-cat"><option value="">— Selecciona —</option><option value="limpieza">🧹 Limpieza del hogar</option><option value="cuidado">💊 Cuidado de personas mayores</option><option value="belleza">💅 Belleza y estética</option></select>
     </div>
-    <div class="form-group"><label class="form-label">Años de experiencia</label>
-      <select class="form-select"><option>Menos de 1 año</option><option>1–3 años</option><option>3–5 años</option><option>Más de 5 años</option><option>Más de 10 años</option></select>
+    <div class="fg"><label class="fl">Experiencia</label>
+      <select class="fs"><option>Menos de 1 año</option><option>1–3 años</option><option>3–5 años</option><option>Más de 5 años</option><option>Más de 10 años</option></select>
     </div>
-    <div class="form-group">
-      <label class="form-label">Disponibilidad</label>
+    <div class="fg">
+      <label class="fl">Disponibilidad</label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--teal)" checked>Lun–Vie</label>
-        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--teal)">Sábados</label>
-        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--teal)">Domingos</label>
-        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--teal)">Urgencias</label>
+        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--t)" checked> Lun–Vie</label>
+        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--t)"> Sábados</label>
+        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--t)"> Domingos</label>
+        <label style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:600"><input type="checkbox" style="accent-color:var(--t)"> Urgencias</label>
       </div>
     </div>
     <div>
-      <label class="form-label" style="display:block;margin-bottom:12px">Mis servicios y precios</label>
+      <label class="fl" style="display:block;margin-bottom:12px">Mis servicios y precios</label>
       <div id="svc-container">
-        <div class="service-entry">
-          <div class="svc-header"><span class="svc-num">Servicio 1</span></div>
+        <div class="se">
+          <div class="se-h"><span class="se-n">Servicio 1</span></div>
           <div style="display:flex;flex-direction:column;gap:10px">
-            <input class="form-input" type="text" placeholder="Nombre (ej: Limpieza estándar 3h)"/>
-            <div class="price-row">
-              <div class="form-group"><label class="form-label">Precio (CUP)</label><input class="form-input" type="number" placeholder="Ej: 500" min="0"/></div>
-              <div class="form-group"><label class="form-label">Duración</label><select class="form-select"><option>1h</option><option>2h</option><option>3h</option><option>4h</option><option>6h</option><option>8h</option><option>Todo el día</option></select></div>
+            <input class="fi" type="text" placeholder="Nombre del servicio">
+            <div class="pr">
+              <div class="fg"><label class="fl">Precio (CUP)</label><input class="fi" type="number" placeholder="500" min="0"></div>
+              <div class="fg"><label class="fl">Duración</label><select class="fs"><option>1h</option><option>2h</option><option>3h</option><option>4h</option><option>6h</option><option>8h</option><option>Todo el día</option></select></div>
             </div>
-            <textarea class="form-input" rows="2" placeholder="¿Qué incluye este servicio?"></textarea>
+            <textarea class="fi" rows="2" placeholder="¿Qué incluye?"></textarea>
           </div>
         </div>
       </div>
-      <button class="add-svc-btn" data-click="addSvc()">+ Agregar otro servicio</button>
+      <button id="btn-add-svc" class="add-svc">+ Agregar otro servicio</button>
     </div>
   </div>
 
-  <!-- STEP 3 -->
-  <div class="reg-step" id="step3">
-    <div class="info-box"><div class="info-box-icon">🔒</div><div class="info-box-text"><strong>Verificación opcional.</strong> Los perfiles verificados reciben hasta 3× más solicitudes de clientes.</div></div>
-    <div class="form-group"><label class="form-label">🪪 Carnet — frente</label>
-      <div class="photo-upload" id="pu-front" data-click="markUpload('pu-front','ps-front')">
-        <input type="file" accept="image/*"/>
-        <div style="font-size:32px;margin-bottom:8px">🪪</div>
-        <div style="font-size:14px;font-weight:700">Foto del carnet (frente)</div>
-        <div style="font-size:12px;color:var(--gray-500);margin-top:3px">Toca para seleccionar</div>
-        <div class="photo-status" id="ps-front">✅ Cargado</div>
-      </div>
+  <div class="rstep" id="rp3">
+    <div class="ib"><span>🔒</span><span><strong>Verificación opcional.</strong> Los perfiles verificados reciben hasta 3× más solicitudes.</span></div>
+    <div class="fg"><label class="fl">🪪 Carnet — frente</label>
+      <div class="pu" id="pu-front"><input type="file" accept="image/*" id="puf-input"><div style="font-size:32px;margin-bottom:8px">🪪</div><div style="font-size:14px;font-weight:700">Frente del carnet</div><div style="font-size:12px;color:var(--g5);margin-top:3px">Toca para seleccionar</div><div class="pu-st" id="puf-st">✅ Cargado</div></div>
     </div>
-    <div class="form-group"><label class="form-label">🪪 Carnet — reverso</label>
-      <div class="photo-upload" id="pu-back" data-click="markUpload('pu-back','ps-back')">
-        <input type="file" accept="image/*"/>
-        <div style="font-size:32px;margin-bottom:8px">🪪</div>
-        <div style="font-size:14px;font-weight:700">Foto del carnet (reverso)</div>
-        <div style="font-size:12px;color:var(--gray-500);margin-top:3px">Toca para seleccionar</div>
-        <div class="photo-status" id="ps-back">✅ Cargado</div>
-      </div>
+    <div class="fg"><label class="fl">🪪 Carnet — reverso</label>
+      <div class="pu" id="pu-back"><input type="file" accept="image/*" id="pub-input"><div style="font-size:32px;margin-bottom:8px">🪪</div><div style="font-size:14px;font-weight:700">Reverso del carnet</div><div style="font-size:12px;color:var(--g5);margin-top:3px">Toca para seleccionar</div><div class="pu-st" id="pub-st">✅ Cargado</div></div>
     </div>
-    <div class="form-group"><label class="form-label">🤳 Selfie con tu carnet</label>
-      <div class="photo-upload" id="pu-selfie" data-click="markUpload('pu-selfie','ps-selfie')">
-        <input type="file" accept="image/*" capture="user"/>
-        <div style="font-size:32px;margin-bottom:8px">🤳</div>
-        <div style="font-size:14px;font-weight:700">Tu foto sosteniendo el carnet</div>
-        <div style="font-size:12px;color:var(--gray-500);margin-top:3px">Asegúrate que el carnet sea legible</div>
-        <div class="photo-status" id="ps-selfie">✅ Cargado</div>
-      </div>
+    <div class="fg"><label class="fl">🤳 Selfie con carnet</label>
+      <div class="pu" id="pu-self"><input type="file" accept="image/*" capture="user" id="pus-input"><div style="font-size:32px;margin-bottom:8px">🤳</div><div style="font-size:14px;font-weight:700">Foto tuya con el carnet</div><div style="font-size:12px;color:var(--g5);margin-top:3px">Asegúrate que sea legible</div><div class="pu-st" id="pus-st">✅ Cargado</div></div>
     </div>
-    <div class="form-group"><label class="form-label">🏠 Dirección de tu domicilio</label><input class="form-input" type="text" placeholder="Calle, número, municipio, ciudad"/><span style="font-size:11px;color:var(--gray-500);margin-top:4px;display:block">Información privada, solo para verificación.</span></div>
+    <div class="fg"><label class="fl">🏠 Dirección domicilio</label><input class="fi" type="text" placeholder="Calle, número, municipio, ciudad"><span style="font-size:11px;color:var(--g5)">Solo para verificación. Es privado.</span></div>
   </div>
 
-  <!-- STEP 4 -->
-  <div class="reg-step" id="step4">
-    <div style="text-align:center;padding:20px 0 10px">
+  <div class="rstep" id="rp4">
+    <div style="text-align:center;padding:20px 0">
       <div style="font-size:56px;margin-bottom:16px">🎉</div>
-      <h2 style="font-size:22px;font-weight:800;color:var(--navy);margin-bottom:8px">¡Perfil creado!</h2>
-      <p style="font-size:14px;color:var(--gray-500);line-height:1.6">Tu perfil entrará en revisión y estará visible en 24–48 horas.</p>
+      <h2 style="font-size:22px;font-weight:800;color:var(--n);margin-bottom:8px">¡Perfil creado!</h2>
+      <p style="font-size:14px;color:var(--g5);line-height:1.6">Tu perfil entrará en revisión y estará visible en 24–48 horas.</p>
     </div>
-    <div class="summary-card">
-      <div class="sum-row"><span class="sum-lbl">Estado</span><span class="vbadge pending">⏳ En revisión</span></div>
-      <div class="sum-row"><span class="sum-lbl">Verificación</span><span id="final-verify" class="vbadge no">Sin verificar</span></div>
-      <div class="sum-row"><span class="sum-lbl">Visible en</span><span class="sum-val">24–48 horas</span></div>
+    <div class="sumc">
+      <div class="sr"><span class="sl">Estado</span><span class="vb pend">⏳ En revisión</span></div>
+      <div class="sr"><span class="sl">Verificación</span><span class="vb no" id="final-verify">Sin verificar</span></div>
+      <div class="sr"><span class="sl">Visible en</span><span class="sv">24–48 horas</span></div>
     </div>
-    <div class="info-box"><div class="info-box-icon">📱</div><div class="info-box-text">Los clientes te contactarán por WhatsApp. Mantén notificaciones activas.</div></div>
+    <div class="ib"><span>📱</span><span>Los clientes te contactarán por WhatsApp. Mantén notificaciones activas.</span></div>
   </div>
 
 </div>
@@ -574,685 +414,819 @@ html,body{font-family:'Plus Jakarta Sans',sans-serif;background:#F7F9FC;color:va
 
   </div>
   <div style="position:fixed;bottom:0;left:0;right:0;background:white;padding:14px 20px 28px;border-top:1px solid #EDF2F7">
-    <button class="btn-teal" id="step-btn" data-click="nextStep()">Continuar →</button>
+    <button id="btn-rp-next" class="bt">Continuar →</button>
   </div>
 </div>
 
-<!-- ==========================================
-     HOME
-     ========================================== -->
+<!-- HOME -->
 
-<div id="screen-home" class="screen">
-  <nav class="navbar">
-    <div class="logo" data-click="goHome()">Casa<span>Ya</span></div>
+<div id="scr-home" class="scr">
+  <div class="nav">
+    <div class="logo" id="logo-home">Casa<b>Ya</b></div>
     <div style="display:flex;gap:10px;align-items:center">
-      <button data-click="showScreen('screen-explore')" style="background:none;border:none;cursor:pointer;padding:8px;border-radius:10px;color:var(--gray-700);display:flex"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
-      <button data-click="showScreen('screen-profile')" style="background:var(--teal);color:white;border:none;padding:8px 16px;border-radius:40px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">Mi perfil</button>
+      <button id="btn-home-search" style="background:none;border:none;cursor:pointer;padding:8px;border-radius:10px;color:var(--g7);display:flex"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+      <button id="btn-home-profile" style="background:var(--t);color:white;border:none;padding:8px 16px;border-radius:40px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">Mi perfil</button>
     </div>
-  </nav>
-  <div class="page-content">
-    <div class="home-hero">
-      <p class="hero-greeting">👋 ¿Qué necesitas hoy?</p>
-      <h1 class="hero-title">Servicios a domicilio <em>confiables</em> en Cuba</h1>
-      <div class="search-bar">
+  </div>
+  <div class="pg">
+    <div class="hero">
+      <p class="hg">👋 ¿Qué necesitas hoy?</p>
+      <h1 class="ht">Servicios a domicilio <em>confiables</em> en Cuba</h1>
+      <div class="sb">
         <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" placeholder="¿Qué servicio buscas?" readonly data-click="showScreen('screen-explore')"/>
-        <button class="search-btn" data-click="showScreen('screen-explore')"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        <input type="text" id="home-search-inp" placeholder="¿Qué servicio buscas?" readonly>
+        <div class="sb-btn" id="btn-hero-search"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
-    </div>
-    <!-- CITY -->
-    <div class="city-bar" id="city-bar-wrap">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--teal)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      <button class="city-btn" data-click="toggleCity()">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-        <span id="city-label">Elige tu ciudad</span>
-      </button>
-    </div>
-    <div class="city-dropdown" id="city-dd">
-      <div class="city-dd-header">📍 Ciudades de Cuba</div>
-      <div class="city-option" data-click="pickCity('La Habana','🏙️')"><span>🏙️</span>La Habana</div>
-      <div class="city-option" data-click="pickCity('Santiago de Cuba','🌄')"><span>🌄</span>Santiago de Cuba</div>
-      <div class="city-option" data-click="pickCity('Holguín','🌿')"><span>🌿</span>Holguín</div>
-      <div class="city-option" data-click="pickCity('Camagüey','🏛️')"><span>🏛️</span>Camagüey</div>
-      <div class="city-option" data-click="pickCity('Guantánamo','⛰️')"><span>⛰️</span>Guantánamo</div>
-      <div class="city-option" data-click="pickCity('Santa Clara','🌺')"><span>🌺</span>Santa Clara</div>
-      <div class="city-option" data-click="pickCity('Las Tunas','🌾')"><span>🌾</span>Las Tunas</div>
-      <div class="city-option" data-click="pickCity('Bayamo','🎵')"><span>🎵</span>Bayamo</div>
-      <div class="city-option" data-click="pickCity('Cienfuegos','⚓')"><span>⚓</span>Cienfuegos</div>
-      <div class="city-option" data-click="pickCity('Pinar del Río','🌱')"><span>🌱</span>Pinar del Río</div>
-      <div class="city-option" data-click="pickCity('Matanzas','🌊')"><span>🌊</span>Matanzas</div>
-      <div class="city-option" data-click="pickCity('Ciego de Ávila','🍍')"><span>🍍</span>Ciego de Ávila</div>
-      <div class="city-option" data-click="pickCity('Sancti Spíritus','🕌')"><span>🕌</span>Sancti Spíritus</div>
-      <div class="city-option" data-click="pickCity('Trinidad','🏺')"><span>🏺</span>Trinidad</div>
-      <div class="city-option" data-click="pickCity('Varadero','🏖️')"><span>🏖️</span>Varadero</div>
     </div>
 
 ```
-<div class="promo-banner"><div class="promo-text"><h3>¡Gratis para todos!</h3><p>Sin comisiones ni suscripciones</p></div><div style="font-size:40px;position:relative;z-index:1">🎉</div></div>
-
-<div class="section">
-  <div class="section-header"><h2 class="section-title">Servicios disponibles</h2><button class="section-link" data-click="showScreen('screen-explore')">Ver todos</button></div>
-  <div class="categories-grid">
-    <div class="cat-card" data-click="filterAndExplore('limpieza')"><div class="cat-icon" style="background:#E0F7F4">🧹</div><span class="cat-name">Limpieza del hogar</span></div>
-    <div class="cat-card" data-click="filterAndExplore('cuidado')"><div class="cat-icon" style="background:#FFF0E3">💊</div><span class="cat-name">Cuidado de personas</span></div>
-    <div class="cat-card" data-click="filterAndExplore('belleza')"><div class="cat-icon" style="background:#F3E8FF">💅</div><span class="cat-name">Belleza y estética</span></div>
+<div class="cb" id="city-bar">
+  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--t)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+  <button id="btn-city" class="cbtn">
+    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+    <span id="city-label">Elige tu ciudad</span>
+  </button>
+  <div class="cdd" id="city-dd">
+    <div class="cdd-h">📍 Ciudades de Cuba</div>
+    <div class="co" data-city="La Habana" data-emoji="🏙️"><span>🏙️</span>La Habana</div>
+    <div class="co" data-city="Santiago de Cuba" data-emoji="🌄"><span>🌄</span>Santiago de Cuba</div>
+    <div class="co" data-city="Holguín" data-emoji="🌿"><span>🌿</span>Holguín</div>
+    <div class="co" data-city="Camagüey" data-emoji="🏛️"><span>🏛️</span>Camagüey</div>
+    <div class="co" data-city="Guantánamo" data-emoji="⛰️"><span>⛰️</span>Guantánamo</div>
+    <div class="co" data-city="Santa Clara" data-emoji="🌺"><span>🌺</span>Santa Clara</div>
+    <div class="co" data-city="Las Tunas" data-emoji="🌾"><span>🌾</span>Las Tunas</div>
+    <div class="co" data-city="Bayamo" data-emoji="🎵"><span>🎵</span>Bayamo</div>
+    <div class="co" data-city="Cienfuegos" data-emoji="⚓"><span>⚓</span>Cienfuegos</div>
+    <div class="co" data-city="Pinar del Río" data-emoji="🌱"><span>🌱</span>Pinar del Río</div>
+    <div class="co" data-city="Matanzas" data-emoji="🌊"><span>🌊</span>Matanzas</div>
+    <div class="co" data-city="Ciego de Ávila" data-emoji="🍍"><span>🍍</span>Ciego de Ávila</div>
+    <div class="co" data-city="Sancti Spíritus" data-emoji="🕌"><span>🕌</span>Sancti Spíritus</div>
+    <div class="co" data-city="Trinidad" data-emoji="🏺"><span>🏺</span>Trinidad</div>
+    <div class="co" data-city="Varadero" data-emoji="🏖️"><span>🏖️</span>Varadero</div>
   </div>
 </div>
 
-<div class="section">
-  <div class="section-header"><h2 class="section-title">Profesionales</h2><button class="section-link" data-click="showScreen('screen-explore')">Ver todos</button></div>
+<div class="pb"><div class="pt"><h3>¡Gratis para todos!</h3><p>Sin comisiones ni suscripciones</p></div><div style="font-size:40px;position:relative;z-index:1">🎉</div></div>
+
+<div class="sec">
+  <div class="sec-h"><h2 class="sec-t">Servicios</h2><button id="btn-see-all" class="sec-l">Ver todos</button></div>
+  <div class="cg">
+    <div class="cc" data-cat="limpieza"><div class="ci" style="background:#E0F7F4">🧹</div><span class="cn">Limpieza del hogar</span></div>
+    <div class="cc" data-cat="cuidado"><div class="ci" style="background:#FFF0E3">💊</div><span class="cn">Cuidado de personas</span></div>
+    <div class="cc" data-cat="belleza"><div class="ci" style="background:#F3E8FF">💅</div><span class="cn">Belleza y estética</span></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-h"><h2 class="sec-t">Profesionales</h2><button id="btn-see-pros" class="sec-l">Ver todos</button></div>
   <div id="home-pros"></div>
 </div>
 
 <div style="padding:20px">
-  <div style="background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:16px;padding:22px 20px;position:relative;overflow:hidden">
-    <div style="position:absolute;right:-16px;top:-16px;width:90px;height:90px;background:var(--teal);border-radius:50%;opacity:0.07"></div>
-    <p style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:6px">¿Eres profesional?</p>
+  <div style="background:linear-gradient(135deg,var(--n),var(--n2));border-radius:16px;padding:22px 20px;position:relative;overflow:hidden">
+    <div style="position:absolute;right:-16px;top:-16px;width:90px;height:90px;background:var(--t);border-radius:50%;opacity:.07"></div>
+    <p style="font-size:13px;color:rgba(255,255,255,.45);margin-bottom:6px">¿Eres profesional?</p>
     <h3 style="font-size:17px;font-weight:800;color:white;margin-bottom:6px">Publica tus servicios gratis</h3>
-    <p style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:18px;line-height:1.5">Únete y empieza a recibir clientes sin comisiones</p>
-    <button class="btn-teal" style="max-width:240px" data-click="selectRole('pro');showScreen('screen-reg-pro')">Registrarme como profesional</button>
+    <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:18px;line-height:1.5">Sin comisiones. Empieza hoy.</p>
+    <button id="btn-be-pro" class="bt" style="max-width:240px">Registrarme como profesional</button>
   </div>
 </div>
 <div style="height:10px"></div>
 ```
 
   </div>
-  <nav class="bottom-nav">
-    <button class="bnav-item active" data-click="showScreen('screen-home')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
-    <button class="bnav-item" data-click="showScreen('screen-explore')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
-    <!-- FAB placeholder -->
+  <nav class="bnav">
+    <button class="bni on" data-screen="scr-home"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+    <button class="bni" data-screen="scr-explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
     <div style="width:60px"></div>
-    <button class="bnav-item" data-click="showScreen('screen-bookings')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
-    <button class="bnav-item" data-click="showScreen('screen-profile')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+    <button class="bni" data-screen="scr-bookings"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
+    <button class="bni" data-screen="scr-profile"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
   </nav>
-  <!-- FAB -->
-  <button class="fab" data-click="openRequestModal()" title="Solicitar servicio">
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-  </button>
+  <button class="fab" id="fab-home"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
 </div>
 
-<!-- ==========================================
-     EXPLORE
-     ========================================== -->
+<!-- EXPLORE -->
 
-<div id="screen-explore" class="screen">
-  <nav class="navbar"><div class="logo" data-click="goHome()">Casa<span>Ya</span></div></nav>
+<div id="scr-explore" class="scr">
+  <div class="nav"><div class="logo" id="logo-exp">Casa<b>Ya</b></div></div>
   <div style="background:white;padding:14px 20px;border-bottom:1px solid #EDF2F7">
-    <div style="background:var(--gray-100);border-radius:12px;display:flex;align-items:center;padding:0 14px;gap:10px;height:46px">
+    <div style="background:var(--g1);border-radius:12px;display:flex;align-items:center;padding:0 14px;gap:10px;height:46px">
       <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="explore-input" placeholder="Buscar profesional o servicio..." style="flex:1;border:none;outline:none;font-family:inherit;font-size:14px;background:transparent" data-input="renderPros(currentFilter)"/>
+      <input type="text" id="exp-input" placeholder="Buscar..." style="flex:1;border:none;outline:none;font-family:inherit;font-size:14px;background:transparent">
     </div>
   </div>
-  <div class="filter-chips">
-    <button class="chip active" data-click="setFilter(this,'todos')">Todos</button>
-    <button class="chip" data-click="setFilter(this,'limpieza')">🧹 Limpieza</button>
-    <button class="chip" data-click="setFilter(this,'cuidado')">💊 Cuidado</button>
-    <button class="chip" data-click="setFilter(this,'belleza')">💅 Belleza</button>
+  <div class="fc" id="filter-chips">
+    <button class="ch on" data-filter="todos">Todos</button>
+    <button class="ch" data-filter="limpieza">🧹 Limpieza</button>
+    <button class="ch" data-filter="cuidado">💊 Cuidado</button>
+    <button class="ch" data-filter="belleza">💅 Belleza</button>
   </div>
-  <div class="page-content" style="padding-bottom:80px">
-    <div class="pros-list" id="pros-list"></div>
-  </div>
-  <nav class="bottom-nav">
-    <button class="bnav-item" data-click="showScreen('screen-home')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
-    <button class="bnav-item active"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
+  <div class="pg" style="padding-bottom:80px"><div class="pl" id="pros-list"></div></div>
+  <nav class="bnav">
+    <button class="bni" data-screen="scr-home"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+    <button class="bni on" data-screen="scr-explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
     <div style="width:60px"></div>
-    <button class="bnav-item" data-click="showScreen('screen-bookings')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
-    <button class="bnav-item" data-click="showScreen('screen-profile')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+    <button class="bni" data-screen="scr-bookings"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
+    <button class="bni" data-screen="scr-profile"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
   </nav>
-  <button class="fab" data-click="openRequestModal()"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button class="fab" id="fab-exp"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
 </div>
 
-<!-- ==========================================
-     DETAIL
-     ========================================== -->
+<!-- DETAIL -->
 
-<div id="screen-detail" class="screen">
-  <div class="page-content" id="detail-content" style="padding-bottom:90px"></div>
-  <div class="cta-bar">
-    <button style="background:none;border:1.5px solid #25D366;border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;color:#25D366" data-click="openWhatsApp()">
+<div id="scr-detail" class="scr">
+  <div class="pg" id="detail-body" style="padding-bottom:90px"></div>
+  <div class="cta">
+    <button id="btn-wa" style="background:none;border:1.5px solid #25D366;border-radius:14px;padding:13px 16px;display:flex;align-items:center;gap:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;color:#25D366">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       WhatsApp
     </button>
-    <button class="btn-teal" style="flex:1" data-click="showScreen('screen-booking')">Reservar →</button>
+    <button id="btn-book" class="bt" style="flex:1">Reservar →</button>
   </div>
 </div>
 
-<!-- ==========================================
-     BOOKING
-     ========================================== -->
+<!-- BOOKING -->
 
-<div id="screen-booking" class="screen">
+<div id="scr-booking" class="scr">
   <div style="background:white;padding:16px 20px;border-bottom:1px solid #EDF2F7;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10">
-    <button class="back-btn-d" data-click="showScreen('screen-detail')"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-    <h2 style="font-size:17px;font-weight:800;color:var(--navy)">Reservar servicio</h2>
+    <button id="btn-back-book" class="back-d"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    <h2 style="font-size:17px;font-weight:800;color:var(--n)">Reservar servicio</h2>
   </div>
-  <div class="page-content" style="padding-bottom:100px">
+  <div class="pg" style="padding-bottom:100px">
     <div style="padding:20px;display:flex;flex-direction:column;gap:18px">
-      <div class="form-group"><label class="form-label">¿Qué servicio necesitas?</label><div id="booking-svcs"></div></div>
-      <div class="form-group"><label class="form-label">Fecha</label><div class="date-grid" id="date-grid"></div></div>
-      <div class="form-group"><label class="form-label">Hora</label><div class="time-grid" id="time-grid"></div></div>
-      <div class="form-group"><label class="form-label">Tu dirección</label><input class="form-input" type="text" placeholder="Calle, número, municipio"/></div>
-      <div class="form-group"><label class="form-label">Notas (opcional)</label><textarea class="form-input" rows="3" placeholder="Ej: traer materiales, tengo mascota..."></textarea></div>
-      <div class="form-group"><label class="form-label">Resumen</label>
-        <div class="summary-card">
-          <div class="sum-row"><span class="sum-lbl">Profesional</span><span class="sum-val" id="sum-pro">—</span></div>
-          <div class="sum-row"><span class="sum-lbl">Servicio</span><span class="sum-val" id="sum-svc">—</span></div>
-          <div class="sum-row"><span class="sum-lbl">Fecha y hora</span><span class="sum-val" id="sum-date">—</span></div>
-          <div class="sum-row sum-total"><span class="sum-lbl">Total</span><span class="sum-val" id="sum-price">—</span></div>
+      <div class="fg"><label class="fl">Servicio</label><div id="book-svcs"></div></div>
+      <div class="fg"><label class="fl">Fecha</label><div class="dg" id="date-grid"></div></div>
+      <div class="fg"><label class="fl">Hora</label><div class="tg2" id="time-grid"></div></div>
+      <div class="fg"><label class="fl">Tu dirección</label><input class="fi" type="text" placeholder="Calle, número, municipio"></div>
+      <div class="fg"><label class="fl">Notas (opcional)</label><textarea class="fi" rows="3" placeholder="Ej: traer materiales, tengo mascota..."></textarea></div>
+      <div class="fg"><label class="fl">Resumen</label>
+        <div class="sumc">
+          <div class="sr"><span class="sl">Profesional</span><span class="sv" id="sum-pro">—</span></div>
+          <div class="sr"><span class="sl">Servicio</span><span class="sv" id="sum-svc">—</span></div>
+          <div class="sr"><span class="sl">Fecha y hora</span><span class="sv" id="sum-date">—</span></div>
+          <div class="sr tot"><span class="sl">Total</span><span class="sv" id="sum-price">—</span></div>
         </div>
       </div>
-      <div class="info-box"><div class="info-box-icon">💵</div><div class="info-box-text">El pago se realiza en efectivo al profesional el día del servicio. CasaYa no cobra comisiones.</div></div>
+      <div class="ib"><span>💵</span><span>Pago en efectivo al profesional el día del servicio. Sin comisiones.</span></div>
     </div>
   </div>
   <div style="position:fixed;bottom:0;left:0;right:0;background:white;padding:14px 20px 24px;border-top:1px solid #EDF2F7">
-    <button class="btn-teal" data-click="confirmBooking()">Confirmar reserva</button>
+    <button id="btn-confirm" class="bt">Confirmar reserva</button>
   </div>
 </div>
 
-<!-- ==========================================
-     BOOKINGS LIST
-     ========================================== -->
+<!-- BOOKINGS LIST -->
 
-<div id="screen-bookings" class="screen">
-  <nav class="navbar"><div class="logo" data-click="goHome()">Casa<span>Ya</span></div></nav>
-  <div class="page-content" style="padding-bottom:80px">
+<div id="scr-bookings" class="scr">
+  <div class="nav"><div class="logo" id="logo-bk">Casa<b>Ya</b></div></div>
+  <div class="pg" style="padding-bottom:80px">
     <div style="padding:20px">
-      <h2 style="font-size:18px;font-weight:800;color:var(--navy);margin-bottom:16px">Mis reservas</h2>
-      <div class="empty-state" style="background:white;border-radius:16px;box-shadow:var(--shadow)">
-        <div class="empty-icon">📅</div>
-        <div class="empty-title">Sin reservas aún</div>
-        <div class="empty-sub">Cuando reserves un servicio aparecerá aquí</div>
-        <button class="btn-teal" style="max-width:200px;margin-top:10px" data-click="showScreen('screen-explore')">Explorar servicios</button>
-      </div>
+      <h2 style="font-size:18px;font-weight:800;color:var(--n);margin-bottom:16px">Mis reservas</h2>
+      <div class="es"><div style="font-size:48px">📅</div><div style="font-size:16px;font-weight:800;color:var(--n)">Sin reservas aún</div><div style="font-size:13px;color:var(--g5);line-height:1.6;max-width:260px">Cuando reserves aparecerá aquí</div><button id="btn-explore-bk" class="bt" style="max-width:200px;margin-top:10px">Explorar servicios</button></div>
     </div>
   </div>
-  <nav class="bottom-nav">
-    <button class="bnav-item" data-click="showScreen('screen-home')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
-    <button class="bnav-item" data-click="showScreen('screen-explore')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
+  <nav class="bnav">
+    <button class="bni" data-screen="scr-home"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+    <button class="bni" data-screen="scr-explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
     <div style="width:60px"></div>
-    <button class="bnav-item active"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
-    <button class="bnav-item" data-click="showScreen('screen-profile')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+    <button class="bni on" data-screen="scr-bookings"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
+    <button class="bni" data-screen="scr-profile"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
   </nav>
 </div>
 
-<!-- ==========================================
-     PROFILE
-     ========================================== -->
+<!-- PROFILE -->
 
-<div id="screen-profile" class="screen">
-  <nav class="navbar"><div class="logo" data-click="goHome()">Casa<span>Ya</span></div></nav>
-  <div class="page-content" style="padding-bottom:80px">
-    <div class="profile-hero">
-      <div class="profile-avatar-wrap" style="background:var(--teal)">👤</div>
-      <div><div class="profile-name">Mi perfil</div><div class="profile-loc" id="profile-city-disp">📍 Ciudad no seleccionada</div></div>
+<div id="scr-profile" class="scr">
+  <div class="nav"><div class="logo" id="logo-pf">Casa<b>Ya</b></div></div>
+  <div class="pg" style="padding-bottom:80px">
+    <div class="ph">
+      <div class="pav">👤</div>
+      <div><div style="font-size:20px;font-weight:800;color:white">Mi perfil</div><div id="pf-city" style="font-size:13px;color:rgba(255,255,255,.5)">📍 Ciudad no seleccionada</div></div>
     </div>
-    <div class="profile-body">
-      <div class="profile-menu">
-        <div class="menu-item" data-click="showScreen('screen-bookings')"><div class="menu-icon" style="background:#E0F7F4">📋</div><div class="menu-text"><div class="menu-title">Mis reservas</div><div class="menu-sub">Historial de servicios</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#CBD5E0" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-        <div class="menu-item" data-click="selectRole('pro');showScreen('screen-reg-pro')"><div class="menu-icon" style="background:#F3E8FF">💼</div><div class="menu-text"><div class="menu-title">Ofrecer servicios</div><div class="menu-sub">Regístrate como profesional</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#CBD5E0" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+    <div style="padding:20px">
+      <div class="pmenu">
+        <div class="mi" id="pf-bookings"><div class="mic" style="background:#E0F7F4">📋</div><div><div class="mit">Mis reservas</div><div class="mis">Historial de servicios</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#CBD5E0" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="mi" id="pf-be-pro"><div class="mic" style="background:#F3E8FF">💼</div><div><div class="mit">Ofrecer servicios</div><div class="mis">Regístrate como profesional</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#CBD5E0" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
       </div>
-      <div class="profile-menu">
-        <div class="menu-item"><div class="menu-icon" style="background:#FFF0E3">⚙️</div><div class="menu-text"><div class="menu-title">Configuración</div><div class="menu-sub">Cuenta y notificaciones</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#CBD5E0" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-        <div class="menu-item"><div class="menu-icon" style="background:#E0F7F4">❓</div><div class="menu-text"><div class="menu-title">Ayuda y soporte</div><div class="menu-sub">¿Tienes algún problema?</div></div><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#CBD5E0" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      <div class="pmenu">
+        <div class="mi"><div class="mic" style="background:#FFF0E3">⚙️</div><div><div class="mit">Configuración</div><div class="mis">Cuenta y notificaciones</div></div></div>
+        <div class="mi"><div class="mic" style="background:#E0F7F4">❓</div><div><div class="mit">Ayuda y soporte</div></div></div>
       </div>
-      <div style="text-align:center;padding:10px 0"><span style="font-size:11px;color:var(--gray-300)">CasaYa v1.0 · Hecho con ❤️ para Cuba</span></div>
+      <div style="text-align:center;padding:16px 0"><span style="font-size:11px;color:var(--g3)">CasaYa v1.0 · Hecho con ❤️ para Cuba</span></div>
     </div>
   </div>
-  <nav class="bottom-nav">
-    <button class="bnav-item" data-click="showScreen('screen-home')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
-    <button class="bnav-item" data-click="showScreen('screen-explore')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
+  <nav class="bnav">
+    <button class="bni" data-screen="scr-home"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+    <button class="bni" data-screen="scr-explore"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Explorar</span></button>
     <div style="width:60px"></div>
-    <button class="bnav-item" data-click="showScreen('screen-bookings')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
-    <button class="bnav-item active"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+    <button class="bni" data-screen="scr-bookings"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Reservas</span></button>
+    <button class="bni on" data-screen="scr-profile"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
   </nav>
 </div>
 
-<!-- ==========================================
-     SUCCESS
-     ========================================== -->
+<!-- SUCCESS -->
 
-<div id="screen-success" class="screen" style="background:#F7F9FC">
-  <div class="page-content">
-    <div class="success-screen">
-      <div class="success-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
-      <h2 style="font-size:24px;font-weight:800;color:var(--navy);margin-bottom:10px">¡Reserva enviada!</h2>
-      <p style="font-size:14px;color:var(--gray-500);line-height:1.6;max-width:280px;margin:0 auto 28px">El profesional te contactará por WhatsApp para confirmar los detalles.</p>
-      <div class="success-card">
-        <div class="suc-row"><span class="k">Profesional</span><span class="v" id="suc-pro">—</span></div>
-        <div class="suc-row"><span class="k">Servicio</span><span class="v" id="suc-svc">—</span></div>
-        <div class="suc-row"><span class="k">Fecha</span><span class="v" id="suc-date">—</span></div>
-        <div class="suc-row"><span class="k">Pago</span><span class="v">Efectivo al profesional</span></div>
+<div id="scr-success" class="scr" style="background:#F7F9FC">
+  <div class="pg">
+    <div class="succ">
+      <div class="succ-ic"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2 style="font-size:24px;font-weight:800;color:var(--n);margin-bottom:10px">¡Reserva enviada!</h2>
+      <p style="font-size:14px;color:var(--g5);line-height:1.6;max-width:280px;margin:0 auto 28px">El profesional te contactará por WhatsApp para confirmar los detalles.</p>
+      <div class="sc">
+        <div class="scr2"><span class="k">Profesional</span><span class="v" id="suc-pro">—</span></div>
+        <div class="scr2"><span class="k">Servicio</span><span class="v" id="suc-svc">—</span></div>
+        <div class="scr2"><span class="k">Fecha</span><span class="v" id="suc-date">—</span></div>
+        <div class="scr2"><span class="k">Pago</span><span class="v">Efectivo al profesional</span></div>
       </div>
-      <button class="btn-teal" style="max-width:320px" data-click="goHome()">Volver al inicio</button>
+      <button id="btn-succ-home" class="bt" style="max-width:320px">Volver al inicio</button>
     </div>
   </div>
 </div>
 
-<!-- ==========================================
-     REQUEST SERVICE MODAL (FAB +)
-     ========================================== -->
+<!-- REQUEST MODAL -->
 
-<div class="modal-overlay" id="request-modal" data-click="closeRequestModal(event)">
-  <div class="modal-sheet" data-click="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div class="modal-title">¿Qué servicio necesitas?</div>
-    <div class="modal-body">
-      <p style="font-size:13px;color:var(--gray-500)">Selecciona el tipo de servicio y cuéntanos qué necesitas. Los profesionales disponibles te contactarán.</p>
-      <div id="req-step-1">
-        <div class="service-option" data-click="selectReqService('limpieza',this)">
-          <div class="service-option-icon" style="background:#E0F7F4">🧹</div>
-          <div><div class="service-option-name">Limpieza del hogar</div><div class="service-option-sub">Limpieza estándar, profunda, organización</div></div>
-        </div>
-        <div class="service-option" data-click="selectReqService('cuidado',this)">
-          <div class="service-option-icon" style="background:#FFF0E3">💊</div>
-          <div><div class="service-option-name">Cuidado de personas</div><div class="service-option-sub">Adultos mayores, acompañamiento, enfermería</div></div>
-        </div>
-        <div class="service-option" data-click="selectReqService('belleza',this)">
-          <div class="service-option-icon" style="background:#F3E8FF">💅</div>
-          <div><div class="service-option-name">Belleza y estética</div><div class="service-option-sub">Peluquería, manicura, pedicura a domicilio</div></div>
-        </div>
+<div class="mo" id="req-modal">
+  <div class="ms" id="req-sheet">
+    <div class="mh"></div>
+    <div class="mt">¿Qué servicio necesitas?</div>
+    <div class="mb">
+      <div id="req1">
+        <p style="font-size:13px;color:var(--g5);margin-bottom:12px">Los profesionales disponibles te contactarán por WhatsApp.</p>
+        <div class="so" data-rcat="limpieza"><div class="so-ic" style="background:#E0F7F4">🧹</div><div><div class="so-n">Limpieza del hogar</div><div class="so-s">Limpieza estándar, profunda, organización</div></div></div>
+        <div class="so" data-rcat="cuidado" style="margin-top:10px"><div class="so-ic" style="background:#FFF0E3">💊</div><div><div class="so-n">Cuidado de personas</div><div class="so-s">Adultos mayores, acompañamiento</div></div></div>
+        <div class="so" data-rcat="belleza" style="margin-top:10px"><div class="so-ic" style="background:#F3E8FF">💅</div><div><div class="so-n">Belleza y estética</div><div class="so-s">Peluquería, manicura, pedicura</div></div></div>
       </div>
-      <div id="req-step-2" style="display:none;flex-direction:column;gap:14px">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-          <button data-click="showReqStep(1)" style="background:none;border:none;cursor:pointer;color:var(--teal);font-size:13px;font-weight:700;font-family:inherit;padding:0">← Volver</button>
-          <span style="font-size:15px;font-weight:800;color:var(--navy)" id="req-category-title">Limpieza del hogar</span>
+      <div id="req2" style="display:none;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button id="btn-req-back" style="background:none;border:none;cursor:pointer;color:var(--t);font-size:13px;font-weight:700;font-family:inherit">← Volver</button>
+          <span id="req-cat-title" style="font-size:15px;font-weight:800;color:var(--n)"></span>
         </div>
-        <div class="form-group"><label class="form-label">¿Qué necesitas exactamente?</label><textarea class="form-input" rows="3" id="req-description" placeholder="Ej: Limpieza de apartamento de 2 habitaciones, necesito que traigan materiales..."></textarea></div>
-        <div class="form-group"><label class="form-label">Tu ciudad</label>
-          <select class="form-select" id="req-city"><option value="">— Selecciona —</option><option>La Habana</option><option>Santiago de Cuba</option><option>Holguín</option><option>Camagüey</option><option>Santa Clara</option><option>Cienfuegos</option><option>Matanzas</option><option>Pinar del Río</option><option>Guantánamo</option><option>Las Tunas</option><option>Bayamo</option><option>Ciego de Ávila</option><option>Sancti Spíritus</option><option>Trinidad</option><option>Varadero</option></select>
+        <div class="fg"><label class="fl">¿Qué necesitas exactamente?</label><textarea class="fi" id="req-desc" rows="3" placeholder="Describe tu necesidad..."></textarea></div>
+        <div class="fg"><label class="fl">Tu ciudad</label>
+          <select class="fs" id="req-city"><option value="">— Selecciona —</option><option>La Habana</option><option>Santiago de Cuba</option><option>Holguín</option><option>Camagüey</option><option>Santa Clara</option><option>Cienfuegos</option><option>Matanzas</option><option>Pinar del Río</option><option>Guantánamo</option><option>Las Tunas</option><option>Bayamo</option><option>Ciego de Ávila</option><option>Sancti Spíritus</option><option>Trinidad</option><option>Varadero</option></select>
         </div>
-        <div class="form-group"><label class="form-label">¿Cuándo lo necesitas?</label>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <select class="form-select" id="req-date-sel"></select>
-            <select class="form-select"><option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>2:00 PM</option><option>4:00 PM</option></select>
-          </div>
-        </div>
-        <div class="form-group"><label class="form-label">Tu WhatsApp</label><input class="form-input" type="tel" placeholder="+53 5 XXX XXXX" id="req-whatsapp"/></div>
-        <button class="btn-teal" data-click="submitRequest()">Publicar solicitud →</button>
-        <p style="font-size:11px;color:var(--gray-500);text-align:center">Los profesionales disponibles te contactarán por WhatsApp</p>
+        <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" type="tel" id="req-wa" placeholder="+53 5 XXX XXXX"></div>
+        <button id="btn-req-submit" class="bt">Publicar solicitud →</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ==========================================
-     RATING POPUP — triggers after 1 min
-     ========================================== -->
+<!-- RATING -->
 
-<div class="rating-overlay" id="rating-overlay">
-  <div class="rating-card">
-    <div class="rating-emoji">⭐</div>
-    <h3 class="rating-title">¿Qué tal CasaYa?</h3>
-    <p class="rating-sub">Llevas 1 minuto usando la app. Tu opinión nos ayuda a mejorar.</p>
-    <div class="stars-row">
-      <button class="star-btn" data-click="setStar(1)" id="star1">★</button>
-      <button class="star-btn" data-click="setStar(2)" id="star2">★</button>
-      <button class="star-btn" data-click="setStar(3)" id="star3">★</button>
-      <button class="star-btn" data-click="setStar(4)" id="star4">★</button>
-      <button class="star-btn" data-click="setStar(5)" id="star5">★</button>
+<div class="ro" id="rating-overlay">
+  <div class="rcard">
+    <div style="font-size:52px;margin-bottom:12px">⭐</div>
+    <h3 style="font-size:20px;font-weight:800;color:var(--n);margin-bottom:6px">¿Qué tal CasaYa?</h3>
+    <p style="font-size:13px;color:var(--g5);margin-bottom:4px;line-height:1.5">Llevas 1 minuto usando la app. Tu opinión nos ayuda a mejorar.</p>
+    <div class="stars">
+      <button class="star" data-star="1">★</button>
+      <button class="star" data-star="2">★</button>
+      <button class="star" data-star="3">★</button>
+      <button class="star" data-star="4">★</button>
+      <button class="star" data-star="5">★</button>
     </div>
-    <textarea class="rating-textarea" id="rating-comment" rows="3" placeholder="¿Qué podríamos mejorar? Cuéntanos..."></textarea>
-    <button class="btn-teal" data-click="submitRating()" id="rating-submit-btn" style="opacity:0.45;pointer-events:none">Enviar valoración</button>
-    <button class="btn-ghost" style="margin-top:8px;width:100%" data-click="closeRating()">Ahora no</button>
+    <textarea class="fi" id="rating-comment" rows="3" placeholder="¿Qué podríamos mejorar?" style="margin-bottom:14px"></textarea>
+    <button id="btn-rating-send" class="bt" style="opacity:.4;pointer-events:none">Enviar valoración</button>
+    <button id="btn-rating-skip" style="width:100%;margin-top:8px;background:none;border:none;cursor:pointer;font-family:inherit;font-size:14px;color:var(--g5);padding:8px">Ahora no</button>
   </div>
 </div>
 
 <script>
-// ===== STATE =====
-let selectedRole='';
-let currentStep=1;
-let currentPro=null;
-let selDate='',selTime='',currentFilter='todos',selectedCity='';
-let svcCount=1,uploads={};
-const professionals=[];
-let tutSlide=0,selectedStar=0,reqCategory='';
-let appStartTime=null;
+// =============================================
+// STATE
+// =============================================
+var professionals = [];
+var currentPro = null;
+var currentFilter = 'todos';
+var selectedCity = '';
+var selDate = '';
+var selTime = '';
+var selectedStar = 0;
+var regStep = 1;
+var svcCount = 1;
+var tutSlide = 0;
+var selectedRole = '';
+var appStarted = false;
 
-// ===== TUTORIAL =====
-function tutNext(){
-  const slides=document.querySelectorAll('.tut-slide');
-  slides[tutSlide].classList.remove('active');
-  slides[tutSlide].classList.add('exit');
-  setTimeout(()=>slides[tutSlide].classList.remove('exit'),350);
+// =============================================
+// TUTORIAL DATA
+// =============================================
+var tutData = [
+  {
+    title: 'Busca tu servicio a domicilio',
+    sub: 'Limpieza, cuidado de personas, belleza y más. Todo a domicilio en Cuba.',
+    ill: '<svg viewBox="0 0 240 240" style="width:100%;height:100%"><circle cx="120" cy="120" r="110" fill="#F0FFFE"/><rect x="70" y="125" width="100" height="75" rx="6" fill="#E0F7F4"/><polygon points="65,127 120,75 175,127" fill="#00BFA5"/><rect x="100" y="155" width="40" height="45" rx="4" fill="white"/><circle cx="55" cy="95" r="24" fill="white" style="filter:drop-shadow(0 2px 8px rgba(0,0,0,.08))"/><text x="55" y="103" text-anchor="middle" font-size="20">🧹</text><circle cx="190" cy="85" r="24" fill="white" style="filter:drop-shadow(0 2px 8px rgba(0,0,0,.08))"/><text x="190" y="93" text-anchor="middle" font-size="20">💅</text><circle cx="185" cy="150" r="24" fill="white" style="filter:drop-shadow(0 2px 8px rgba(0,0,0,.08))"/><text x="185" y="158" text-anchor="middle" font-size="20">💊</text></svg>'
+  },
+  {
+    title: 'Escoge a tu profesional ideal',
+    sub: 'Compara profesionales, sus precios y valoraciones. Elige el que más te guste.',
+    ill: '<svg viewBox="0 0 240 240" style="width:100%;height:100%"><circle cx="120" cy="120" r="110" fill="#F0FFFE"/><rect x="50" y="85" width="140" height="65" rx="14" fill="white" style="filter:drop-shadow(0 4px 16px rgba(0,0,0,.1))"/><circle cx="85" cy="117" r="18" fill="#E0F7F4"/><text x="85" y="124" text-anchor="middle" font-size="16">👩</text><text x="118" y="110" font-size="14" font-weight="700" fill="#1E2D4E">Laura</text><circle cx="143" cy="107" r="7" fill="#00BFA5"/><text x="143" y="111" text-anchor="middle" font-size="7" fill="white">✓</text><text x="115" y="127" font-size="18">⭐</text><text x="138" y="128" font-size="13" font-weight="700" fill="#1E2D4E">5.0</text><rect x="60" y="56" width="120" height="50" rx="14" fill="#F7F9FC" opacity=".8"/><circle cx="90" cy="81" r="14" fill="#E8F8F7" opacity=".8"/><rect x="60" y="158" width="120" height="50" rx="14" fill="#F7F9FC" opacity=".8"/><circle cx="90" cy="183" r="14" fill="#E8F8F7" opacity=".8"/></svg>'
+  },
+  {
+    title: 'Contáctalo en 3 toques',
+    sub: 'Reserva en la app o escríbele por WhatsApp. Pago en efectivo, sin comisiones.',
+    ill: '<svg viewBox="0 0 240 240" style="width:100%;height:100%"><circle cx="120" cy="120" r="110" fill="#F0FFFE"/><rect x="85" y="65" width="75" height="125" rx="14" fill="white" style="filter:drop-shadow(0 4px 20px rgba(0,0,0,.1))"/><rect x="95" y="80" width="55" height="7" rx="3" fill="#E0F7F4"/><rect x="95" y="95" width="38" height="5" rx="2" fill="#F0F4F8"/><rect x="95" y="108" width="46" height="5" rx="2" fill="#F0F4F8"/><rect x="95" y="156" width="55" height="20" rx="9" fill="#00BFA5"/><text x="122" y="170" text-anchor="middle" font-size="10" fill="white" font-weight="700">Reservar</text><rect x="32" y="115" width="60" height="34" rx="9" fill="#25D366"/><text x="62" y="136" text-anchor="middle" font-size="18">💬</text><polygon points="86,135 92,143 86,143" fill="#25D366"/></svg>'
+  },
+  {
+    title: 'Disfruta tu servicio',
+    sub: 'Recibe al profesional en tu domicilio. ¡Y califica tu experiencia!',
+    ill: '<svg viewBox="0 0 240 240" style="width:100%;height:100%"><circle cx="120" cy="120" r="110" fill="#F0FFFE"/><rect x="75" y="75" width="95" height="125" rx="4" fill="#D4A96A"/><rect x="80" y="80" width="85" height="115" rx="4" fill="#E8C882" opacity=".6"/><circle cx="103" cy="125" r="17" fill="#FDDBB4"/><rect x="89" y="142" width="27" height="42" rx="7" fill="#7C86C9"/><line x1="89" y1="157" x2="74" y2="144" stroke="#FDDBB4" stroke-width="5" stroke-linecap="round"/><circle cx="153" cy="123" r="17" fill="#FDDBB4"/><rect x="139" y="140" width="27" height="42" rx="7" fill="#00BFA5"/><line x1="166" y1="153" x2="181" y2="138" stroke="#FDDBB4" stroke-width="5" stroke-linecap="round"/><text x="88" y="68" font-size="14">⭐</text><text x="108" y="61" font-size="14">⭐</text><text x="128" y="66" font-size="14">⭐</text></svg>'
+  }
+];
+
+function renderTutSlide(i) {
+  var d = tutData[i];
+  document.getElementById('tut-ill').innerHTML = d.ill;
+  document.getElementById('tut-title').textContent = d.title;
+  document.getElementById('tut-sub').textContent = d.sub;
+  for (var j = 0; j < 4; j++) {
+    document.getElementById('d' + j).className = 'dot' + (j === i ? ' on' : '');
+  }
+  document.getElementById('btn-tut-next').textContent = i === 3 ? '¡Empezar!' : 'Siguiente';
+}
+renderTutSlide(0);
+
+// =============================================
+// SCREEN NAVIGATION
+// =============================================
+function goTo(id) {
+  document.querySelectorAll('.scr').forEach(function(s) { s.classList.remove('on'); });
+  var el = document.getElementById(id);
+  if (el) el.classList.add('on');
+  window.scrollTo(0, 0);
+  if (id === 'scr-explore') renderPros();
+  if (id === 'scr-home') renderHomePros();
+}
+
+// =============================================
+// TUTORIAL
+// =============================================
+document.getElementById('btn-tut-next').addEventListener('click', function() {
   tutSlide++;
-  if(tutSlide>=4){endTutorial();return;}
-  slides[tutSlide].classList.add('active');
-  document.querySelectorAll('.tut-dot').forEach((d,i)=>{
-    d.classList.toggle('active',i===tutSlide);
-  });
-  const btn=document.getElementById('tut-btn');
-  btn.textContent=tutSlide===3?'¡Empezar!':'Siguiente';
-}
-function endTutorial(){showScreen('screen-onboarding');}
+  if (tutSlide >= 4) { goTo('scr-onb'); return; }
+  renderTutSlide(tutSlide);
+});
+document.getElementById('btn-skip').addEventListener('click', function() {
+  goTo('scr-onb');
+});
 
-// ===== ONBOARDING =====
-function selectRole(role){
-  selectedRole=role;
-  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
-  const el=document.getElementById('role-'+role);
-  if(el)el.classList.add('selected');
-}
-function continueOnboarding(){
-  if(!selectedRole){alert('Por favor elige una opción.');return;}
-  if(selectedRole==='client')showScreen('screen-reg-client');
-  else{currentStep=1;updateStep();showScreen('screen-reg-pro');}
-}
+// =============================================
+// ONBOARDING
+// =============================================
+document.getElementById('rc-client').addEventListener('click', function() {
+  selectedRole = 'client';
+  document.getElementById('rc-client').classList.add('on');
+  document.getElementById('rc-pro').classList.remove('on');
+});
+document.getElementById('rc-pro').addEventListener('click', function() {
+  selectedRole = 'pro';
+  document.getElementById('rc-pro').classList.add('on');
+  document.getElementById('rc-client').classList.remove('on');
+});
+document.getElementById('btn-continue-onb').addEventListener('click', function() {
+  if (!selectedRole) { alert('Por favor elige una opción.'); return; }
+  if (selectedRole === 'client') { goTo('scr-regc'); }
+  else { regStep = 1; updateRegStep(); goTo('scr-regp'); }
+});
 
-// ===== START APP =====
-function startApp(){
-  showScreen('screen-home');
-  appStartTime=Date.now();
-  setTimeout(()=>document.getElementById('rating-overlay').classList.add('open'),60000);
-}
+// =============================================
+// REG CLIENT
+// =============================================
+document.getElementById('btn-back-regc').addEventListener('click', function() { goTo('scr-onb'); });
+document.getElementById('btn-start-client').addEventListener('click', function() { startApp(); });
 
-// ===== REG STEPS =====
-const stepTitles=['Datos personales','Servicios y precios','Verificación','¡Listo!'];
-const stepSubs=['Paso 1 de 4 · Info básica','Paso 2 de 4 · Tus servicios','Paso 3 de 4 · Verificación','Paso 4 de 4 · Resumen'];
-function updateStep(){
-  [1,2,3,4].forEach(i=>{
-    document.getElementById('step'+i).classList.toggle('active',i===currentStep);
-    document.getElementById('sd'+i).classList.toggle('done',i<=currentStep);
-  });
-  document.getElementById('reg-title').textContent=stepTitles[currentStep-1];
-  document.getElementById('reg-sub').textContent=stepSubs[currentStep-1];
-  const btn=document.getElementById('step-btn');
-  if(currentStep===4){btn.textContent='Ir a la app →';btn.onclick=startApp;}
-  else{btn.textContent='Continuar →';btn.onclick=nextStep;}
-}
-function nextStep(){if(currentStep<4){currentStep++;updateStep();}
-  if(currentStep===4){const any=uploads['front']||uploads['back']||uploads['selfie'];const b=document.getElementById('final-verify');if(any){b.className='vbadge pending';b.textContent='⏳ En revisión';}}}
-function prevStep(){if(currentStep>1){currentStep--;updateStep();}else showScreen('screen-onboarding');}
+// =============================================
+// REG PRO STEPS
+// =============================================
+var stepTitles = ['Datos personales', 'Servicios y precios', 'Verificación', '¡Listo!'];
+var stepSubs = ['Paso 1 de 4', 'Paso 2 de 4', 'Paso 3 de 4', 'Paso 4 de 4'];
 
-function addSvc(){
-  svcCount++;
-  const c=document.getElementById('svc-container');
-  const d=document.createElement('div');d.className='service-entry';
-  d.innerHTML=`<div class="svc-header"><span class="svc-num">Servicio ${svcCount}</span><button class="svc-remove" onclick="this.closest('.service-entry').remove()">×</button></div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <input class="form-input" type="text" placeholder="Nombre del servicio"/>
-      <div class="price-row">
-        <div class="form-group"><label class="form-label">Precio (CUP)</label><input class="form-input" type="number" placeholder="Ej: 500" min="0"/></div>
-        <div class="form-group"><label class="form-label">Duración</label><select class="form-select"><option>1h</option><option>2h</option><option>3h</option><option>4h</option><option>6h</option><option>8h</option><option>Todo el día</option></select></div>
-      </div>
-      <textarea class="form-input" rows="2" placeholder="¿Qué incluye?"></textarea>
-
-```
-</div>`;
-```
-
-c.appendChild(d);
+function updateRegStep() {
+  for (var i = 1; i <= 4; i++) {
+    document.getElementById('rp' + i).className = 'rstep' + (i === regStep ? ' on' : '');
+    document.getElementById('sd' + i).className = 'sd' + (i <= regStep ? ' on' : '');
+  }
+  document.getElementById('rp-title').textContent = stepTitles[regStep - 1];
+  document.getElementById('rp-sub').textContent = stepSubs[regStep - 1];
+  document.getElementById('btn-rp-next').textContent = regStep === 4 ? 'Ir a la app →' : 'Continuar →';
 }
 
-function markUpload(boxId,statusId){
-document.getElementById(boxId).classList.add(‘uploaded’);
-document.getElementById(statusId).style.display=‘block’;
-uploads[boxId.replace(‘pu-’,’’)]=true;
-}
+document.getElementById('btn-back-regp').addEventListener('click', function() {
+  if (regStep > 1) { regStep--; updateRegStep(); }
+  else goTo('scr-onb');
+});
+
+document.getElementById('btn-rp-next').addEventListener('click', function() {
+  if (regStep === 4) { startApp(); return; }
+  regStep++;
+  updateRegStep();
+  if (regStep === 4) {
+    var anyPhoto = document.getElementById('pu-front').classList.contains('done') ||
+                   document.getElementById('pu-back').classList.contains('done') ||
+                   document.getElementById('pu-self').classList.contains('done');
+    if (anyPhoto) {
+      var b = document.getElementById('final-verify');
+      b.className = 'vb pend';
+      b.textContent = '⏳ En revisión';
+    }
+  }
+});
 
 // Avatar upload
-function triggerAvatarUpload(){document.getElementById(‘avatar-input’).click();}
-function previewAvatar(input){
-if(!input.files||!input.files[0])return;
-const reader=new FileReader();
-reader.onload=e=>{
-const img=document.getElementById(‘avatar-preview-img’);
-img.src=e.target.result;img.style.display=‘block’;
-document.getElementById(‘avatar-placeholder’).style.display=‘none’;
-document.getElementById(‘avatar-upload-box’).classList.add(‘uploaded’);
-};
-reader.readAsDataURL(input.files[0]);
-}
-
-// ===== CITY =====
-function toggleCity(){document.getElementById(‘city-dd’).classList.toggle(‘open’);}
-function pickCity(city,emoji){
-selectedCity=city;
-document.getElementById(‘city-label’).textContent=emoji+’ ’+city;
-document.getElementById(‘city-dd’).classList.remove(‘open’);
-document.getElementById(‘profile-city-disp’).textContent=’📍 ’+city;
-renderHomePros();
-}
-// city click handled by delegation
-
-// ===== NAVIGATION =====
-function showScreen(id){
-document.querySelectorAll(’.screen’).forEach(s=>s.classList.remove(‘active’));
-document.getElementById(id).classList.add(‘active’);
-window.scrollTo(0,0);
-if(id===‘screen-explore’)renderPros(currentFilter);
-if(id===‘screen-home’)renderHomePros();
-}
-function goHome(){showScreen(‘screen-home’);}
-function filterAndExplore(cat){
-currentFilter=cat;showScreen(‘screen-explore’);
-document.querySelectorAll(’.chip’).forEach(c=>c.classList.toggle(‘active’,c.textContent.toLowerCase().includes(cat.substring(0,4))||(cat===‘todos’&&c.textContent===‘Todos’)));
-}
-
-// ===== EXPLORE =====
-function setFilter(el,cat){
-document.querySelectorAll(’.chip’).forEach(c=>c.classList.remove(‘active’));el.classList.add(‘active’);currentFilter=cat;renderPros(cat);
-}
-const catEmoji={limpieza:‘🧹’,cuidado:‘👩‍⚕️’,belleza:‘💅’};
-const catBg={limpieza:’#E0F7F4’,cuidado:’#FFF0E3’,belleza:’#F3E8FF’};
-
-function proCardHTML(p){
-const idx=professionals.indexOf(p);
-const avatarContent=p.avatar?`<img src="${p.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:14px"/>`:`<span style="font-size:30px">${catEmoji[p.category]||'👤'}</span>`;
-return`<div class="pro-list-card" onclick="showDetail(${idx})">
-<div class="pro-avatar-box" style="background:${catBg[p.category]||'#F0F4F8'}">${avatarContent}</div>
-<div style="flex:1">
-<div class="pro-list-name">${p.name}</div>
-<div class="pro-list-role">${p.role}</div>
-<div class="pro-meta"><span class="tag">📍 ${p.city}</span>${p.verified?’<span class="tag teal">✓ Verificado</span>’:’’}<span class="tag">Efectivo</span></div>
-</div>
-
-  </div>`;
-}
-function emptyHTML(withBtn){
-  return`<div class="empty-state" style="background:white;border-radius:16px;box-shadow:var(--shadow)">
-    <div class="empty-icon">🔍</div><div class="empty-title">Sin profesionales aún</div>
-    <div class="empty-sub">Todavía no hay profesionales registrados. ¡Sé el primero!</div>
-    ${withBtn?`<button class="btn-teal" style="max-width:240px;margin-top:10px" onclick="selectRole('pro');showScreen('screen-reg-pro')">Registrarme como profesional</button>`:''}
-  </div>`;
-}
-function renderPros(filter){
-  const list=document.getElementById('pros-list');if(!list)return;
-  const q=(document.getElementById('explore-input')?.value||'').toLowerCase();
-  let f=professionals.filter(p=>(filter==='todos'||p.category===filter)&&(!q||p.name.toLowerCase().includes(q)||p.role.toLowerCase().includes(q)));
-  list.innerHTML=f.length?f.map(proCardHTML).join(''):emptyHTML(true);
-}
-function renderHomePros(){
-  const el=document.getElementById('home-pros');if(!el)return;
-  const f=selectedCity?professionals.filter(p=>p.city===selectedCity):professionals;
-  el.innerHTML=`<div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">`+(f.length?f.slice(0,4).map(proCardHTML).join(''):emptyHTML(false))+`</div>`;
-}
-
-// ===== DETAIL =====
-function showDetail(idx){
-currentPro=professionals[idx];const p=currentPro;
-const avatarBig=p.avatar?`<img src="${p.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:17px"/>`:`<span style="font-size:40px">${catEmoji[p.category]||'👤'}</span>`;
-document.getElementById(‘detail-content’).innerHTML=` <div class="detail-hero"> <button class="back-btn-w" style="margin-bottom:16px" onclick="showScreen('screen-explore')"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button> <div style="display:flex;gap:16px;align-items:flex-start"> <div class="detail-avatar-big" style="background:${catBg[p.category]||'#E0F7F4'}">${avatarBig}</div> <div style="flex:1"> <div class="detail-name">${p.name}</div> <div class="detail-role">${p.role}</div> <div style="margin-top:8px">${p.verified?'<span class="vbadge ok">✓ Verificado</span>':'<span class="vbadge no">Sin verificar</span>'}</div> <div style="display:flex;gap:20px;margin-top:12px"> <div><div class="stat-val">—</div><div class="stat-lbl">Valoración</div></div> <div><div class="stat-val">0</div><div class="stat-lbl">Reseñas</div></div> </div> </div> </div> </div> <div class="detail-body"> <div><div class="dsec-title">📍 Zona de trabajo</div><p style="font-size:14px;color:var(--gray-500)">${p.city}${p.zones?' · '+p.zones:''}</p></div> ${p.bio?`<div><div class="dsec-title">Sobre mí</div><p style="font-size:14px;color:var(--gray-500);line-height:1.6">${p.bio}</p></div>`:''} ${p.services&&p.services.length?`<div><div class="dsec-title">Servicios y precios</div><div class="svc-grid">${p.services.map(s=>`<div class="svc-item"><div class="svc-item-name">${s.name}</div><div class="svc-item-price">${s.price} CUP</div><div class="svc-item-dur">${s.duration}</div></div>`).join(’’)}</div></div>`:''} <div class="info-box"><div class="info-box-icon">💬</div><div class="info-box-text">Contáctalo por WhatsApp para coordinar antes de reservar.</div></div> </div>`;
-// booking fill
-document.getElementById(‘sum-pro’).textContent=p.name;
-document.getElementById(‘suc-pro’).textContent=p.name;
-if(p.services&&p.services.length){
-document.getElementById(‘sum-svc’).textContent=p.services[0].name;
-document.getElementById(‘sum-price’).textContent=p.services[0].price+’ CUP’;
-document.getElementById(‘suc-svc’).textContent=p.services[0].name;
-document.getElementById(‘booking-svcs’).innerHTML=p.services.map((s,i)=>` <div class="svc-check ${i===0?'checked':''}" onclick="pickSvc(this,'${s.name}','${s.price}')"> <div class="svc-check-box">${i===0?'<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>':''}</div> <span class="svc-check-name">${s.name}<br><small style="color:var(--gray-300);font-weight:400">${s.duration}</small></span> <span class="svc-check-price">${s.price} CUP</span> </div>`).join(’’);
-}else{document.getElementById(‘booking-svcs’).innerHTML=’<p style="font-size:13px;color:var(--gray-500)">Sin servicios registrados aún.</p>’;}
-// dates
-const days=[‘Dom’,‘Lun’,‘Mar’,‘Mié’,‘Jue’,‘Vie’,‘Sáb’],months=[‘Ene’,‘Feb’,‘Mar’,‘Abr’,‘May’,‘Jun’,‘Jul’,‘Ago’,‘Sep’,‘Oct’,‘Nov’,‘Dic’];
-const today=new Date();
-document.getElementById(‘date-grid’).innerHTML=Array.from({length:7},(_,i)=>{
-const d=new Date(today);d.setDate(today.getDate()+i+1);
-const lbl=`${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
-return`<button class="date-btn ${i===0?'selected':''}" onclick="pickDate(this,'${lbl}')"><div class="day">${days[d.getDay()]}</div><div class="num">${d.getDate()}</div></button>`;
-}).join(’’);
-const fd=new Date(today);fd.setDate(today.getDate()+1);
-selDate=`${days[fd.getDay()]} ${fd.getDate()} ${months[fd.getMonth()]}`;
-const times=[‘8:00 AM’,‘9:00 AM’,‘10:00 AM’,‘11:00 AM’,‘2:00 PM’,‘4:00 PM’];
-document.getElementById(‘time-grid’).innerHTML=times.map((t,i)=>`<button class="time-btn ${i===0?'selected':''}" onclick="pickTime(this,'${t}')">${t}</button>`).join(’’);
-selTime=times[0];updateSumDate();
-showScreen(‘screen-detail’);
-}
-function openWhatsApp(){
-if(!currentPro?.whatsapp)return;
-const num=currentPro.whatsapp.replace(/\D/g,’’);
-const msg=encodeURIComponent(`Hola ${currentPro.name}, vi tu perfil en CasaYa. Me interesa tu servicio de ${currentPro.role}. ¿Tienes disponibilidad?`);
-window.open(`https://wa.me/${num}?text=${msg}`,’_blank’);
-}
-function pickSvc(el,name,price){
-document.querySelectorAll(’.svc-check’).forEach(s=>{s.classList.remove(‘checked’);s.querySelector(’.svc-check-box’).innerHTML=’’;});
-el.classList.add(‘checked’);el.querySelector(’.svc-check-box’).innerHTML=’<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>’;
-document.getElementById(‘sum-svc’).textContent=name;document.getElementById(‘sum-price’).textContent=price+’ CUP’;document.getElementById(‘suc-svc’).textContent=name;
-}
-function pickDate(el,val){document.querySelectorAll(’.date-btn’).forEach(b=>b.classList.remove(‘selected’));el.classList.add(‘selected’);selDate=val;updateSumDate();}
-function pickTime(el,val){document.querySelectorAll(’.time-btn’).forEach(b=>b.classList.remove(‘selected’));el.classList.add(‘selected’);selTime=val;updateSumDate();}
-function updateSumDate(){const t=selDate&&selTime?`${selDate} · ${selTime}`:’—’;[‘sum-date’,‘suc-date’].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=t;});}
-function confirmBooking(){showScreen(‘screen-success’);}
-
-// ===== REQUEST MODAL =====
-function openRequestModal(){
-// populate date options
-const sel=document.getElementById(‘req-date-sel’);
-const days=[‘Dom’,‘Lun’,‘Mar’,‘Mié’,‘Jue’,‘Vie’,‘Sáb’],months=[‘Ene’,‘Feb’,‘Mar’,‘Abr’,‘May’,‘Jun’,‘Jul’,‘Ago’,‘Sep’,‘Oct’,‘Nov’,‘Dic’];
-const today=new Date();sel.innerHTML=’’;
-for(let i=1;i<=7;i++){const d=new Date(today);d.setDate(today.getDate()+i);sel.innerHTML+=`<option>${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}</option>`;}
-showReqStep(1);
-document.getElementById(‘request-modal’).classList.add(‘open’);
-}
-function closeRequestModal(e){if(e.target===document.getElementById(‘request-modal’))document.getElementById(‘request-modal’).classList.remove(‘open’);}
-function showReqStep(n){
-document.getElementById(‘req-step-1’).style.display=n===1?‘flex’:‘none’;
-document.getElementById(‘req-step-1’).style.flexDirection=‘column’;
-document.getElementById(‘req-step-1’).style.gap=‘10px’;
-document.getElementById(‘req-step-2’).style.display=n===2?‘flex’:‘none’;
-document.getElementById(‘req-step-2’).style.flexDirection=‘column’;
-}
-const catNames={limpieza:‘Limpieza del hogar’,cuidado:‘Cuidado de personas’,belleza:‘Belleza y estética’};
-function selectReqService(cat,el){
-reqCategory=cat;
-document.getElementById(‘req-category-title’).textContent=catNames[cat]||cat;
-showReqStep(2);
-}
-function submitRequest(){
-const desc=document.getElementById(‘req-description’).value;
-const city=document.getElementById(‘req-city’).value;
-const wa=document.getElementById(‘req-whatsapp’).value;
-if(!city||!wa){alert(‘Por favor completa la ciudad y tu WhatsApp.’);return;}
-document.getElementById(‘request-modal’).classList.remove(‘open’);
-alert(`✅ Solicitud publicada. Los profesionales de ${city} disponibles para ${catNames[reqCategory]} te contactarán por WhatsApp.`);
-}
-
-// ===== RATING =====
-function setStar(n){
-selectedStar=n;
-for(let i=1;i<=5;i++)document.getElementById(‘star’+i).classList.toggle(‘active’,i<=n);
-document.getElementById(‘rating-submit-btn’).style.opacity=‘1’;
-document.getElementById(‘rating-submit-btn’).style.pointerEvents=‘auto’;
-}
-function submitRating(){
-if(!selectedStar)return;
-document.getElementById(‘rating-overlay’).classList.remove(‘open’);
-const stars=‘⭐’.repeat(selectedStar);
-setTimeout(()=>alert(`${stars} ¡Gracias por tu valoración! Tu opinión nos ayuda a mejorar CasaYa.`),300);
-}
-function closeRating(){document.getElementById(‘rating-overlay’).classList.remove(‘open’);}
-
-// ===== INIT =====
-renderHomePros();renderPros(‘todos’);
-// init req-step display
-document.getElementById(‘req-step-1’).style.display=‘flex’;
-document.getElementById(‘req-step-1’).style.flexDirection=‘column’;
-document.getElementById(‘req-step-1’).style.gap=‘10px’;
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Pure dispatch map - no eval, no new Function - works under any CSP
-  function dispatch(key, event, el) {
-    var screens = {
-      'screen-home':1,'screen-explore':1,'screen-booking':1,
-      'screen-bookings':1,'screen-detail':1,'screen-profile':1,
-      'screen-onboarding':1,'screen-reg-pro':1,'screen-reg-client':1
-    };
-    // showScreen pattern
-    var m = key.match(/^showScreen\('([^']+)'\)$/);
-    if (m) { showScreen(m[1]); return; }
-    // filterAndExplore
-    m = key.match(/^filterAndExplore\('([^']+)'\)$/);
-    if (m) { filterAndExplore(m[1]); return; }
-    // selectRole
-    m = key.match(/^selectRole\('([^']+)'\)$/);
-    if (m) { selectRole(m[1]); return; }
-    // selectRole + showScreen
-    if (key === "selectRole('pro');showScreen('screen-reg-pro')") { selectRole('pro'); showScreen('screen-reg-pro'); return; }
-    // pickCity - extract name and emoji
-    m = key.match(/^pickCity\('([^']+)','([^']+)'\)$/);
-    if (m) { pickCity(m[1], m[2]); return; }
-    // setFilter
-    m = key.match(/^setFilter\(this,'([^']+)'\)$/);
-    if (m) { setFilter(el, m[1]); return; }
-    // selectReqService
-    m = key.match(/^selectReqService\('([^']+)',this\)$/);
-    if (m) { selectReqService(m[1], el); return; }
-    // markUpload
-    m = key.match(/^markUpload\('([^']+)','([^']+)'\)$/);
-    if (m) { markUpload(m[1], m[2]); return; }
-    // setStar
-    m = key.match(/^setStar\((\d+)\)$/);
-    if (m) { setStar(parseInt(m[1])); return; }
-    // showReqStep
-    m = key.match(/^showReqStep\((\d+)\)$/);
-    if (m) { showReqStep(parseInt(m[1])); return; }
-    // simple functions
-    var simple = {
-      'tutNext()': tutNext,
-      'endTutorial()': endTutorial,
-      'continueOnboarding()': continueOnboarding,
-      'startApp()': startApp,
-      'prevStep()': prevStep,
-      'nextStep()': nextStep,
-      'addSvc()': addSvc,
-      'triggerAvatarUpload()': triggerAvatarUpload,
-      'goHome()': goHome,
-      'toggleCity()': toggleCity,
-      'openRequestModal()': openRequestModal,
-      'openWhatsApp()': openWhatsApp,
-      'confirmBooking()': confirmBooking,
-      'submitRequest()': submitRequest,
-      'submitRating()': submitRating,
-      'closeRating()': closeRating
-    };
-    if (simple[key]) { simple[key](); return; }
-    if (key === 'event.stopPropagation()') { event.stopPropagation(); return; }
-    if (key === 'closeRequestModal(event)') {
-      if (event.target === document.getElementById('request-modal'))
-        document.getElementById('request-modal').classList.remove('open');
-      return;
-    }
-    console.warn('CasaYa: unmapped action:', key);
-  }
-
-  document.addEventListener('click', function(event) {
-    // Close city dropdown on outside click
-    if (!event.target.closest('#city-bar-wrap') && !event.target.closest('#city-dd')) {
-      var cityDD = document.getElementById('city-dd');
-      if (cityDD) cityDD.classList.remove('open');
-    }
-    var el = event.target.closest('[data-click]');
-    if (!el) return;
-    var key = el.getAttribute('data-click');
-    if (key) dispatch(key, event, el);
-  });
-
-  document.addEventListener('input', function(event) {
-    if (event.target.getAttribute('data-input') === 'renderPros(currentFilter)') {
-      renderPros(currentFilter);
-    }
-  });
+document.getElementById('av-box').addEventListener('click', function() {
+  document.getElementById('av-input').click();
 });
+document.getElementById('av-input').addEventListener('change', function() {
+  var file = this.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('av-img');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    document.getElementById('av-ph').style.display = 'none';
+    document.getElementById('av-box').classList.add('done');
+  };
+  reader.readAsDataURL(file);
+});
+
+// Photo uploads
+function setupPhotoUpload(boxId, inputId, statusId) {
+  document.getElementById(boxId).addEventListener('click', function() {
+    document.getElementById(inputId).click();
+  });
+  document.getElementById(inputId).addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      document.getElementById(boxId).classList.add('done');
+      document.getElementById(statusId).style.display = 'block';
+    }
+  });
+}
+setupPhotoUpload('pu-front', 'puf-input', 'puf-st');
+setupPhotoUpload('pu-back', 'pub-input', 'pub-st');
+setupPhotoUpload('pu-self', 'pus-input', 'pus-st');
+
+// Add service
+document.getElementById('btn-add-svc').addEventListener('click', function() {
+  svcCount++;
+  var c = document.getElementById('svc-container');
+  var d = document.createElement('div');
+  d.className = 'se';
+  d.innerHTML = '<div class="se-h"><span class="se-n">Servicio ' + svcCount + '</span><button class="se-rm" type="button">×</button></div>' +
+    '<div style="display:flex;flex-direction:column;gap:10px">' +
+    '<input class="fi" type="text" placeholder="Nombre del servicio">' +
+    '<div class="pr"><div class="fg"><label class="fl">Precio (CUP)</label><input class="fi" type="number" placeholder="500" min="0"></div>' +
+    '<div class="fg"><label class="fl">Duración</label><select class="fs"><option>1h</option><option>2h</option><option>3h</option><option>4h</option><option>6h</option><option>8h</option><option>Todo el día</option></select></div></div>' +
+    '<textarea class="fi" rows="2" placeholder="¿Qué incluye?"></textarea></div>';
+
+d.querySelector(’.se-rm’).addEventListener(‘click’, function() { d.remove(); });
+c.appendChild(d);
+});
+
+// =============================================
+// START APP
+// =============================================
+function startApp() {
+appStarted = true;
+goTo(‘scr-home’);
+setTimeout(function() {
+document.getElementById(‘rating-overlay’).classList.add(‘on’);
+}, 60000);
+}
+
+// =============================================
+// CITY SELECTOR
+// =============================================
+document.getElementById(‘btn-city’).addEventListener(‘click’, function(e) {
+e.stopPropagation();
+document.getElementById(‘city-dd’).classList.toggle(‘on’);
+});
+document.addEventListener(‘click’, function(e) {
+var dd = document.getElementById(‘city-dd’);
+if (dd && !e.target.closest(’#city-bar’)) dd.classList.remove(‘on’);
+});
+document.querySelectorAll(’.co’).forEach(function(el) {
+el.addEventListener(‘click’, function() {
+selectedCity = el.getAttribute(‘data-city’);
+var emoji = el.getAttribute(‘data-emoji’);
+document.getElementById(‘city-label’).textContent = emoji + ’ ’ + selectedCity;
+document.getElementById(‘city-dd’).classList.remove(‘on’);
+document.getElementById(‘pf-city’).textContent = ’📍 ’ + selectedCity;
+renderHomePros();
+});
+});
+
+// =============================================
+// HOME BUTTONS
+// =============================================
+document.getElementById(‘logo-home’).addEventListener(‘click’, function() { goTo(‘scr-home’); });
+document.getElementById(‘logo-exp’).addEventListener(‘click’, function() { goTo(‘scr-home’); });
+document.getElementById(‘logo-bk’).addEventListener(‘click’, function() { goTo(‘scr-home’); });
+document.getElementById(‘logo-pf’).addEventListener(‘click’, function() { goTo(‘scr-home’); });
+document.getElementById(‘btn-home-search’).addEventListener(‘click’, function() { goTo(‘scr-explore’); });
+document.getElementById(‘btn-home-profile’).addEventListener(‘click’, function() { goTo(‘scr-profile’); });
+document.getElementById(‘btn-hero-search’).addEventListener(‘click’, function() { goTo(‘scr-explore’); });
+document.getElementById(‘home-search-inp’).addEventListener(‘click’, function() { goTo(‘scr-explore’); });
+document.getElementById(‘btn-see-all’).addEventListener(‘click’, function() { goTo(‘scr-explore’); });
+document.getElementById(‘btn-see-pros’).addEventListener(‘click’, function() { goTo(‘scr-explore’); });
+document.getElementById(‘btn-be-pro’).addEventListener(‘click’, function() { selectedRole = ‘pro’; regStep = 1; updateRegStep(); goTo(‘scr-regp’); });
+
+// Category cards
+document.querySelectorAll(’.cc’).forEach(function(el) {
+el.addEventListener(‘click’, function() {
+currentFilter = el.getAttribute(‘data-cat’);
+goTo(‘scr-explore’);
+document.querySelectorAll(’.ch’).forEach(function(c) {
+c.classList.toggle(‘on’, c.getAttribute(‘data-filter’) === currentFilter);
+});
+});
+});
+
+// FABs
+document.getElementById(‘fab-home’).addEventListener(‘click’, function() { openReqModal(); });
+document.getElementById(‘fab-exp’).addEventListener(‘click’, function() { openReqModal(); });
+
+// Bottom nav
+document.querySelectorAll(’.bni[data-screen]’).forEach(function(btn) {
+btn.addEventListener(‘click’, function() { goTo(btn.getAttribute(‘data-screen’)); });
+});
+
+// =============================================
+// EXPLORE / FILTER
+// =============================================
+document.querySelectorAll(’.ch’).forEach(function(btn) {
+btn.addEventListener(‘click’, function() {
+currentFilter = btn.getAttribute(‘data-filter’);
+document.querySelectorAll(’.ch’).forEach(function(c) { c.classList.remove(‘on’); });
+btn.classList.add(‘on’);
+renderPros();
+});
+});
+document.getElementById(‘exp-input’).addEventListener(‘input’, function() { renderPros(); });
+
+var catEmoji = { limpieza: ‘🧹’, cuidado: ‘👩‍⚕️’, belleza: ‘💅’ };
+var catBg = { limpieza: ‘#E0F7F4’, cuidado: ‘#FFF0E3’, belleza: ‘#F3E8FF’ };
+
+function proCardHTML(p, idx) {
+var avi = p.avatar
+? ‘<img src="' + p.avatar + '" style="width:100%;height:100%;object-fit:cover;border-radius:14px">’
+: ‘<span style="font-size:28px">’ + (catEmoji[p.category] || ‘👤’) + ‘</span>’;
+return ‘<div class="pc" data-idx="' + idx + '">’ +
+‘<div class="pa" style="background:' + (catBg[p.category] || '#F0F4F8') + '">’ + avi + ‘</div>’ +
+‘<div style="flex:1"><div class="pn">’ + p.name + ‘</div><div class="pr2">’ + p.role + ‘</div>’ +
+’<div class="pm"><span class="tg">📍 ’ + p.city + ‘</span>’ +
+(p.verified ? ‘<span class="tg ok">✓ Verificado</span>’ : ‘’) +
+‘<span class="tg">Efectivo</span></div></div></div>’;
+}
+
+function emptyState(withBtn) {
+return ‘<div class="es"><div style="font-size:48px">🔍</div>’ +
+‘<div style="font-size:16px;font-weight:800;color:var(--n)">Sin profesionales aún</div>’ +
+‘<div style="font-size:13px;color:var(--g5);line-height:1.6;max-width:260px">¡Sé el primero en registrarte!</div>’ +
+(withBtn ? ‘<button id="btn-reg-pro-empty" class="bt" style="max-width:240px;margin-top:10px">Registrarme como profesional</button>’ : ‘’) +
+‘</div>’;
+}
+
+function renderPros() {
+var list = document.getElementById(‘pros-list’);
+if (!list) return;
+var q = (document.getElementById(‘exp-input’).value || ‘’).toLowerCase();
+var filtered = professionals.filter(function(p) {
+var mc = currentFilter === ‘todos’ || p.category === currentFilter;
+var mq = !q || p.name.toLowerCase().includes(q) || p.role.toLowerCase().includes(q);
+return mc && mq;
+});
+if (!filtered.length) { list.innerHTML = emptyState(true); bindEmptyBtn(); return; }
+list.innerHTML = filtered.map(function(p) {
+return proCardHTML(p, professionals.indexOf(p));
+}).join(’’);
+list.querySelectorAll(’.pc’).forEach(function(card) {
+card.addEventListener(‘click’, function() { showDetail(parseInt(card.getAttribute(‘data-idx’))); });
+});
+}
+
+function bindEmptyBtn() {
+var b = document.getElementById(‘btn-reg-pro-empty’);
+if (b) b.addEventListener(‘click’, function() { selectedRole = ‘pro’; regStep = 1; updateRegStep(); goTo(‘scr-regp’); });
+}
+
+function renderHomePros() {
+var el = document.getElementById(‘home-pros’);
+if (!el) return;
+var filtered = selectedCity ? professionals.filter(function(p) { return p.city === selectedCity; }) : professionals;
+if (!filtered.length) { el.innerHTML = ‘<div style="margin-top:14px">’ + emptyState(false) + ‘</div>’; return; }
+el.innerHTML = ‘<div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">’ +
+filtered.slice(0, 4).map(function(p) { return proCardHTML(p, professionals.indexOf(p)); }).join(’’) + ‘</div>’;
+el.querySelectorAll(’.pc’).forEach(function(card) {
+card.addEventListener(‘click’, function() { showDetail(parseInt(card.getAttribute(‘data-idx’))); });
+});
+}
+
+// =============================================
+// DETAIL
+// =============================================
+function showDetail(idx) {
+currentPro = professionals[idx];
+var p = currentPro;
+var avi = p.avatar
+? ‘<img src="' + p.avatar + '">’
+: ‘<span style="font-size:40px">’ + (catEmoji[p.category] || ‘👤’) + ‘</span>’;
+var svcsHTML = ‘’;
+if (p.services && p.services.length) {
+svcsHTML = ‘<div><div class="dst">Servicios y precios</div><div class="sg">’ +
+p.services.map(function(s) {
+return ‘<div class="si"><div class="sin">’ + s.name + ‘</div><div class="sip">’ + s.price + ’ CUP</div><div class="sid">’ + s.duration + ‘</div></div>’;
+}).join(’’) + ‘</div></div>’;
+}
+document.getElementById(‘detail-body’).innerHTML =
+‘<div class="dh">’ +
+‘<button id="btn-back-detail" class="back-w" style="margin-bottom:16px"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>’ +
+‘<div style="display:flex;gap:16px;align-items:flex-start">’ +
+‘<div class="da" style="background:' + (catBg[p.category] || '#E0F7F4') + '">’ + avi + ‘</div>’ +
+‘<div style="flex:1"><div class="dn">’ + p.name + ‘</div><div class="dr">’ + p.role + ‘</div>’ +
+‘<div style="margin-top:8px">’ + (p.verified ? ‘<span class="vb ok">✓ Verificado</span>’ : ‘<span class="vb no">Sin verificar</span>’) + ‘</div>’ +
+‘<div style="display:flex;gap:20px;margin-top:12px">’ +
+‘<div><div style="font-size:16px;font-weight:800;color:white">—</div><div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:2px">Valoración</div></div>’ +
+‘<div><div style="font-size:16px;font-weight:800;color:white">0</div><div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:2px">Reseñas</div></div>’ +
+‘</div></div></div></div>’ +
+‘<div class="db">’ +
+‘<div><div class="dst">📍 Zona de trabajo</div><p style="font-size:14px;color:var(--g5)">’ + p.city + (p.zones ? ’ · ’ + p.zones : ‘’) + ‘</p></div>’ +
+(p.bio ? ‘<div><div class="dst">Sobre mí</div><p style="font-size:14px;color:var(--g5);line-height:1.6">’ + p.bio + ‘</p></div>’ : ‘’) +
+svcsHTML +
+‘<div class="ib"><span>💬</span><span>Escríbele por WhatsApp para coordinar antes de reservar.</span></div>’ +
+‘</div>’;
+
+document.getElementById(‘btn-back-detail’).addEventListener(‘click’, function() { goTo(‘scr-explore’); });
+
+// Fill booking
+document.getElementById(‘sum-pro’).textContent = p.name;
+document.getElementById(‘suc-pro’).textContent = p.name;
+buildBooking(p);
+goTo(‘scr-detail’);
+}
+
+function buildBooking(p) {
+// Services
+var bsvcs = document.getElementById(‘book-svcs’);
+if (p.services && p.services.length) {
+document.getElementById(‘sum-svc’).textContent = p.services[0].name;
+document.getElementById(‘sum-price’).textContent = p.services[0].price + ’ CUP’;
+document.getElementById(‘suc-svc’).textContent = p.services[0].name;
+bsvcs.innerHTML = p.services.map(function(s, i) {
+return ‘<div class="ck' + (i === 0 ? ' on' : '') + '" data-sname="' + s.name + '" data-sprice="' + s.price + '">’ +
+‘<div class="ckb"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>’ +
+‘<span class="ckn">’ + s.name + ‘<br><small style="color:var(--g3);font-weight:400">’ + s.duration + ‘</small></span>’ +
+‘<span class="ckp">’ + s.price + ’ CUP</span></div>’;
+}).join(’’);
+bsvcs.querySelectorAll(’.ck’).forEach(function(ck) {
+ck.addEventListener(‘click’, function() {
+bsvcs.querySelectorAll(’.ck’).forEach(function(c) { c.classList.remove(‘on’); });
+ck.classList.add(‘on’);
+document.getElementById(‘sum-svc’).textContent = ck.getAttribute(‘data-sname’);
+document.getElementById(‘sum-price’).textContent = ck.getAttribute(‘data-sprice’) + ’ CUP’;
+document.getElementById(‘suc-svc’).textContent = ck.getAttribute(‘data-sname’);
+});
+});
+} else {
+bsvcs.innerHTML = ‘<p style="font-size:13px;color:var(--g5)">Sin servicios registrados.</p>’;
+}
+
+// Dates
+var days = [‘Dom’,‘Lun’,‘Mar’,‘Mié’,‘Jue’,‘Vie’,‘Sáb’];
+var months = [‘Ene’,‘Feb’,‘Mar’,‘Abr’,‘May’,‘Jun’,‘Jul’,‘Ago’,‘Sep’,‘Oct’,‘Nov’,‘Dic’];
+var today = new Date();
+var dgEl = document.getElementById(‘date-grid’);
+dgEl.innerHTML = ‘’;
+for (var i = 0; i < 7; i++) {
+var d = new Date(today); d.setDate(today.getDate() + i + 1);
+var lbl = days[d.getDay()] + ’ ’ + d.getDate() + ’ ’ + months[d.getMonth()];
+var btn = document.createElement(‘button’);
+btn.className = ‘db2’ + (i === 0 ? ’ on’ : ‘’);
+btn.innerHTML = ‘<div class="dy">’ + days[d.getDay()] + ‘</div><div class="nm">’ + d.getDate() + ‘</div>’;
+btn.setAttribute(‘data-lbl’, lbl);
+btn.addEventListener(‘click’, (function(b, l) {
+return function() {
+dgEl.querySelectorAll(’.db2’).forEach(function(x) { x.classList.remove(‘on’); });
+b.classList.add(‘on’);
+selDate = l;
+updateSumDate();
+};
+})(btn, lbl));
+dgEl.appendChild(btn);
+}
+var fd = new Date(today); fd.setDate(today.getDate() + 1);
+selDate = days[fd.getDay()] + ’ ’ + fd.getDate() + ’ ’ + months[fd.getMonth()];
+
+// Times
+var times = [‘8:00 AM’,‘9:00 AM’,‘10:00 AM’,‘11:00 AM’,‘2:00 PM’,‘4:00 PM’];
+var tgEl = document.getElementById(‘time-grid’);
+tgEl.innerHTML = ‘’;
+times.forEach(function(t, i) {
+var btn = document.createElement(‘button’);
+btn.className = ‘tb’ + (i === 0 ? ’ on’ : ‘’);
+btn.textContent = t;
+btn.addEventListener(‘click’, (function(b, tv) {
+return function() {
+tgEl.querySelectorAll(’.tb’).forEach(function(x) { x.classList.remove(‘on’); });
+b.classList.add(‘on’);
+selTime = tv;
+updateSumDate();
+};
+})(btn, t));
+tgEl.appendChild(btn);
+});
+selTime = times[0];
+updateSumDate();
+}
+
+function updateSumDate() {
+var t = selDate && selTime ? selDate + ’ · ’ + selTime : ‘—’;
+var e1 = document.getElementById(‘sum-date’);
+var e2 = document.getElementById(‘suc-date’);
+if (e1) e1.textContent = t;
+if (e2) e2.textContent = t;
+}
+
+// WA + Booking
+document.getElementById(‘btn-wa’).addEventListener(‘click’, function() {
+if (!currentPro || !currentPro.whatsapp) return;
+var num = currentPro.whatsapp.replace(/\D/g, ‘’);
+var msg = encodeURIComponent(’Hola ’ + currentPro.name + ’, vi tu perfil en CasaYa. Me interesa tu servicio de ’ + currentPro.role + ‘. ¿Tienes disponibilidad?’);
+window.open(‘https://wa.me/’ + num + ‘?text=’ + msg, ‘_blank’);
+});
+document.getElementById(‘btn-book’).addEventListener(‘click’, function() { goTo(‘scr-booking’); });
+document.getElementById(‘btn-back-book’).addEventListener(‘click’, function() { goTo(‘scr-detail’); });
+document.getElementById(‘btn-confirm’).addEventListener(‘click’, function() { goTo(‘scr-success’); });
+document.getElementById(‘btn-succ-home’).addEventListener(‘click’, function() { goTo(‘scr-home’); });
+document.getElementById(‘btn-explore-bk’).addEventListener(‘click’, function() { goTo(‘scr-explore’); });
+
+// Profile
+document.getElementById(‘pf-bookings’).addEventListener(‘click’, function() { goTo(‘scr-bookings’); });
+document.getElementById(‘pf-be-pro’).addEventListener(‘click’, function() { selectedRole = ‘pro’; regStep = 1; updateRegStep(); goTo(‘scr-regp’); });
+
+// =============================================
+// REQUEST MODAL
+// =============================================
+function openReqModal() {
+document.getElementById(‘req1’).style.display = ‘block’;
+document.getElementById(‘req2’).style.display = ‘none’;
+document.getElementById(‘req-modal’).classList.add(‘on’);
+}
+document.getElementById(‘req-modal’).addEventListener(‘click’, function(e) {
+if (e.target === this) this.classList.remove(‘on’);
+});
+document.getElementById(‘req-sheet’).addEventListener(‘click’, function(e) { e.stopPropagation(); });
+document.querySelectorAll(’.so’).forEach(function(el) {
+el.addEventListener(‘click’, function() {
+var cat = el.getAttribute(‘data-rcat’);
+var names = { limpieza: ‘Limpieza del hogar’, cuidado: ‘Cuidado de personas’, belleza: ‘Belleza y estética’ };
+document.getElementById(‘req-cat-title’).textContent = names[cat] || cat;
+document.getElementById(‘req1’).style.display = ‘none’;
+document.getElementById(‘req2’).style.display = ‘flex’;
+document.getElementById(‘req2’).style.flexDirection = ‘column’;
+});
+});
+document.getElementById(‘btn-req-back’).addEventListener(‘click’, function() {
+document.getElementById(‘req1’).style.display = ‘block’;
+document.getElementById(‘req2’).style.display = ‘none’;
+});
+document.getElementById(‘btn-req-submit’).addEventListener(‘click’, function() {
+var city = document.getElementById(‘req-city’).value;
+var wa = document.getElementById(‘req-wa’).value;
+if (!city || !wa) { alert(‘Por favor completa la ciudad y tu WhatsApp.’); return; }
+document.getElementById(‘req-modal’).classList.remove(‘on’);
+alert(‘✅ Solicitud publicada. Los profesionales te contactarán por WhatsApp.’);
+});
+
+// =============================================
+// RATING
+// =============================================
+document.querySelectorAll(’.star’).forEach(function(btn) {
+btn.addEventListener(‘click’, function() {
+selectedStar = parseInt(btn.getAttribute(‘data-star’));
+document.querySelectorAll(’.star’).forEach(function(s) {
+s.classList.toggle(‘on’, parseInt(s.getAttribute(‘data-star’)) <= selectedStar);
+});
+var sb = document.getElementById(‘btn-rating-send’);
+sb.style.opacity = ‘1’;
+sb.style.pointerEvents = ‘auto’;
+});
+});
+document.getElementById(‘btn-rating-send’).addEventListener(‘click’, function() {
+if (!selectedStar) return;
+document.getElementById(‘rating-overlay’).classList.remove(‘on’);
+setTimeout(function() { alert(‘⭐’.repeat(selectedStar) + ’ ¡Gracias! Tu opinión nos ayuda a mejorar CasaYa.’); }, 300);
+});
+document.getElementById(‘btn-rating-skip’).addEventListener(‘click’, function() {
+document.getElementById(‘rating-overlay’).classList.remove(‘on’);
+});
+
+// =============================================
+// INIT
+// =============================================
+renderHomePros();
+renderPros();
 </script>
 
 </body>
