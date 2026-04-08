@@ -1169,34 +1169,89 @@ document.getElementById(‘req-step-1’).style.gap=‘10px’;
 </script>
 
 <script>
-// ===== EVENT DELEGATION — Vercel/CSP safe =====
-document.addEventListener('click', function(event) {
-  // Close city dropdown on outside click
-  if (!event.target.closest('#city-bar-wrap') && !event.target.closest('#city-dd')) {
-    const cityDD = document.getElementById('city-dd');
-    if (cityDD) cityDD.classList.remove('open');
+document.addEventListener('DOMContentLoaded', function() {
+  // Pure dispatch map - no eval, no new Function - works under any CSP
+  function dispatch(key, event, el) {
+    var screens = {
+      'screen-home':1,'screen-explore':1,'screen-booking':1,
+      'screen-bookings':1,'screen-detail':1,'screen-profile':1,
+      'screen-onboarding':1,'screen-reg-pro':1,'screen-reg-client':1
+    };
+    // showScreen pattern
+    var m = key.match(/^showScreen\('([^']+)'\)$/);
+    if (m) { showScreen(m[1]); return; }
+    // filterAndExplore
+    m = key.match(/^filterAndExplore\('([^']+)'\)$/);
+    if (m) { filterAndExplore(m[1]); return; }
+    // selectRole
+    m = key.match(/^selectRole\('([^']+)'\)$/);
+    if (m) { selectRole(m[1]); return; }
+    // selectRole + showScreen
+    if (key === "selectRole('pro');showScreen('screen-reg-pro')") { selectRole('pro'); showScreen('screen-reg-pro'); return; }
+    // pickCity - extract name and emoji
+    m = key.match(/^pickCity\('([^']+)','([^']+)'\)$/);
+    if (m) { pickCity(m[1], m[2]); return; }
+    // setFilter
+    m = key.match(/^setFilter\(this,'([^']+)'\)$/);
+    if (m) { setFilter(el, m[1]); return; }
+    // selectReqService
+    m = key.match(/^selectReqService\('([^']+)',this\)$/);
+    if (m) { selectReqService(m[1], el); return; }
+    // markUpload
+    m = key.match(/^markUpload\('([^']+)','([^']+)'\)$/);
+    if (m) { markUpload(m[1], m[2]); return; }
+    // setStar
+    m = key.match(/^setStar\((\d+)\)$/);
+    if (m) { setStar(parseInt(m[1])); return; }
+    // showReqStep
+    m = key.match(/^showReqStep\((\d+)\)$/);
+    if (m) { showReqStep(parseInt(m[1])); return; }
+    // simple functions
+    var simple = {
+      'tutNext()': tutNext,
+      'endTutorial()': endTutorial,
+      'continueOnboarding()': continueOnboarding,
+      'startApp()': startApp,
+      'prevStep()': prevStep,
+      'nextStep()': nextStep,
+      'addSvc()': addSvc,
+      'triggerAvatarUpload()': triggerAvatarUpload,
+      'goHome()': goHome,
+      'toggleCity()': toggleCity,
+      'openRequestModal()': openRequestModal,
+      'openWhatsApp()': openWhatsApp,
+      'confirmBooking()': confirmBooking,
+      'submitRequest()': submitRequest,
+      'submitRating()': submitRating,
+      'closeRating()': closeRating
+    };
+    if (simple[key]) { simple[key](); return; }
+    if (key === 'event.stopPropagation()') { event.stopPropagation(); return; }
+    if (key === 'closeRequestModal(event)') {
+      if (event.target === document.getElementById('request-modal'))
+        document.getElementById('request-modal').classList.remove('open');
+      return;
+    }
+    console.warn('CasaYa: unmapped action:', key);
   }
 
-  const el = event.target.closest('[data-click]');
-  if (!el) return;
-  const action = el.getAttribute('data-click');
-  if (!action) return;
-  if (action === 'event.stopPropagation()') { event.stopPropagation(); return; }
+  document.addEventListener('click', function(event) {
+    // Close city dropdown on outside click
+    if (!event.target.closest('#city-bar-wrap') && !event.target.closest('#city-dd')) {
+      var cityDD = document.getElementById('city-dd');
+      if (cityDD) cityDD.classList.remove('open');
+    }
+    var el = event.target.closest('[data-click]');
+    if (!el) return;
+    var key = el.getAttribute('data-click');
+    if (key) dispatch(key, event, el);
+  });
 
-  // Execute action with correct 'this' binding
-  try {
-    (new Function('event', action)).call(el, event);
-  } catch(err) {
-    console.warn('CasaYa action error:', action, err);
-  }
-});
-
-document.addEventListener('input', function(event) {
-  const el = event.target;
-  const action = el.getAttribute('data-input');
-  if (action) {
-    try { (new Function(action)).call(el); } catch(e) {}
-  }
+  document.addEventListener('input', function(event) {
+    if (event.target.getAttribute('data-input') === 'renderPros(currentFilter)') {
+      renderPros(currentFilter);
+    }
+  });
 });
 </script>
 
