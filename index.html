@@ -849,6 +849,13 @@ function App(){
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
+<script>
+const supabaseUrl = "https://olfbnucblnzijfuytjgs.supabase.co";
+const supabaseKey = "sb_publishable_SOOuRm-nwNBJlX-7GkH4Cg_cEAZ6wIx";
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+</script>
 </body>
 </html>
