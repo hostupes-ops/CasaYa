@@ -7,13 +7,15 @@
 <title>CasaYa — Servicios a domicilio en Cuba</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 
-<!-- React + Babel via CDN — no build step needed -->
+<!-- React + Babel + Supabase via CDN -->
 
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -275,16 +277,96 @@ function RegClient({onBack,onDone}){
 // ── REG PRO ──────────────────────────────────────────────────
 function RegPro({onBack,onDone}){
   const [step,setStep]=useState(1);
-  const [svcN,setSvcN]=useState(1);
+  
   const [avSrc,setAvSrc]=useState(null);
   const [ups,setUps]=useState({});
   const avRef=useRef();
+  const [formData,setFormData]=useState({nombre:"",whatsapp:"",ciudad:"",zonas:"",bio:"",categoria:"",experiencia:"",disponibilidad:[],direccion:""});
+  const [formSvcs,setFormSvcs]=useState([{name:"",price:"",duration:"1h",desc:""}]);
+  const [verifFiles,setVerifFiles]=useState({front:null,back:null,self:null});
+  const [saving,setSaving]=useState(false);
   const T2=["Datos personales","Servicios y precios","Verificación","¡Listo!"];
   const T3=["Paso 1 de 4","Paso 2 de 4","Paso 3 de 4","Paso 4 de 4"];
-  const goNext=()=>{if(step===4){onDone();return;}setStep(s=>s+1);};
+  const goNext=async()=>{
+    if(step===4){
+      setSaving(true);
+      // Save to Supabase
+      try {
+        const sb = window.supabase.createClient(
+          "https://olfbnucblnzijfuytjgs.supabase.co",
+          "sb_publishable_SOOuRm-nwNBJlX-7GkH4Cg_cEAZ6wIx"
+        );
+        // Upload avatar if exists
+        let avatarUrl = null;
+        if(avSrc && avRef.current?.files[0]) {
+          const file = avRef.current.files[0];
+          const fileName = `avatar_${Date.now()}_${file.name}`;
+          const { data: uploadData } = await sb.storage
+            .from("avatares")
+            .upload(fileName, file, { upsert: true });
+          if(uploadData) {
+            const { data: urlData } = sb.storage.from("avatares").getPublicUrl(fileName);
+            avatarUrl = urlData?.publicUrl;
+          }
+        }
+        // Upload verification photos
+        const uploadVerif = async (file, prefix) => {
+          if(!file) return null;
+          const name = `${prefix}_${Date.now()}`;
+          const { data } = await sb.storage.from("verificacion").upload(name, file, { upsert: true });
+          if(data) {
+            const { data: u } = sb.storage.from("verificacion").getPublicUrl(name);
+            return u?.publicUrl;
+          }
+          return null;
+        };
+        const frontUrl  = verifFiles.front  ? await uploadVerif(verifFiles.front,  "front")  : null;
+        const backUrl   = verifFiles.back   ? await uploadVerif(verifFiles.back,   "back")   : null;
+        const selfieUrl = verifFiles.self   ? await uploadVerif(verifFiles.self,   "selfie") : null;
+
+        // Parse services from state
+        const svcsData = formSvcs.map(s => ({
+          name: s.name, price: s.price, duration: s.duration, description: s.desc
+        })).filter(s => s.name);
+
+        const catLabels = {limpieza:"Limpieza del hogar", cuidado:"Cuidado de personas mayores", belleza:"Belleza y estética"};
+
+        const payload = {
+          nombre:          formData.nombre,
+          whatsapp:        formData.whatsapp,
+          ciudad:          formData.ciudad,
+          zonas:           formData.zonas,
+          bio:             formData.bio,
+          categoria:       formData.categoria,
+          categoria_label: catLabels[formData.categoria] || formData.categoria,
+          experiencia:     formData.experiencia,
+          disponibilidad:  formData.disponibilidad,
+          servicios:       svcsData,
+          avatar_url:      avatarUrl,
+          verificado:      false,
+          activo:          true,
+          foto_carnet_frente:  frontUrl,
+          foto_carnet_reverso: backUrl,
+          foto_selfie_carnet:  selfieUrl,
+          direccion_domicilio: formData.direccion,
+        };
+        const { error } = await sb.from("profesionales").insert([payload]);
+        if(error) { console.error("Error guardando:", error); }
+      } catch(e) { console.error("Error Supabase:", e); }
+      setSaving(false);
+      onDone();
+      return;
+    }
+    setStep(s=>s+1);
+  };
   const goBack=()=>step>1?setStep(s=>s-1):onBack();
   const handleAv=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>setAvSrc(ev.target.result);r.readAsDataURL(f);};
-  const handleUp=k=>e=>{if(e.target.files&&e.target.files[0])setUps(u=>({...u,[k]:true}));};
+  const handleUp=k=>e=>{
+    if(e.target.files&&e.target.files[0]){
+      setUps(u=>({...u,[k]:true}));
+      setVerifFiles(v=>({...v,[k]:e.target.files[0]}));
+    }
+  };
   const anyPh=ups.front||ups.back||ups.self;
 
   return <div style={screen}>
@@ -307,19 +389,19 @@ function RegPro({onBack,onDone}){
             </div>
             <span style={{fontSize:12,color:G5}}>Foto de perfil (recomendado)</span>
           </div>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Nombre completo</label><input style={inp} type="text" placeholder="Ej: María González"/></div>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>WhatsApp ✱</label><input style={inp} type="tel" placeholder="+53 5 XXX XXXX"/><span style={{fontSize:11,color:G5}}>✱ Los clientes te contactarán por aquí</span></div>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Ciudad</label><select style={sel}><option value="">— Selecciona —</option><CityOptions/></select></div>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Zonas donde trabajas</label><input style={inp} type="text" placeholder="Ej: Playa, Vedado, Miramar"/></div>
-          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Sobre mí</label><textarea style={{...inp,resize:"none"}} rows={4} placeholder="Tu experiencia y por qué elegirte..."/></div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Nombre completo</label><input style={inp} type="text" placeholder="Ej: María González" value={formData.nombre} onChange={e=>setFormData(f=>({...f,nombre:e.target.value}))}/></div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>WhatsApp ✱</label><input style={inp} type="tel" placeholder="+53 5 XXX XXXX" value={formData.whatsapp} onChange={e=>setFormData(f=>({...f,whatsapp:e.target.value}))}/><span style={{fontSize:11,color:G5}}>✱ Los clientes te contactarán por aquí</span></div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Ciudad</label><select style={sel} value={formData.ciudad} onChange={e=>setFormData(f=>({...f,ciudad:e.target.value}))}><option value="">— Selecciona —</option><CityOptions/></select></div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Zonas donde trabajas</label><input style={inp} type="text" placeholder="Ej: Playa, Vedado, Miramar" value={formData.zonas} onChange={e=>setFormData(f=>({...f,zonas:e.target.value}))}/></div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Sobre mí</label><textarea style={{...inp,resize:"none"}} rows={4} placeholder="Tu experiencia y por qué elegirte..." value={formData.bio} onChange={e=>setFormData(f=>({...f,bio:e.target.value}))}/></div>
         </>}
 
         {step===2&&<>
           <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Categoría</label>
-            <select style={sel}><option value="">— Selecciona —</option><option value="limpieza">🧹 Limpieza del hogar</option><option value="cuidado">💊 Cuidado de personas mayores</option><option value="belleza">💅 Belleza y estética</option></select>
+            <select style={sel} value={formData.categoria} onChange={e=>setFormData(f=>({...f,categoria:e.target.value}))}><option value="">— Selecciona —</option><option value="limpieza">🧹 Limpieza del hogar</option><option value="cuidado">💊 Cuidado de personas mayores</option><option value="belleza">💅 Belleza y estética</option></select>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Experiencia</label>
-            <select style={sel}><option>Menos de 1 año</option><option>1–3 años</option><option>3–5 años</option><option>Más de 5 años</option><option>Más de 10 años</option></select>
+            <select style={sel} value={formData.experiencia} onChange={e=>setFormData(f=>({...f,experiencia:e.target.value}))}><option>Menos de 1 año</option><option>1–3 años</option><option>3–5 años</option><option>Más de 5 años</option><option>Más de 10 años</option></select>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             <label style={{fontSize:13,fontWeight:700,color:G5}}>Disponibilidad</label>
@@ -329,20 +411,27 @@ function RegPro({onBack,onDone}){
           </div>
           <div>
             <label style={{fontSize:13,fontWeight:700,color:G5,display:"block",marginBottom:12}}>Mis servicios y precios</label>
-            {Array.from({length:svcN},(_,i)=>(
+            {formSvcs.map((sv,i)=>(
               <div key={i} style={{background:"white",border:"1.5px solid #E2E8F0",borderRadius:14,padding:16,marginBottom:10}}>
-                <div style={{fontSize:13,fontWeight:700,color:G5,marginBottom:12}}>Servicio {i+1}</div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <span style={{fontSize:13,fontWeight:700,color:G5}}>Servicio {i+1}</span>
+                  {i>0&&<button onClick={()=>setFormSvcs(s=>s.filter((_,j)=>j!==i))} style={{background:"none",border:"none",cursor:"pointer",color:G3,fontSize:20,lineHeight:1}}>×</button>}
+                </div>
                 <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                  <input style={inp} type="text" placeholder="Nombre del servicio"/>
+                  <input style={inp} type="text" placeholder="Nombre del servicio" value={sv.name} onChange={e=>{const s=[...formSvcs];s[i]={...s[i],name:e.target.value};setFormSvcs(s);}}/>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                    <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Precio (CUP)</label><input style={inp} type="number" placeholder="500" min="0"/></div>
-                    <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Duración</label><select style={sel}><option>1h</option><option>2h</option><option>3h</option><option>4h</option><option>6h</option><option>8h</option><option>Todo el día</option></select></div>
+                    <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Precio (CUP)</label><input style={inp} type="number" placeholder="500" min="0" value={sv.price} onChange={e=>{const s=[...formSvcs];s[i]={...s[i],price:e.target.value};setFormSvcs(s);}}/></div>
+                    <div style={{display:"flex",flexDirection:"column",gap:8}}><label style={{fontSize:13,fontWeight:700,color:G5}}>Duración</label>
+                      <select style={sel} value={sv.duration} onChange={e=>{const s=[...formSvcs];s[i]={...s[i],duration:e.target.value};setFormSvcs(s);}}>
+                        <option>1h</option><option>2h</option><option>3h</option><option>4h</option><option>6h</option><option>8h</option><option>Todo el día</option>
+                      </select>
+                    </div>
                   </div>
-                  <textarea style={{...inp,resize:"none"}} rows={2} placeholder="¿Qué incluye?"/>
+                  <textarea style={{...inp,resize:"none"}} rows={2} placeholder="¿Qué incluye?" value={sv.desc} onChange={e=>{const s=[...formSvcs];s[i]={...s[i],desc:e.target.value};setFormSvcs(s);}}/>
                 </div>
               </div>
             ))}
-            <button style={{background:TEAL_L,border:`1.5px dashed ${TEAL}`,borderRadius:12,padding:13,fontSize:14,fontWeight:700,color:TEAL,cursor:"pointer",width:"100%"}} onClick={()=>setSvcN(n=>n+1)}>+ Agregar otro servicio</button>
+            <button style={{background:TEAL_L,border:`1.5px dashed ${TEAL}`,borderRadius:12,padding:13,fontSize:14,fontWeight:700,color:TEAL,cursor:"pointer",width:"100%"}} onClick={()=>setFormSvcs(s=>[...s,{name:"",price:"",duration:"1h",desc:""}])}>+ Agregar otro servicio</button>
           </div>
         </>}
 
@@ -364,7 +453,7 @@ function RegPro({onBack,onDone}){
           ))}
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             <label style={{fontSize:13,fontWeight:700,color:G5}}>🏠 Dirección de tu domicilio</label>
-            <input style={inp} type="text" placeholder="Calle, número, municipio, ciudad"/>
+            <input style={inp} type="text" placeholder="Calle, número, municipio, ciudad" value={formData.direccion} onChange={e=>setFormData(f=>({...f,direccion:e.target.value}))}/>
             <span style={{fontSize:11,color:G5}}>Solo para verificación. Información privada.</span>
           </div>
         </>}
@@ -391,13 +480,15 @@ function RegPro({onBack,onDone}){
       </div>
     </div>
     <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,background:"white",padding:"14px 20px 28px",borderTop:"1px solid #EDF2F7"}}>
-      <button style={btn()} onClick={goNext}>{step===4?"Ir a la app →":"Continuar →"}</button>
+      <button style={btn({opacity:saving?0.6:1,pointerEvents:saving?"none":"auto"})} onClick={goNext}>
+        {saving?"Guardando..." : step===4?"Ir a la app →":"Continuar →"}
+      </button>
     </div>
   </div>;
 }
 
 // ── HOME ─────────────────────────────────────────────────────
-function Home({pros,onNav,onCat,city,onCity,onFab}){
+function Home({pros,prosLoading,onNav,onCat,city,onCity,onFab}){
   const [open,setOpen]=useState(false);
   const cityLabel=city?city:"Elige tu ciudad";
   const visible=city?pros.filter(p=>p.city===city):pros;
@@ -469,7 +560,12 @@ function Home({pros,onNav,onCat,city,onCity,onFab}){
           <button onClick={()=>onNav("explore")} style={{fontSize:13,color:TEAL,fontWeight:600,background:"none",border:"none",cursor:"pointer"}}>Ver todos</button>
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          {visible.length===0?<Empty withBtn={false}/>:visible.slice(0,4).map((p,i)=><ProCard key={i} pro={p} onClick={()=>onNav("detail",p)}/>)}
+          {prosLoading
+            ? <div style={{textAlign:"center",padding:"32px 0",color:G5,fontSize:14}}>Cargando profesionales...</div>
+            : visible.length===0
+              ? <Empty withBtn={false}/>
+              : visible.slice(0,4).map((p,i)=><ProCard key={i} pro={p} onClick={()=>onNav("detail",p)}/>)
+          }
         </div>
       </div>
 
@@ -516,7 +612,10 @@ function Explore({pros,onNav,onDetail,onFab}){
     </div>
     <div style={{flex:1,overflowY:"auto",paddingBottom:80}}>
       <div style={{padding:"16px 20px",display:"flex",flexDirection:"column",gap:12}}>
-        {filtered.length===0?<Empty withBtn onReg={()=>onNav("regpro")}/>:filtered.map((p,i)=><ProCard key={i} pro={p} onClick={()=>onDetail(p)}/>)}
+        {filtered.length===0
+          ? <Empty withBtn onReg={()=>onNav("regpro")}/>
+          : filtered.map((p,i)=><ProCard key={i} pro={p} onClick={()=>onDetail(p)}/>)
+        }
       </div>
     </div>
     <BNav cur="explore" onChange={onNav}/>
@@ -811,7 +910,8 @@ function Rating({onClose}){
 // ── APP ROOT ─────────────────────────────────────────────────
 function App(){
   const [screen,setScreen]=useState("tutorial");
-  const [pros]=useState([]);
+  const [pros,setPros]=useState([]);
+  const [prosLoading,setProsLoading]=useState(false);
   const [city,setCity]=useState("");
   const [pro,setPro]=useState(null);
   const [bookings,setBookings]=useState([]);
@@ -819,8 +919,41 @@ function App(){
   const [rating,setRating]=useState(false);
   const timer=useRef();
 
+  const loadPros = async () => {
+    setProsLoading(true);
+    try {
+      const sb = window.supabase.createClient(
+        "https://olfbnucblnzijfuytjgs.supabase.co",
+        "sb_publishable_SOOuRm-nwNBJlX-7GkH4Cg_cEAZ6wIx"
+      );
+      const { data, error } = await sb
+        .from("profesionales")
+        .select("*")
+        .eq("activo", true)
+        .order("created_at", { ascending: false });
+      if (!error && data) {
+        const mapped = data.map(p => ({
+          id: p.id,
+          name: p.nombre,
+          role: p.categoria_label || p.categoria,
+          category: p.categoria,
+          city: p.ciudad,
+          zones: p.zonas,
+          bio: p.bio,
+          whatsapp: p.whatsapp,
+          avatar: p.avatar_url,
+          verified: p.verificado,
+          services: p.servicios || [],
+        }));
+        setPros(mapped);
+      }
+    } catch(e) { console.error("Error cargando profesionales:", e); }
+    setProsLoading(false);
+  };
+
   const startApp=()=>{
     setScreen("home");
+    loadPros();
     timer.current=setTimeout(()=>setRating(true),60000);
   };
   useEffect(()=>()=>clearTimeout(timer.current),[]);
@@ -835,7 +968,7 @@ function App(){
     {screen==="onboarding"&& <Onboarding onClient={()=>setScreen("regclient")} onPro={()=>setScreen("regpro")}/>}
     {screen==="regclient" && <RegClient onBack={()=>setScreen("onboarding")} onDone={startApp}/>}
     {screen==="regpro"    && <RegPro onBack={()=>setScreen("onboarding")} onDone={startApp}/>}
-    {screen==="home"      && <Home pros={pros} onNav={nav} onCat={cat=>{setScreen("explore");}} city={city} onCity={setCity} onFab={()=>setModal(true)}/>}
+    {screen==="home"      && <Home pros={pros} prosLoading={prosLoading} onNav={nav} onCat={cat=>{setScreen("explore");}} city={city} onCity={setCity} onFab={()=>setModal(true)}/>}
     {screen==="explore"   && <Explore pros={pros} onNav={nav} onDetail={p=>{setPro(p);setScreen("detail");}} onFab={()=>setModal(true)}/>}
     {screen==="detail"    && pro && <Detail pro={pro} onBack={()=>setScreen("explore")} onBook={()=>setScreen("booking")}/>}
     {screen==="booking"   && pro && <Booking pro={pro} onBack={()=>setScreen("detail")} onConfirm={b=>{setBookings(bk=>[...bk,b]);setScreen("success");}}/>}
@@ -849,13 +982,6 @@ function App(){
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<script>
-const supabaseUrl = "https://olfbnucblnzijfuytjgs.supabase.co";
-const supabaseKey = "sb_publishable_SOOuRm-nwNBJlX-7GkH4Cg_cEAZ6wIx";
-
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-</script>
 </body>
 </html>
