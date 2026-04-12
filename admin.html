@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>CasaYa — Panel Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F0F4F8;color:#1E2D4E;min-height:100vh}
@@ -103,7 +103,7 @@ tr:hover td{background:#FAFBFC}
 <script>
 const SB_URL = "https://olfbnucblnzijfuytjgs.supabase.co";
 const SB_KEY = "sb_publishable_SOOuRm-nwNBJlX-7GkH4Cg_cEAZ6wIx";
-const sb = window.supabase.createClient(SB_URL, SB_KEY);
+const sb = supabase.createClient(SB_URL, SB_KEY);
 const ADMIN_PASS = "casaya2025admin";
 
 let S = {
@@ -365,7 +365,8 @@ else if(a===“del”) deletePro(id);
 });
 }
 
-r();
+// Init safely after page load
+if(document.readyState === “loading”) { document.addEventListener(“DOMContentLoaded”, r); } else { r(); }
 </script>
 
 </body>
